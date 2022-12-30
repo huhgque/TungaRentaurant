@@ -33,6 +33,8 @@ namespace TungaRestaurant
             services.AddDbContext<TungaRestaurantDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("TungaRestaurantDbContext")));
 
+           
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,8 +62,9 @@ namespace TungaRestaurant
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "Manager",
-                    pattern: "{Manager:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                   name: "Manager",
+                   pattern: "{area:exists}/{controller=Branch}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

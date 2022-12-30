@@ -172,7 +172,7 @@ namespace TungaRestaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branch");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.Category", b =>
@@ -367,7 +367,7 @@ namespace TungaRestaurant.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Tables");
+                    b.ToTable("Table");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.UserInfo", b =>
