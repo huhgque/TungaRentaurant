@@ -32,6 +32,7 @@ namespace TungaRestaurant
 
             services.AddDbContext<TungaRestaurantDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("TungaRestaurantDbContext")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

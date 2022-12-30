@@ -9,7 +9,7 @@ using TungaRestaurant.Models;
 
 namespace TungaRestaurant.Data
 {
-    public class TungaRestaurantDbContext : IdentityDbContext<IdentityUser>
+    public class TungaRestaurantDbContext : IdentityDbContext<UserInfo>
     {
         public TungaRestaurantDbContext (DbContextOptions<TungaRestaurantDbContext> options)
             : base(options)

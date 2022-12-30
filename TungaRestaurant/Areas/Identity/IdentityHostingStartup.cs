@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TungaRestaurant.Data;
+using TungaRestaurant.Models;
 
 [assembly: HostingStartup(typeof(TungaRestaurant.Areas.Identity.IdentityHostingStartup))]
 namespace TungaRestaurant.Areas.Identity
@@ -15,12 +16,12 @@ namespace TungaRestaurant.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
-                services.AddDbContext<TungaRestaurantContext>(options =>
+                services.AddDbContext<TungaRestaurantDbContext>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("TungaRestaurantContextConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<TungaRestaurantContext>();
+                services.AddDefaultIdentity<UserInfo>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddEntityFrameworkStores<TungaRestaurantDbContext>();
             });
         }
     }
