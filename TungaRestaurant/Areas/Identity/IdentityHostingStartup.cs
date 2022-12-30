@@ -18,7 +18,7 @@ namespace TungaRestaurant.Areas.Identity
             builder.ConfigureServices((context, services) => {
                 services.AddDbContext<TungaRestaurantDbContext>(options =>
                     options.UseSqlServer(
-                        context.Configuration.GetConnectionString("TungaRestaurantContextConnection")));
+                        context.Configuration.GetConnectionString("TungaRestaurantDbContext")));
 
                 services.AddDefaultIdentity<UserInfo>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<TungaRestaurantDbContext>();
