@@ -197,6 +197,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Bold.woff2" />
+    <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Light.woff2" />
+    <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Medium.woff2" />
+    <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Regular.woff2" />
+    <None Include="wwwroot\admin_asset\assets\images\dashboard\circle.svg" />
+    <None Include="wwwroot\admin_asset\assets\images\logo-mini.svg" />
+    <None Include="wwwroot\admin_asset\assets\images\logo.svg" />
+    <None Include="wwwroot\admin_asset\assets\js\chart.js" />
+    <None Include="wwwroot\admin_asset\assets\js\dashboard.js" />
+    <None Include="wwwroot\admin_asset\assets\js\file-upload.js" />
+    <None Include="wwwroot\admin_asset\assets\js\hoverable-collapse.js" />
+    <None Include="wwwroot\admin_asset\assets\js\jquery.cookie.js" />
+    <None Include="wwwroot\admin_asset\assets\js\misc.js" />
+    <None Include="wwwroot\admin_asset\assets\js\off-canvas.js" />
+    <None Include="wwwroot\admin_asset\assets\js\todolist.js" />
+    <None Include="wwwroot\admin_asset\assets\vendors\chart.js\Chart.min.js" />
+    <None Include="wwwroot\admin_asset\assets\vendors\js\vendor.bundle.base.js" />
+    <None Include="wwwroot\admin_asset\assets\vendors\mdi\fonts\materialdesignicons-webfont61e3.woff2" />
     <None Include="wwwroot\template\wp-content\plugins\add-search-to-menu\public\images\spinner.gif" />
     <None Include="wwwroot\template\wp-content\plugins\add-search-to-menu\public\js\is-highlight.min82d0.js" />
     <None Include="wwwroot\template\wp-content\plugins\add-search-to-menu\public\js\ivory-ajax-search.min82d0.js" />
