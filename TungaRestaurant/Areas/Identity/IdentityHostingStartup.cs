@@ -21,6 +21,7 @@ namespace TungaRestaurant.Areas.Identity
                         context.Configuration.GetConnectionString("TungaRestaurantDbContext")));
 
                 services.AddDefaultIdentity<UserInfo>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<TungaRestaurantDbContext>();
             });
         }
