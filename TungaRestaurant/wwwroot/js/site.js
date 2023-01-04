@@ -1,4 +1,8 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿var host = window.location.origin;
 
-// Write your JavaScript code.
+$(".redirect-on-click").on("click", function () {
+    console.log(host);
+    var redirectUrl = $(this).attr("href");
+    
+    window.location.href = host + "/" + redirectUrl;
+})
