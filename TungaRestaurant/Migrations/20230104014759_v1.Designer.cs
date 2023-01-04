@@ -10,7 +10,7 @@ using TungaRestaurant.Data;
 namespace TungaRestaurant.Migrations
 {
     [DbContext(typeof(TungaRestaurantDbContext))]
-    [Migration("20221230035458_v1")]
+    [Migration("20230104014759_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
