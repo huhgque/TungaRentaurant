@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TungaRestaurant.Migrations
 {
-    public partial class init : Migration
+    public partial class v1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,7 +22,7 @@ namespace TungaRestaurant.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Branches",
+                name: "Branch",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -33,7 +33,7 @@ namespace TungaRestaurant.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Branches", x => x.Id);
+                    table.PrimaryKey("PK_Branch", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -139,15 +139,15 @@ namespace TungaRestaurant.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_Branches_BranchId",
+                        name: "FK_AspNetUsers_Branch_BranchId",
                         column: x => x.BranchId,
-                        principalTable: "Branches",
+                        principalTable: "Branch",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tables",
+                name: "Table",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -160,11 +160,11 @@ namespace TungaRestaurant.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tables", x => x.Id);
+                    table.PrimaryKey("PK_Table", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tables_Branches_BranchId",
+                        name: "FK_Table_Branch_BranchId",
                         column: x => x.BranchId,
-                        principalTable: "Branches",
+                        principalTable: "Branch",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -321,9 +321,9 @@ namespace TungaRestaurant.Migrations
                 {
                     table.PrimaryKey("PK_Reservations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reservations_Tables_TableId",
+                        name: "FK_Reservations_Table_TableId",
                         column: x => x.TableId,
-                        principalTable: "Tables",
+                        principalTable: "Table",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -429,8 +429,8 @@ namespace TungaRestaurant.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tables_BranchId",
-                table: "Tables",
+                name: "IX_Table_BranchId",
+                table: "Table",
                 column: "BranchId");
         }
 
@@ -476,13 +476,13 @@ namespace TungaRestaurant.Migrations
                 name: "Reservations");
 
             migrationBuilder.DropTable(
-                name: "Tables");
+                name: "Table");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Branches");
+                name: "Branch");
         }
     }
 }
