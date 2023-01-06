@@ -16,8 +16,8 @@ namespace TungaRestaurant.Data
         {
         }
 
-        public DbSet<Table> Tables { get; set; }
-        public DbSet<Branch> Branches { get; set; }
+        public DbSet<Table> Table { get; set; }
+        public DbSet<Branch> Branch { get; set; }
         public DbSet<Food> Foods { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
