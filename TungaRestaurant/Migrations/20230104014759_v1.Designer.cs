@@ -10,8 +10,8 @@ using TungaRestaurant.Data;
 namespace TungaRestaurant.Migrations
 {
     [DbContext(typeof(TungaRestaurantDbContext))]
-    [Migration("20221230021603_init")]
-    partial class init
+    [Migration("20230104014759_v1")]
+    partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -174,7 +174,7 @@ namespace TungaRestaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branch");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.Category", b =>
@@ -369,7 +369,7 @@ namespace TungaRestaurant.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Tables");
+                    b.ToTable("Table");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.UserInfo", b =>
