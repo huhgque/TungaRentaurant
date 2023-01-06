@@ -25,10 +25,12 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         {
             ViewBag.BranchList = await _context.Branch.ToListAsync();
             IQueryable<Table> tunga ;
+            ViewBag.Reservations = await _context.Reservations.Where(r => r.CreatedAt >= DateTime.Now.AddMonths(-1)).Include(r=>r.Table).ToListAsync();
             if (branche==null)
             {
-                tunga = _context.Table.Include(t => t.Branch);
-                ViewBag.Branch = null;
+                var id = _context.Table.FirstOrDefault().Id;
+                tunga = _context.Table.Where(t => t.BranchId ==(id)).Include(t => t.Branch);
+                ViewBag.Branch = id;
             }
             else
             {
@@ -159,23 +161,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         }
 
         // GET: Manager/Tables/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var table = await _context.Table
-                .Include(t => t.Branch)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (table == null)
-            {
-                return NotFound();
-            }
-
-            return View(table);
-        }
+        
 
         // POST: Manager/Tables/Delete/5
         [HttpPost, ActionName("Delete")]
