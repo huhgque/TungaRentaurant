@@ -31,7 +31,11 @@ namespace TungaRestaurant
             services.AddRazorPages();
 
             services.AddDbContext<TungaRestaurantDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("TungaRestaurantDbContext")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("TungaRestaurantDbContext"));
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+
+            });
 
         }
 
