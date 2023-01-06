@@ -31,7 +31,11 @@ namespace TungaRestaurant
             services.AddRazorPages();
 
             services.AddDbContext<TungaRestaurantDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("TungaRestaurantDbContext")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("TungaRestaurantDbContext"));
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+
+            });
 
             services.AddDbContext<TungaRestaurantContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("TungaRestaurantContext")));
@@ -65,7 +69,6 @@ namespace TungaRestaurant
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-
                    name: "Manager",
                    pattern: "{area:exists}/{controller=Branch}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(

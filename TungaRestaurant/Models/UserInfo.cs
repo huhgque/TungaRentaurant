@@ -17,11 +17,8 @@ namespace TungaRestaurant.Models
         [Required]
         public int Sex { get; set; }
         [Required]
-        public string Phone {get;set;}
-        [Required]
         public string Address {get;set;}
-        [Required]
-        public int Role {get;set;}
-        public Boolean IsVegan { get; set; } 
+        public Boolean IsVegan { get; set; } = false;
+        public UserStatus Status { get; set; } = UserStatus.NORMAL;
     }
 }
