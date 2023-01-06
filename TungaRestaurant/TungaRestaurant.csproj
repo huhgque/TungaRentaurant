@@ -188,6 +188,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.32" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.32" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.32" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.32">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.32" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.32">
       <PrivateAssets>all</PrivateAssets>
@@ -197,6 +201,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Manager\Models\" />
     <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Bold.woff2" />
     <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Light.woff2" />
     <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Medium.woff2" />
@@ -414,6 +419,7 @@
     <Content Update="wwwroot\template\wp-json\wp\v2\pages\5448.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+
   </ItemGroup>
 
   <ItemGroup>
