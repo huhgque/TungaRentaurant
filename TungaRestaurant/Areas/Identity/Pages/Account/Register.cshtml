@@ -105,57 +105,80 @@
 										<h2 class="login-heading">Hey there! Welcome back.</h2>
 										<p class="login-subheading">Login to your account</p>
 										<div class="woocommerce-notices-wrapper"></div>
-										<form class="woocommerce-form woocommerce-form-register register" method="post">
+										<form asp-route-returnUrl="@Model.ReturnUrl" class="woocommerce-form woocommerce-form-register register" method="post">
+											<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 											<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-												<label for="reg_email">
-													Email address&nbsp;<span class="required">*</span>
+												<label asp-for="Input.Email" for="reg_email">
 												</label>
+												<span class="required">*</span>
 												<input type="email"
 													   class="woocommerce-Input woocommerce-Input--text input-text"
-													   name="email" id="reg_email" autocomplete="email" value="" />
+													   asp-for="Input.Email" autocomplete="email" value="" />
+												<span asp-validation-for="Input.Email" class="text-danger"></span>
+
 											</p>
 											<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-												<label for="reg_user_name">
-													User Name&nbsp;<span class="required">*</span>
+												<label asp-for="Input.DisplayName">
 												</label>
-												<input type="user_name"
+												<span class="required">*</span>
+												<input type="text"
 													   class="woocommerce-Input woocommerce-Input--text input-text"
-													   name="user_name" id="reg_user_name" autocomplete="user_name" value="" />
+													   asp-for="Input.DisplayName" autocomplete="user_name" value="" />
+												<span asp-validation-for="Input.DisplayName" class="text-danger"></span>
+
 											</p>
 											<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-												<label for="reg_sex">
-													Gender&nbsp;<span class="required">*</span>
+												<label asp-for="Input.Sex">
 												</label>
-												<Select>
+												<span class="required">*</span>
+												<Select asp-for="Input.Sex">
 													<option value="0">Female</option>
 													<option value="1">Male</option>
 													<option value="2">Other</option>
 												</Select>
+												<span asp-validation-for="Input.Sex" class="text-danger"></span>
+
 											</p>
 											<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-												<label for="reg_address">
-													Address&nbsp;<span class="required">*</span>
+												<label asp-for="Input.Address">
 												</label>
-												<input type="address"
+												<span class="required">*</span>
+												<input type="text"
 													   class="woocommerce-Input woocommerce-Input--text input-text"
-													   name="address" id="reg_address" autocomplete="address" value="" />
+													   asp-for="Input.Address" autocomplete="address" value="" />
+												<span asp-validation-for="Input.Address" class="text-danger"></span>
+
+											</p>
+											<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+												<label asp-for="Input.PhoneNumber" >
+												</label>
+												<span class="required">*</span>
+												<input type="text"
+													   class="woocommerce-Input woocommerce-Input--text input-text"
+													   asp-for="Input.PhoneNumber" autocomplete="phonenumber" value="" />
+												<span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+
 											</p>
 											<p class="woocommerce-form-row woocommerce-form-row--wide form-row-wide">
-												<label for="reg_password">
-													Password&nbsp;<span class="required">*</span>
+												<label asp-for="Input.Password">
 												</label>
+												<span class="required">*</span>
 												<input type="password"
 													   class="woocommerce-Input woocommerce-Input--text input-text"
-													   name="password" id="reg_password" autocomplete="new-password" />
+													   asp-for="Input.Password" autocomplete="new-password" />
+												<span asp-validation-for="Input.Password" class="text-danger"></span>
+
 											</p>
 											<p class="woocommerce-form-row woocommerce-form-row--wide form-row-wide">
-												<label for="reg_password">
-													Confirm Password&nbsp;<span class="required">*</span>
+												<label asp-for="Input.ConfirmPassword">
 												</label>
+												<span class="required">*</span>
 												<input type="password"
 													   class="woocommerce-Input woocommerce-Input--text input-text"
-													   name="password" id="confirm_password" autocomplete="new-password" />
+													   asp-for="Input.ConfirmPassword" autocomplete="new-password" />
+												<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
 											</p>
 
 											<div class="clear"></div>

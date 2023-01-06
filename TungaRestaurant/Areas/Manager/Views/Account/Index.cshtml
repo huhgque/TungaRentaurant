@@ -30,10 +30,12 @@
                             </td>
                             <td> @user.DisplayName </td>
                             <td> @user.Email </td>
-                            <td> @user.Phone </td>
+                            <td> @user.PhoneNumber</td>
                             <td> @user.Address </td>
                             <td> @user.Sex </td>
-                            <td> @userManager.GetRolesAsync(user).Result.First() </td>
+                            <td>
+                                @userManager.GetRolesAsync(user).Result.First() 
+                            </td>
                             <td> @user.Status </td>
                         </tr>
                     }

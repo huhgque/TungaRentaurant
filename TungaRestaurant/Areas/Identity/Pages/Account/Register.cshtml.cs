@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<UserInfo> _signInManager;
         private readonly UserManager<UserInfo> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
@@ -29,12 +31,14 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
             UserManager<UserInfo> userManager,
             SignInManager<UserInfo> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -61,6 +65,19 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            [Required]
+            [Display(Name = "User name")]
+            public string DisplayName { get; set; }
+            [Display(Name = "Address")]
+            [Required]
+            public string Address { get; set; }
+            [Display(Name = "Phone number")]
+            [Required]
+            [RegularExpression("^\\d{10}$",ErrorMessage = "Wrong phone number partern")]
+            public string PhoneNumber { get; set; }
+            [Display(Name = "Gender")]
+            [Required]
+            public int Sex { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -75,12 +92,13 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new UserInfo { UserName = Input.Email, Email = Input.Email };
+                var user = new UserInfo { UserName = Input.Email, Email = Input.Email , Address = Input.Address , PhoneNumber = Input.PhoneNumber , Sex = Input.Sex ,DisplayName = Input.DisplayName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    IdentityRole role = _roleManager.FindByNameAsync("Customer").Result;
+                    await _userManager.AddToRoleAsync(user,role.Name);
                     _logger.LogInformation("User created a new account with password.");
-
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
