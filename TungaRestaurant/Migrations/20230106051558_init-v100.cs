@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TungaRestaurant.Migrations
 {
-    public partial class v1 : Migration
+    public partial class initv100 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -129,10 +129,9 @@ namespace TungaRestaurant.Migrations
                     DisplayName = table.Column<string>(nullable: false),
                     Avatar = table.Column<string>(nullable: true),
                     Sex = table.Column<int>(nullable: false),
-                    Phone = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: false),
-                    Role = table.Column<int>(nullable: false),
                     IsVegan = table.Column<bool>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     BranchId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

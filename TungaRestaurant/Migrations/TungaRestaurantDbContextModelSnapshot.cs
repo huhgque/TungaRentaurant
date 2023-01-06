@@ -580,7 +580,7 @@ namespace TungaRestaurant.Migrations
 
             modelBuilder.Entity("TungaRestaurant.Models.UserInfo", b =>
                 {
-                    b.HasOne("TungaRestaurant.Models.Branch", null)
+                    b.HasOne("TungaRestaurant.Models.Branch", "Branch")
                         .WithMany("Users")
                         .HasForeignKey("BranchId");
                 });

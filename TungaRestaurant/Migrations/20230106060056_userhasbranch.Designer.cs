@@ -10,8 +10,8 @@ using TungaRestaurant.Data;
 namespace TungaRestaurant.Migrations
 {
     [DbContext(typeof(TungaRestaurantDbContext))]
-    [Migration("20230104014759_v1")]
-    partial class v1
+    [Migration("20230106060056_userhasbranch")]
+    partial class userhasbranch
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -425,23 +425,19 @@ namespace TungaRestaurant.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Sex")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -586,7 +582,7 @@ namespace TungaRestaurant.Migrations
 
             modelBuilder.Entity("TungaRestaurant.Models.UserInfo", b =>
                 {
-                    b.HasOne("TungaRestaurant.Models.Branch", null)
+                    b.HasOne("TungaRestaurant.Models.Branch", "Branch")
                         .WithMany("Users")
                         .HasForeignKey("BranchId");
                 });

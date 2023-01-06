@@ -10,8 +10,8 @@ using TungaRestaurant.Data;
 namespace TungaRestaurant.Migrations
 {
     [DbContext(typeof(TungaRestaurantDbContext))]
-    [Migration("20230104125530_remove-phone-column")]
-    partial class removephonecolumn
+    [Migration("20230106051558_init-v100")]
+    partial class initv100
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -174,7 +174,7 @@ namespace TungaRestaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branch");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.Category", b =>
@@ -369,7 +369,7 @@ namespace TungaRestaurant.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Tables");
+                    b.ToTable("Table");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.UserInfo", b =>

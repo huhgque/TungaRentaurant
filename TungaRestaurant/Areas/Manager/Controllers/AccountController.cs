@@ -30,14 +30,14 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         public IActionResult Create()
         {
             List<IdentityRole> roles = roleManager.Roles.ToList();
-            List<Branch> branches = tungaRestaurantDbContext.Branches.ToList();
+            List<Branch> branches = tungaRestaurantDbContext.Branch.ToList();
             ViewBag.Roles = roles;
             ViewBag.Branches = branches;
             ViewBag.StatusList = Enum.GetValues(typeof(UserStatus));
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Email,Password,DisplayName,Phone,Sex,Address")] UserInfo user,[FromForm] string RoleName,[FromForm] string Password)
+        public async Task<IActionResult> Create([Bind("Email,Password,DisplayName,PhoneNumber,Sex,Address")] UserInfo user,[FromForm] string RoleName,[FromForm] string Password)
         {
             if (!ModelState.IsValid)
             {
@@ -48,9 +48,8 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            user.PasswordHash = Password;
             user.UserName = user.Email;
-            var Result = await userManager.CreateAsync(user);
+            var Result = await userManager.CreateAsync(user,Password);
             var addRoleResult = await userManager.AddToRoleAsync(user, role.Name);
             return RedirectToAction(nameof(Index));
         }
@@ -62,14 +61,15 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
             var roles = roleManager.Roles.ToList();
-            List<Branch> branches = tungaRestaurantDbContext.Branches.ToList();
+            List<Branch> branches = tungaRestaurantDbContext.Branch.ToList();
             
             ViewBag.StatusList = Enum.GetValues( typeof(UserStatus) );
             ViewBag.Roles = roles;
+            ViewBag.Branches = branches;
             return View(user);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit([Bind("Id,Email,Password,DisplayName,Phone,Sex,Address")] UserInfo user, [FromForm] string RoleName, [FromForm] string Password)
+        public async Task<IActionResult> Edit([Bind("Id,Email,DisplayName,PhoneNumber,Sex,Address,BranchId")] UserInfo user, [FromForm] string RoleName, [FromForm] string Password)
         {
             if (!ModelState.IsValid)
             {
