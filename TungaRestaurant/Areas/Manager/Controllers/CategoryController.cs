@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TungaRestaurant.Data;
@@ -59,6 +60,20 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             {
                 try
                 {
+                    //upload image
+                    var files = HttpContext.Request.Form.Files;
+                    if (files != null && files[0].Length > 0)
+                    {
+                        var file = files[0];
+                        string time = DateTime.Now.Ticks + "";
+                        var fileName = time + file.FileName;
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            category.Image = fileName;
+                        }
+                    }
                     _dbContext.Add(category);
                     await _dbContext.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -104,6 +119,19 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             {
                 try
                 {
+                    //upload image
+                    var files = HttpContext.Request.Form.Files;
+                    if (files != null && files[0].Length > 0)
+                    {
+                        var file = files[0];
+                        var fileName = file.Name;
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            category.Image = fileName;
+                        }
+                    }
                     _dbContext.Update(category);
                     await _dbContext.SaveChangesAsync();
                 }

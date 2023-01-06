@@ -1,4 +1,4 @@
-﻿@model TungaRestaurant.Models.Category
+﻿@model TungaRestaurant.Models.Food
 
 @{
     ViewData["Title"] = "Details";
@@ -27,6 +27,30 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Image)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CookDuration)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CookDuration)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BranchId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BranchId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ServeUnit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ServeUnit)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Status)

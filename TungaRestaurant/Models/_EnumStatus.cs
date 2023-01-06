@@ -6,4 +6,9 @@
         SUSPEND,
         BAN
     }
+    public enum FoodStatus
+    {
+        AVAILABLE,
+        UNAVAILABLE
+    }
 }

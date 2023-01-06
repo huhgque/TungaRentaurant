@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TungaRestaurant.Data;
 using TungaRestaurant.Models;
@@ -20,7 +22,8 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // GET: Food
         public async Task<IActionResult> Index()
         {
-            return View(await _dbContext.Foods.ToListAsync());
+            var foodDbContext = await _dbContext.Foods.Include(f => f.Categories).Include(f=>f.Branch).OrderByDescending(f => f.Id).ToListAsync();
+            return View(foodDbContext);
         }
 
         // GET: Food/Details/5
@@ -44,6 +47,8 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // GET: Food/Create
         public IActionResult Create()
         {
+            ViewData["CateId"] = new SelectList(_dbContext.Categories, "Id", "Name");
+            ViewData["BranchId"] = new SelectList(_dbContext.Branches, "Id", "Name");
             return View();
         }
 
@@ -52,12 +57,26 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Image,Price,CookDuration,BranchId,ServeUnit,Status")] Food Food)
+        public async Task<IActionResult> Create([Bind("Id,Name,Image,Price,CookDuration,BranchId,CateId,ServeUnit,Status")] Food Food)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    //upload image
+                    var files = HttpContext.Request.Form.Files;
+                    if (files != null && files[0].Length > 0)
+                    {
+                        var file = files[0];
+                        string time = DateTime.Now.Ticks + "";
+                        var fileName = time + file.FileName;
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            Food.Image = fileName;
+                        }
+                    }
                     _dbContext.Add(Food);
                     await _dbContext.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -68,6 +87,8 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                     return View(Food);
                 }
             }
+            ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Categories);
+            ViewData["ProducerId"] = new SelectList(_dbContext.Branches, "BranchId", "BranchId", Food.BranchId);
             return View(Food);
         }
 
@@ -84,6 +105,9 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             {
                 return NotFound();
             }
+            ViewData["CateId"] = new SelectList(_dbContext.Categories, "Id", "Name");
+            ViewData["BranchId"] = new SelectList(_dbContext.Branches, "Id", "Name");
+
             return View(Food);
         }
 
@@ -103,6 +127,20 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             {
                 try
                 {
+                    //upload image
+                    var files = HttpContext.Request.Form.Files;
+                    if (files != null && files.Count > 0)
+                    {
+                        var file = files[0];
+                        string time = DateTime.Now.Ticks + "";
+                        var fileName = time + file.FileName;
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            Food.Image = fileName;
+                        }
+                    }
                     _dbContext.Update(Food);
                     await _dbContext.SaveChangesAsync();
                 }
@@ -119,6 +157,9 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Categories);
+            ViewData["ProducerId"] = new SelectList(_dbContext.Branches, "BranchId", "BranchId", Food.BranchId);
+            
             return View(Food);
         }
 
