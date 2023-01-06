@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TungaRestaurant.Data;
 using TungaRestaurant.Models;
 
 namespace TungaRestaurant.Areas.Manager.Controllers
@@ -12,12 +13,14 @@ namespace TungaRestaurant.Areas.Manager.Controllers
     [Area("Manager")]
     public class AccountController : Controller
     {
+        private readonly TungaRestaurantDbContext tungaRestaurantDbContext;
         private readonly UserManager<UserInfo> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        public AccountController(UserManager<UserInfo> userManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<UserInfo> userManager, RoleManager<IdentityRole> roleManager,TungaRestaurantDbContext tungaRestaurantDbContext)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.tungaRestaurantDbContext = tungaRestaurantDbContext;
         }
         public IActionResult Index()
         {
@@ -27,7 +30,10 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         public IActionResult Create()
         {
             List<IdentityRole> roles = roleManager.Roles.ToList();
+            List<Branch> branches = tungaRestaurantDbContext.Branches.ToList();
             ViewBag.Roles = roles;
+            ViewBag.Branches = branches;
+            ViewBag.StatusList = Enum.GetValues(typeof(UserStatus));
             return View();
         }
         [HttpPost]
@@ -56,6 +62,8 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
             var roles = roleManager.Roles.ToList();
+            List<Branch> branches = tungaRestaurantDbContext.Branches.ToList();
+            
             ViewBag.StatusList = Enum.GetValues( typeof(UserStatus) );
             ViewBag.Roles = roles;
             return View(user);
@@ -81,7 +89,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             var updateResl = await userManager.UpdateAsync(user);
             if (!currentRole.Equals(role))
             {
-                var removeFromRole = await userManager.RemoveFromRoleAsync(user,role.Name);
+                var removeFromRole = await userManager.RemoveFromRoleAsync(user,currentRole);
                 var addRoleResult = await userManager.AddToRoleAsync(user, role.Name);
             }
             return RedirectToAction(nameof(Index));
