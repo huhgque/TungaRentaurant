@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,6 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             this.userManager = userManager;
             this.roleManager = roleManager;
         }
-
         public IActionResult Index()
         {
             List<UserInfo> users = userManager.Users.ToList();
@@ -48,7 +48,6 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             var addRoleResult = await userManager.AddToRoleAsync(user, role.Name);
             return RedirectToAction(nameof(Index));
         }
-
         public async Task<IActionResult> Edit(string id)
         {
             UserInfo user = await userManager.FindByIdAsync(id);
@@ -61,7 +60,31 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             ViewBag.Roles = roles;
             return View(user);
         }
-
-        
+        [HttpPost]
+        public async Task<IActionResult> Edit([Bind("Id,Email,Password,DisplayName,Phone,Sex,Address")] UserInfo user, [FromForm] string RoleName, [FromForm] string Password)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            IdentityRole role = await roleManager.FindByNameAsync(RoleName);
+            if (role == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            user.PasswordHash = Password;
+            user.UserName = user.Email;
+            var currentRoles = userManager.GetRolesAsync(user).Result;
+            string currentRole = (currentRoles.Count > 0) ? currentRoles[0] : "";
+            UserInfo userFromDb = userManager.Users.Where(u => u.Id.Equals(user.Id)).First();
+            user.ConcurrencyStamp = userFromDb.ConcurrencyStamp;
+            var updateResl = await userManager.UpdateAsync(user);
+            if (!currentRole.Equals(role))
+            {
+                var removeFromRole = await userManager.RemoveFromRoleAsync(user,role.Name);
+                var addRoleResult = await userManager.AddToRoleAsync(user, role.Name);
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
