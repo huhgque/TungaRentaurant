@@ -11,7 +11,7 @@ namespace TungaRestaurant.Data
 {
     public class TungaRestaurantDbContext : IdentityDbContext<UserInfo>
     {
-        public TungaRestaurantDbContext (DbContextOptions<TungaRestaurantDbContext> options)
+        public TungaRestaurantDbContext(DbContextOptions<TungaRestaurantDbContext> options)
             : base(options)
         {
         }
