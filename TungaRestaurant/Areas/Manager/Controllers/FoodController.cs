@@ -48,7 +48,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         public IActionResult Create()
         {
             ViewData["CateId"] = new SelectList(_dbContext.Categories, "Id", "Name");
-            ViewData["BranchId"] = new SelectList(_dbContext.Branches, "Id", "Name");
+            ViewData["BranchId"] = new SelectList(_dbContext.Branch, "Id", "Name");
             return View();
         }
 
@@ -88,7 +88,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 }
             }
             ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Categories);
-            ViewData["ProducerId"] = new SelectList(_dbContext.Branches, "BranchId", "BranchId", Food.BranchId);
+            ViewData["ProducerId"] = new SelectList(_dbContext.Branch, "BranchId", "BranchId", Food.BranchId);
             return View(Food);
         }
 
@@ -106,7 +106,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 return NotFound();
             }
             ViewData["CateId"] = new SelectList(_dbContext.Categories, "Id", "Name");
-            ViewData["BranchId"] = new SelectList(_dbContext.Branches, "Id", "Name");
+            ViewData["BranchId"] = new SelectList(_dbContext.Branch, "Id", "Name");
 
             return View(Food);
         }
@@ -158,7 +158,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Categories);
-            ViewData["ProducerId"] = new SelectList(_dbContext.Branches, "BranchId", "BranchId", Food.BranchId);
+            ViewData["ProducerId"] = new SelectList(_dbContext.Branch, "BranchId", "BranchId", Food.BranchId);
             
             return View(Food);
         }
