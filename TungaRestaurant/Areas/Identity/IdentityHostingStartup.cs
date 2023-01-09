@@ -20,6 +20,7 @@ namespace TungaRestaurant.Areas.Identity
                 services.AddDefaultIdentity<UserInfo>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<TungaRestaurantDbContext>();
+                
                 services.Configure<IdentityOptions>(options =>
                 {
                     options.Password.RequireNonAlphanumeric = false;
