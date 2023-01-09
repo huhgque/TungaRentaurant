@@ -11,4 +11,16 @@
         AVAILABLE,
         UNAVAILABLE
     }
+    public enum ReservationStatus
+    {
+        BOOKED,
+        USING,
+        EMPTY
+    }
+
+    public enum TableType
+    {
+        PUBLIC,
+        PRIVATE
+    }
 }
