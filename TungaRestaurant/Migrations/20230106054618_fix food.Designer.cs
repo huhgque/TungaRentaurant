@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TungaRestaurant.Data;
 
 namespace TungaRestaurant.Migrations
 {
     [DbContext(typeof(TungaRestaurantDbContext))]
-    partial class TungaRestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230106054618_fix food")]
+    partial class fixfood
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,7 +174,7 @@ namespace TungaRestaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Branch");
+                    b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.Category", b =>
@@ -369,7 +371,7 @@ namespace TungaRestaurant.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Table");
+                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.UserInfo", b =>
@@ -589,7 +591,7 @@ namespace TungaRestaurant.Migrations
 
             modelBuilder.Entity("TungaRestaurant.Models.UserInfo", b =>
                 {
-                    b.HasOne("TungaRestaurant.Models.Branch", "Branch")
+                    b.HasOne("TungaRestaurant.Models.Branch", null)
                         .WithMany("Users")
                         .HasForeignKey("BranchId");
                 });
