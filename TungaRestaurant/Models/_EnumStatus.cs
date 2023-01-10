@@ -14,13 +14,18 @@
     public enum ReservationStatus
     {
         BOOKED,
-        USING,
-        EMPTY
+        END
     }
 
     public enum TableType
     {
         PUBLIC,
         PRIVATE
+    }
+    public enum TableStatus
+    {
+        EMPTY,
+        BOOKED,
+        USING
     }
 }
