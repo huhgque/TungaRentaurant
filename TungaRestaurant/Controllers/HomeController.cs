@@ -42,16 +42,17 @@ namespace TungaRestaurant.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public async Task<IActionResult> Menu(int? branch,[DefaultValue(false)] bool isVegan)
+        public async Task<IActionResult> Menu(int? branch,[DefaultValue(false)] bool isVegan,[DefaultValue("")] string search)
         {
+            
             UserInfo user = null;
             List<Branch> branches = await _context.Branch.ToListAsync();
             ViewBag.Branches = branches;
-            if (User != null && branch == null)
+            if (User != null)
             {
                 user = await _userManager.FindByNameAsync(User.Identity.Name);
-                branch = user.PreferBranchId;
                 isVegan = user.IsVegan;
+                if (branch == null) branch = user.PreferBranchId;
             }
             if (branch == null)
             {
@@ -62,6 +63,8 @@ namespace TungaRestaurant.Controllers
                 user.PreferBranchId = branch;
                 await _userManager.UpdateAsync(user);
             }
+            ViewBag.BranchId = branch;
+            ViewBag.IsVegan = isVegan;
             // query by food
             //IQueryable<Food> foods = _context.Foods.Include(f => f.Category);
             //if (isVegan)
@@ -72,16 +75,32 @@ namespace TungaRestaurant.Controllers
             //ViewBag.Foods = await foods.ToListAsync();
 
             //query by category
-            IQueryable<Category> categories ;
             if (isVegan)
             {
                 ViewBag.Categories = _context.Categories.Include(c => c.Foods.Where(f => f.IsVeganDish && ( f.BranchId == branch || f.BranchId == null ) )).AsQueryable();
             }
             else
             {
-                ViewBag.Categories = _context.Categories.Include(c => c.Foods ).Where(categories=>categories.Foods.Where(f=>f.BranchId==branch || f.BranchId == null).FirstOrDefault() != null).ToList();
+                ViewBag.Categories = _context.Categories.Include(c => c.Foods )
+                    .Where(categories=>categories
+                        .Foods.Where(f=>
+                            (f.BranchId==branch || f.BranchId == null)
+                            && f.Name.Contains(search)
+                            ).FirstOrDefault() != null)
+                    .ToList();
             }
-            
+            return View();
+        }
+
+        public IActionResult Food(int id)
+        {
+            Food food = _context.Foods.Include(f=>f.Category).FirstOrDefault(f => f.Id == id);
+            if (food == null)
+            {
+                TempData["msg"] = "Food not exist";
+                return RedirectToAction(nameof(Menu));
+            }
+            ViewBag.Food = food;
             return View();
         }
     }
