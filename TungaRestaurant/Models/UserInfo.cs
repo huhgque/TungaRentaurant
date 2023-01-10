@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -20,5 +21,11 @@ namespace TungaRestaurant.Models
         public string Address {get;set;}
         public Boolean IsVegan { get; set; } = false;
         public UserStatus Status { get; set; } = UserStatus.NORMAL;
+        [ForeignKey("Branch")]
+        public int? BranchId { get; set; }
+        public Branch Branch { get; set; }
+        [ForeignKey("PreferBranch")]
+        public int? PreferBranchId { get; set; }
+        public Branch PreferBranch { get; set; }
     }
 }

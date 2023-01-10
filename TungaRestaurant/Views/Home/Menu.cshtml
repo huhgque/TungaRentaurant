@@ -1,0 +1,61 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["navBarMode"] = "navbar-normal";
+}
+<div class="container mt-5" style="min-height:100vh">
+	<div>
+		<form >
+			<div>
+				<div class="form-group">
+					@{
+						SelectList branchList = new SelectList(ViewBag.Branches,"Id","Name",ViewBag.BranchId);
+					}
+					<label>Select Branch</label>
+					<select class="custom-select" asp-items="branchList" name="branch"></select>
+				</div>
+				<div class="form-group">
+					<label for="checkvegan">Are you a vegan?</label>
+					@{
+						var what = new Dictionary<bool, string>();
+						what.Add(false, "No");
+						what.Add(true, "Yes");
+						SelectList veganValue = new SelectList(what,"Key","Value",ViewBag.IsVegan);
+
+					}
+					<select class="custom-select form-control" name="isVegan" asp-items="veganValue" id="checkvegan"></select>
+				</div>
+			</div>
+			<div class="form-group">
+				<input class="form-control" name="search" autocomplete="off" placeholder="Search for a dish" />
+			</div>
+		</form>
+	</div>
+	<div class="row">
+		@foreach(Category category in ViewBag.Categories)
+	   {
+			<div class="col-md-6 mb-5 pb-3">
+				<h3 class="mb-5 heading-pricing ftco-animate fadeInUp ftco-animated">@category.Name</h3>
+				@if (category.Foods == null) continue;
+				@foreach (Food food in category.Foods)
+				{
+					<div class="pricing-entry d-flex ftco-animate fadeInUp ftco-animated">
+						<div class="img" style="background-image: url(/images/@food.Image);"></div>
+						<div class="desc pl-3">
+							<div class="d-flex text align-items-center">
+								<h3><a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id" ><span>@food.Name</span></a></h3>
+								<span class="price">$@food.Price</span>
+							</div>
+							<div class="d-block">
+								<p>Serve unit: @food.ServeUnit</p>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+
+		
+	   }
+	</div>
+</div>

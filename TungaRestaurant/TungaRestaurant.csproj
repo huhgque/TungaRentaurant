@@ -6,6 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Manager\Models\**" />
+    <Content Remove="Areas\Manager\Models\**" />
+    <EmbeddedResource Remove="Areas\Manager\Models\**" />
+    <None Remove="Areas\Manager\Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20230106055903_userhasbrach.cs" />
+    <Compile Remove="Migrations\20230106055903_userhasbrach.Designer.cs" />
+    <Compile Remove="Migrations\20230106060022_userhasbranch.cs" />
+    <Compile Remove="Migrations\20230106060022_userhasbranch.Designer.cs" />
+    <Compile Remove="Migrations\20230109165344_add-user-prefer-branch.cs" />
+    <Compile Remove="Migrations\20230109165344_add-user-prefer-branch.Designer.cs" />
+    <Compile Remove="Migrations\20230109165629_add-user-prefer-branch.cs" />
+    <Compile Remove="Migrations\20230109165629_add-user-prefer-branch.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\template\wp-content\plugins\add-search-to-menu\public\images\spinner.gif" />
     <Content Remove="wwwroot\template\wp-content\plugins\add-search-to-menu\public\js\is-highlight.min82d0.js" />
     <Content Remove="wwwroot\template\wp-content\plugins\add-search-to-menu\public\js\ivory-ajax-search.min82d0.js" />
@@ -201,7 +219,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Manager\Models\" />
     <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Bold.woff2" />
     <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Light.woff2" />
     <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Medium.woff2" />
@@ -540,10 +557,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

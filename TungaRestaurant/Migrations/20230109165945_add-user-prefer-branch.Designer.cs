@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TungaRestaurant.Data;
 
 namespace TungaRestaurant.Migrations
 {
     [DbContext(typeof(TungaRestaurantDbContext))]
-    partial class TungaRestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230109165945_add-user-prefer-branch")]
+    partial class adduserpreferbranch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,6 +198,21 @@ namespace TungaRestaurant.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("TungaRestaurant.Models.CategoryDetail", b =>
+                {
+                    b.Property<int>("FoodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FoodId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("CategoryDetail");
+                });
+
             modelBuilder.Entity("TungaRestaurant.Models.Food", b =>
                 {
                     b.Property<int>("Id")
@@ -206,17 +223,11 @@ namespace TungaRestaurant.Migrations
                     b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CookDuration")
                         .HasColumnType("int");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsVeganDish")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -233,8 +244,6 @@ namespace TungaRestaurant.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Foods");
                 });
@@ -511,15 +520,26 @@ namespace TungaRestaurant.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TungaRestaurant.Models.CategoryDetail", b =>
+                {
+                    b.HasOne("TungaRestaurant.Models.Category", "Category")
+                        .WithMany("Foods")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TungaRestaurant.Models.Food", "Food")
+                        .WithMany("Categories")
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TungaRestaurant.Models.Food", b =>
                 {
                     b.HasOne("TungaRestaurant.Models.Branch", "Branch")
                         .WithMany("Foods")
                         .HasForeignKey("BranchId");
-
-                    b.HasOne("TungaRestaurant.Models.Category", "Category")
-                        .WithMany("Foods")
-                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.OrderDetail", b =>

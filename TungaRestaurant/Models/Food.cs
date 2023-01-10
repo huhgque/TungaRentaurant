@@ -14,12 +14,15 @@ namespace TungaRestaurant.Models
         public float Price { get; set; }
         public int CookDuration  {get; set;}
 
-        [ForeignKey("Branch")]
-        public int? BranchId {get; set;}
         public int ServeUnit {get; set;}
         public FoodStatus Status { get; set; } = FoodStatus.AVAILABLE;
-        public virtual List<CategoryDetail> Categories { get; set; }
+        [ForeignKey("Category")]
+        public int? CategoryId { get; set; }
+        public Category Category { get; set; }
+        [ForeignKey("Branch")]
+        public int? BranchId {get; set;}
         public Branch Branch { get; set; }
+        public bool IsVeganDish { get; set; }
         
     }
 }

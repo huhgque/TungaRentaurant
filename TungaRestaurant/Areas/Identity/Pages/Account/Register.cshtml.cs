@@ -93,6 +93,7 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new UserInfo { UserName = Input.Email, Email = Input.Email , Address = Input.Address , PhoneNumber = Input.PhoneNumber , Sex = Input.Sex ,DisplayName = Input.DisplayName };
+                user.EmailConfirmed = true;
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

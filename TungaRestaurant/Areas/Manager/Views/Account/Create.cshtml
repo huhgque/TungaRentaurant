@@ -5,6 +5,14 @@
             <h4 class="card-title">Basic form elements</h4>
             <p class="card-description"> Basic form elements </p>
             <form class="forms-sample" method="post" asp-controller="Account" asp-action="Create">
+                <select class="form-control" name="Sex" id="exampleSelectGender">
+                    @{ int i = 0; }
+                    @foreach (var status in ViewBag.StatusList)
+                    {
+                        <option value="@i">@status</option>
+                        i++;
+                    }
+                </select>
                 <div class="form-group">
                     <label for="DisplayName">Name</label>
                     <input type="text" class="form-control" id="DisplayName" name="DisplayName" placeholder="Name">
