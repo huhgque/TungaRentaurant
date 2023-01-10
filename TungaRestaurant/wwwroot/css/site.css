@@ -126,3 +126,9 @@ body {
     right: 15px;
     transform:translateY(-50%);
 }
+
+
+.select-primary option {
+    background-color: #c49b63;
+    
+}

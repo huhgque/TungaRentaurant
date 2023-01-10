@@ -78,14 +78,11 @@
                 {
 
                     if (reservasion.Table.Id == item.Id)
-                        if (reservasion.Status==ReservationStatus.BOOKED)
+                        if (reservasion.Status==ReservationStatus.USING)
                         {
                             color = "danger";
                         }
-                        else if(reservasion.Status == ReservationStatus.USING)
-                        {
-                            color = "infor";
-                        }
+                       
                         else
                         {
                             color = "success";
