@@ -300,6 +300,9 @@ namespace TungaRestaurant.Migrations
                     b.Property<DateTime>("ReservationAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ReservationEnd")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 

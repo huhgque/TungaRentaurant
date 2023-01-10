@@ -9,6 +9,7 @@ namespace TungaRestaurant.Models
         public int NumberOfGuest { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ReservationAt { get; set; }
+        public DateTime ReservationEnd { get; set; }
         public ReservationStatus Status { get; set; }
         [ForeignKey("User")]
         public string UserId { get; set; }

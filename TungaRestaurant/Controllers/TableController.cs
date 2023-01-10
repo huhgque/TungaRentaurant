@@ -28,34 +28,53 @@ namespace TungaRestaurant.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BookATable([Bind("firstName,lastName,date,time,phone,type,numberOfGuest,message")] TableBookInfor tableBookInfor)
+        public async Task<IActionResult> BookATable([Bind("firstName,lastName,date,time,time_to,phone,type,numberOfGuest,message")] TableBookInfor tableBookInfor)
         {
-         
-            Table tables =  await _context.Table
-                .Where(t => t.NumberOfGuest>= tableBookInfor.numberOfGuest)
-                .Where(t => 
-                    _context.Reservations
-                        .Where(re => re.ReservationAt.Date != DateTime.Now.Date)
-                        .FirstOrDefault(re => re.TableId == t.Id) == null
-                    )
-                    .FirstOrDefaultAsync();
-          
-            DateTime revDate = DateTime.ParseExact(tableBookInfor.date + " " + tableBookInfor.time, "M/dd/yyyy h:mmtt", CultureInfo.InvariantCulture);
-            UserInfo loginUser = await _userManager.FindByNameAsync(User.Identity.Name);
-            Reservation reservation = new Reservation();
-            reservation.CreatedAt = DateTime.Now;
-            reservation.NumberOfGuest = tableBookInfor.numberOfGuest;
-            reservation.UserId = loginUser.Id;
-            reservation.ReservationAt = revDate;
-            reservation.Status = ReservationStatus.BOOKED;
-            reservation.TableId = tables.Id;
-            _context.Add(reservation);
-            await _context.SaveChangesAsync();
-
             
-
-
-            return View("Index");
+            if (ModelState.IsValid)
+            {
+                DateTime revDate = DateTime.ParseExact(tableBookInfor.date + " " + tableBookInfor.time, "M/d/yyyy h:mmtt", CultureInfo.InvariantCulture);
+                DateTime revEnd = DateTime.ParseExact(tableBookInfor.date + " " + tableBookInfor.time_to, "M/d/yyyy h:mmtt", CultureInfo.InvariantCulture);
+                
+                Table tables = await _context.Table
+                 .Where(t => t.Type == tableBookInfor.type)
+                .Where(t => t.NumberOfGuest >= tableBookInfor.numberOfGuest)
+                .Where(t =>
+                  _context.Reservations
+                        .Where(re => re.ReservationAt.Date == revDate.Date)
+                        .Where(re => re.ReservationAt < revEnd && revDate < re.ReservationEnd)
+                      .FirstOrDefault(re => re.TableId == t.Id) == null
+                 )
+                .FirstOrDefaultAsync();
+                if (tables == null)
+                {
+                    TempData["Message"] = "No table available at this time stamp";
+                    return RedirectToAction("Index", "Home");
+                }
+               
+                                   
+              
+                Reservation reservation = new Reservation();
+                reservation.CreatedAt = DateTime.Now;
+                reservation.NumberOfGuest = tableBookInfor.numberOfGuest;
+                reservation.ReservationAt = revDate;
+                reservation.ReservationEnd = revEnd;
+                reservation.Status = ReservationStatus.END;
+                reservation.TableId = tables.Id;
+                if (User != null)
+                {
+                    UserInfo loginUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                    reservation.UserId = loginUser.Id;
+                }
+                _context.Add(reservation);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Table " + tables.Name + " booked at "+ revDate;
+            }
+            else
+            {
+                TempData["Message"] = "Err";
+            }
+            return RedirectToAction("Index","Home");
         }
     }
 }

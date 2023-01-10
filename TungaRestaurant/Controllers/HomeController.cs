@@ -29,6 +29,10 @@ namespace TungaRestaurant.Controllers
 
         public IActionResult Index()
         {
+            if(TempData["Message"]!=null)
+            {
+                ViewBag.Message =TempData["Message"].ToString();
+            }
             return View();
         }
 

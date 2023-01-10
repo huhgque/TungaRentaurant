@@ -9,21 +9,23 @@ namespace TungaRestaurant.Controllers
 {
     public class TableBookInfor
     {
-        [Required]
+        [Required(ErrorMessage ="Requied")]
         public string firstName { get; set; }
-        [Required]
-        public string lastName { get; set; }  
-        [Required]
+        [Required(ErrorMessage = "Requied")]
+        public string lastName { get; set; }
+        [Required(ErrorMessage = "Requied")]
         public string date { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Requied")]
         public string time { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Requied")]
+        public string time_to { get; set; }
+        [Required(ErrorMessage = "Requied")]
         public string phone { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Requied")]
         public TableType type { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Requied")]
         public int numberOfGuest { get; set; }
-        [Required]
+   
         public string message { get; set; }
 
     }
