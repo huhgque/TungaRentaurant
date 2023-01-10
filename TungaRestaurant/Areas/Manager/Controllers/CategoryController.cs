@@ -67,6 +67,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                         var file = files[0];
                         string time = DateTime.Now.Ticks + "";
                         var fileName = time + file.FileName;
+                        Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/images"));
                         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
                         using (var stream = new FileStream(path, FileMode.Create))
                         {

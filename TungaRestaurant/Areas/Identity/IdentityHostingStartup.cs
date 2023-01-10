@@ -26,6 +26,7 @@ namespace TungaRestaurant.Areas.Identity
                     options.Password.RequireNonAlphanumeric = false;
                     options.User.RequireUniqueEmail = true;
                     options.SignIn.RequireConfirmedEmail = false;
+                    options.SignIn.RequireConfirmedAccount = false;
                 });
             });
         }

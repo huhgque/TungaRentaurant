@@ -17,6 +17,10 @@
     <Compile Remove="Migrations\20230106055903_userhasbrach.Designer.cs" />
     <Compile Remove="Migrations\20230106060022_userhasbranch.cs" />
     <Compile Remove="Migrations\20230106060022_userhasbranch.Designer.cs" />
+    <Compile Remove="Migrations\20230109165344_add-user-prefer-branch.cs" />
+    <Compile Remove="Migrations\20230109165344_add-user-prefer-branch.Designer.cs" />
+    <Compile Remove="Migrations\20230109165629_add-user-prefer-branch.cs" />
+    <Compile Remove="Migrations\20230109165629_add-user-prefer-branch.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -553,10 +557,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

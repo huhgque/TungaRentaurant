@@ -24,5 +24,8 @@ namespace TungaRestaurant.Models
         [ForeignKey("Branch")]
         public int? BranchId { get; set; }
         public Branch Branch { get; set; }
+        [ForeignKey("PreferBranch")]
+        public int? PreferBranchId { get; set; }
+        public Branch PreferBranch { get; set; }
     }
 }
