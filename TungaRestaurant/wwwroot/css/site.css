@@ -115,3 +115,14 @@ body {
 .navbar-normal {
     position: relative !important;
 }
+
+.p-relative{
+    position:relative;
+}
+
+.search-button-over-input{
+    position:absolute;
+    top:50%;
+    right: 15px;
+    transform:translateY(-50%);
+}
