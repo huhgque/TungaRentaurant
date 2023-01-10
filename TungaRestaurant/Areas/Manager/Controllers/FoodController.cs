@@ -22,7 +22,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // GET: Food
         public async Task<IActionResult> Index()
         {
-            var foodDbContext = await _dbContext.Foods.Include(f => f.Categories).Include(f=>f.Branch).OrderByDescending(f => f.Id).ToListAsync();
+            var foodDbContext = await _dbContext.Foods.Include(f => f.Category).Include(f=>f.Branch).OrderByDescending(f => f.Id).ToListAsync();
             return View(foodDbContext);
         }
 
@@ -57,7 +57,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Image,Price,CookDuration,BranchId,CateId,ServeUnit,Status")] Food Food)
+        public async Task<IActionResult> Create([Bind("Id,Name,Image,Price,CookDuration,BranchId,Category,ServeUnit,Status")] Food Food)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +70,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                         var file = files[0];
                         string time = DateTime.Now.Ticks + "";
                         var fileName = time + file.FileName;
+                        Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images"));
                         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
@@ -87,7 +88,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                     return View(Food);
                 }
             }
-            ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Categories);
+            ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Category);
             ViewData["ProducerId"] = new SelectList(_dbContext.Branch, "BranchId", "BranchId", Food.BranchId);
             return View(Food);
         }
@@ -116,7 +117,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Image,Price,CookDuration,BranchId,ServeUnit,Status")] Food Food)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Image,Price,CookDuration,BranchId,ServeUnit,Status,Category")] Food Food)
         {
             if (id != Food.Id)
             {
@@ -157,7 +158,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Categories);
+            ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Category);
             ViewData["ProducerId"] = new SelectList(_dbContext.Branch, "BranchId", "BranchId", Food.BranchId);
             
             return View(Food);

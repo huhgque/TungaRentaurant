@@ -28,12 +28,12 @@ namespace TungaRestaurant.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<CategoryDetail>().HasKey(detail => new { detail.FoodId, detail.CategoryId });
-            builder.Entity<CategoryDetail>().HasOne<Food>(detail => detail.Food).WithMany(food => food.Categories).HasForeignKey(detail => detail.FoodId);
-            builder.Entity<CategoryDetail>().HasOne<Category>(detail => detail.Category).WithMany(category => category.Foods).HasForeignKey(detail => detail.CategoryId);
-
+            
             builder.Entity<OrderDetail>().HasKey(order => new { order.OrderId });
             builder.Entity<ReservationDetail>().HasKey(reserv => reserv.ReservationId);
+
+            builder.Entity<Branch>().HasMany(b=>b.Users).WithOne(u=>u.Branch).HasForeignKey(u => u.BranchId);
         }
+
     }
 }

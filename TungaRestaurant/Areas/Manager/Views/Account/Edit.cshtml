@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group">
                     <label for="Phone">Phone number</label>
-                    <input value="@Model.PhoneNumber" type="text" class="form-control" id="Phone" name="Phone" placeholder="Phone number">
+                    <input value="@Model.PhoneNumber" type="text" class="form-control" id="Phone" name="PhoneNumber" placeholder="Phone number">
                 </div>
                 <div class="form-group">
                     <label for="Address">Address</label>
@@ -46,6 +46,15 @@
                        
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="setBrach">Select Branch</label>
+                    @{
+                        SelectList branchList = new SelectList(ViewBag.Branches, "Id", "Name",Model.BranchId);
+                    }
+                    <select asp-items="@branchList" class="form-control" id="setBrach" name="BranchId">
+                    </select>
+                </div>
+
                 <button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
                 <button class="btn btn-light">Cancel</button>
             </form>

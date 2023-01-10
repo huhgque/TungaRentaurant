@@ -10,8 +10,8 @@ using TungaRestaurant.Data;
 namespace TungaRestaurant.Migrations
 {
     [DbContext(typeof(TungaRestaurantDbContext))]
-    [Migration("20230101145028_user-add-status")]
-    partial class useraddstatus
+    [Migration("20230106051558_init-v100")]
+    partial class initv100
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -174,7 +174,7 @@ namespace TungaRestaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branch");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.Category", b =>
@@ -369,7 +369,7 @@ namespace TungaRestaurant.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Tables");
+                    b.ToTable("Table");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.UserInfo", b =>
@@ -423,10 +423,6 @@ namespace TungaRestaurant.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")

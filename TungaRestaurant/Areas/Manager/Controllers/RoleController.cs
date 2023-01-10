@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,6 @@ namespace TungaRestaurant.Areas.Manager.Controllers
 		{
 			this.roleManager = roleManager;
 		}
-
 		public IActionResult Index()
 		{
 			List<IdentityRole> roleList = roleManager.Roles.ToList();

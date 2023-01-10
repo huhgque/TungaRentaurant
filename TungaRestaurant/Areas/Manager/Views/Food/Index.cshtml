@@ -34,9 +34,7 @@
                             <td> @food.Price</td>
                             <td> @food.CookDuration</td>
                             <td> @food.BranchId</td>
-                            <td> @foreach (var cate in food.Categories ) {
-                                <span>@cate.Category.Name</span>
-                            } </td>
+                            <td> @food.Category.Name</td>
                             <td> @food.ServeUnit</td>
                             <td>@food.Status</td>
                             <td><a asp-action="Delete" asp-route-id="@food.Id" class="btn btn-gradient-danger">Delete</a></td>
