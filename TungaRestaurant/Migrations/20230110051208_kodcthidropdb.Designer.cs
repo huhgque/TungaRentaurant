@@ -10,8 +10,8 @@ using TungaRestaurant.Data;
 namespace TungaRestaurant.Migrations
 {
     [DbContext(typeof(TungaRestaurantDbContext))]
-    [Migration("20230106051558_init-v100")]
-    partial class initv100
+    [Migration("20230110051208_kodcthidropdb")]
+    partial class kodcthidropdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -198,21 +198,6 @@ namespace TungaRestaurant.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("TungaRestaurant.Models.CategoryDetail", b =>
-                {
-                    b.Property<int>("FoodId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FoodId", "CategoryId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("CategoryDetail");
-                });
-
             modelBuilder.Entity("TungaRestaurant.Models.Food", b =>
                 {
                     b.Property<int>("Id")
@@ -220,7 +205,10 @@ namespace TungaRestaurant.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BranchId")
+                    b.Property<int?>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("CookDuration")
@@ -228,6 +216,9 @@ namespace TungaRestaurant.Migrations
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsVeganDish")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -242,6 +233,10 @@ namespace TungaRestaurant.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Foods");
                 });
@@ -431,6 +426,9 @@ namespace TungaRestaurant.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("PreferBranchId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -458,6 +456,8 @@ namespace TungaRestaurant.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PreferBranchId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -513,19 +513,15 @@ namespace TungaRestaurant.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TungaRestaurant.Models.CategoryDetail", b =>
+            modelBuilder.Entity("TungaRestaurant.Models.Food", b =>
                 {
+                    b.HasOne("TungaRestaurant.Models.Branch", "Branch")
+                        .WithMany("Foods")
+                        .HasForeignKey("BranchId");
+
                     b.HasOne("TungaRestaurant.Models.Category", "Category")
                         .WithMany("Foods")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TungaRestaurant.Models.Food", "Food")
-                        .WithMany("Categories")
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("TungaRestaurant.Models.OrderDetail", b =>
@@ -582,9 +578,13 @@ namespace TungaRestaurant.Migrations
 
             modelBuilder.Entity("TungaRestaurant.Models.UserInfo", b =>
                 {
-                    b.HasOne("TungaRestaurant.Models.Branch", null)
+                    b.HasOne("TungaRestaurant.Models.Branch", "Branch")
                         .WithMany("Users")
                         .HasForeignKey("BranchId");
+
+                    b.HasOne("TungaRestaurant.Models.Branch", "PreferBranch")
+                        .WithMany()
+                        .HasForeignKey("PreferBranchId");
                 });
 #pragma warning restore 612, 618
         }

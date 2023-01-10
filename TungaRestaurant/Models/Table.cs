@@ -11,7 +11,7 @@ namespace TungaRestaurant.Models
         [ForeignKey("Branch")]
         public int BranchId {get;set;}
         public int NumberOfGuest {get;set;}
-        public int Status {get;set;}
+        public TableStatus Status {get;set;}
 
         public Branch Branch {get;set;}
     }
