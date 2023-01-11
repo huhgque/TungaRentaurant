@@ -29,10 +29,11 @@ namespace TungaRestaurant.Data
         {
             base.OnModelCreating(builder);
             
-            builder.Entity<OrderDetail>().HasKey(order => new { order.OrderId });
+            builder.Entity<OrderDetail>().HasKey(order => new { order.OrderId, order.FoodId});
             builder.Entity<ReservationDetail>().HasKey(reserv => reserv.ReservationId);
 
             builder.Entity<Branch>().HasMany(b=>b.Users).WithOne(u=>u.Branch).HasForeignKey(u => u.BranchId);
+
         }
 
     }
