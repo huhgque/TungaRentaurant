@@ -12,7 +12,7 @@
             <div class="col-lg-6 mb-5 ftco-animate fadeInUp ftco-animated">
                 <a href="/images/@food.Image" class="image-popup"><img src="/images/@food.Image" class="img-fluid" alt="Colorlib Template"></a>
             </div>
-            <div class="col-lg-6 product-details pl-md-5 ftco-animate fadeInUp ftco-animated">
+            <form  method="post" asp-action="Create" asp-controller="Cart" class="col-lg-6 product-details pl-md-5 ftco-animate fadeInUp ftco-animated">
                 <h3>@food.Name</h3>
                 <p class="price"><span>$@food.Price</span></p>
                 <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
@@ -33,10 +33,11 @@
                                 <i class="icon-plus"></i>
                             </button>
                         </span>
+                        <input hidden value="@food.Id" name="foodId"/>
                     </div>
                 </div>
-                <p><a href="cart.html" class="btn btn-primary py-3 px-5">Add to Cart</a></p>
-            </div>
+                <p><input type="submit" class="btn btn-primary py-3 px-5" value="Add to Cart"/></p>
+            </form>
         </div>
     </div>
 </section>

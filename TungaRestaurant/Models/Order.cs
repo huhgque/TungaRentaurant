@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TungaRestaurant.Models
 {
@@ -9,5 +12,10 @@ namespace TungaRestaurant.Models
         public float Price { get; set; }
         public  DateTime CreatedAt { get; set; }
         public int Status { get; set; }
+        [ForeignKey("User")]
+        public string UserInfoId { get; set; }
+        public UserInfo User { get; set; }
+
+        public virtual ICollection<OrderDetail> OrderDetail { get; set; } = new List<OrderDetail>();
     }
 }
