@@ -88,7 +88,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 }
             }
             ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Category);
-            ViewData["ProducerId"] = new SelectList(_dbContext.Branch, "BranchId", "BranchId", Food.BranchId);
+            ViewData["BranchId"] = new SelectList(_dbContext.Branch, "BranchId", "BranchId", Food.BranchId);
             return View(Food);
 
         }
