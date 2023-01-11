@@ -57,7 +57,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Image,Price,CookDuration,BranchId,Category,ServeUnit,Status")] Food Food)
+        public async Task<IActionResult> Create([Bind("Id,Name,Image,Price,CookDuration,BranchId,CategoryId,ServeUnit,Status,IsVeganDish")] Food Food)
         {
             if (ModelState.IsValid)
             {
@@ -85,12 +85,12 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 catch (Exception ex)
                 {
                     ViewBag.error = "This food has existed! Please contact with admin for more infor." + ex;
-                    return View(Food);
                 }
             }
             ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Category);
             ViewData["ProducerId"] = new SelectList(_dbContext.Branch, "BranchId", "BranchId", Food.BranchId);
             return View(Food);
+
         }
 
         // GET: Food/Edit/5
@@ -117,7 +117,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Image,Price,CookDuration,BranchId,ServeUnit,Status,Category")] Food Food)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Image,Price,CookDuration,BranchId,ServeUnit,Status,CategoryId,IsVeganDish")] Food Food)
         {
             if (id != Food.Id)
             {

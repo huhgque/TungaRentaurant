@@ -7,9 +7,11 @@ namespace TungaRestaurant.Models
         public int Id { get; set; }
         [ForeignKey("Food")]
         public int FoodId { get; set; }
-        public int UserId { get; set; }
+        [ForeignKey("UserInfo")]
+        public string UserInfoId { get; set; }
         public int Quantity { get; set; }
         public Food Food { get; set; }
+        public UserInfo UserInfo { get; set; }
 
     }
 }
