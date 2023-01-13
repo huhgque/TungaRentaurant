@@ -86,7 +86,7 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, "Invalid first time init attempt.");
                 } else
                 {
-                    return RedirectToAction("Index", "/Profile");
+                    return RedirectToAction(actionName: "Index", controllerName: "Profile",new {area = ""});
 
                 }
             }
@@ -130,7 +130,7 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
             {
                 UserInfo firstUser = new UserInfo();
                 firstUser.Email = firstTimeLogin;
-                firstUser.UserName = "admin";
+                firstUser.UserName = firstTimeLogin;
                 firstUser.DisplayName = "Admin";
                 firstUser.PhoneNumber = "0000000000";
                 firstUser.Address = "XXX";
@@ -145,6 +145,7 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
                 var customerRes = await _roleManager.CreateAsync(customerRole);
 
                 var createRes = await _userManager.CreateAsync(firstUser, firstTimeLoginPassword);
+                var addAdminRole = await _userManager.AddToRoleAsync(firstUser,"Admin");
                 return true;
             }
             return false;
