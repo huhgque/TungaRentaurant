@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using TungaRestaurant.Areas.Manager.Controllers;
 
 namespace TungaRestaurant.Controllers
 {
@@ -46,9 +47,15 @@ namespace TungaRestaurant.Controllers
             {
                 try
                 {
+                    List<Cart> carts = _context.Carts.Include(c=>c.Food).Where(c => c.UserInfoId == _userManager.GetUserId(User)).ToList();
+                    if (carts.Count == 0)
+                    {
+                        TempData["Notice"] = "Your cart is empty!";
+                        TempData["Description"] = "Try to order some food first!";                        
+                        return RedirectToAction("Index", "Home");
+                    }
                     order.UserInfoId = _userManager.GetUserId(User);
                     //lay cart
-                    List<Cart> carts = _context.Carts.Include(c=>c.Food).Where(c => c.UserInfoId == _userManager.GetUserId(User)).ToList();
                     order.Name = _userManager.GetUserName(User);
                     float totalPrice = 0;
                     foreach (var cart in carts)
@@ -59,12 +66,14 @@ namespace TungaRestaurant.Controllers
                         orderDetail.Price = cart.Food.Price;
                         orderDetail.Quantity = cart.Quantity;
                         order.OrderDetail.Add(orderDetail);
+                        _context.Carts.Remove(cart);
                     }
                     order.Price = totalPrice;
                     order.CreatedAt = DateTime.Now;
 
 
                     _context.Orders.Add(order);
+                    
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }

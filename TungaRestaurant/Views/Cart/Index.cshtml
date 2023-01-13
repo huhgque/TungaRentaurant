@@ -5,7 +5,6 @@
 
 }
 @model IEnumerable<Cart>
-
 <section class="home-slider owl-carousel">
 
     <div class="slider-item" style="background-image: url(/customer_asset/images/bg_3.jpg);">
@@ -22,7 +21,6 @@
         </div>
     </div>
 </section>
-
 <section class="ftco-section ftco-cart">
     <div class="container">
         <div class="row">
@@ -40,63 +38,73 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @{float subtotal = 0; float discount = 0; float delivery = 0;}
                             @foreach (Cart c in Model)
                             {
-                                <tr class="text-center">
+                                subtotal += c.Food.Price * c.Quantity;
+                            <tr class="text-center">
+                                <td class="image-prod"><div class="img" style="background-image:url(images/@c.Food.Image);"></div></td>
 
+                                <td class="product-name">
+                                    <h3>@c.Food.Name</h3>
+                                    <p>Far far away, behind the word mountains, far from the countries</p>
+                                </td>
 
-                                    <td class="image-prod"><div class="img" style="background-image:url(images/@c.Food.Image);"></div></td>
+                                <td class="price">$@c.Food.Price</td>
 
-                                    <td class="product-name">
-                                        <h3>@c.Food.Name</h3>
-                                        <p>Far far away, behind the word mountains, far from the countries</p>
-                                    </td>
+                                <td class="quantity">
+                                    <div class="input-group">                       
+                                        <form class="text-center" asp-controller="Cart" asp-action="Edit" method="post">
+                                            <input hidden value="@c.Id" name="id" />
+                                            <input hidden value="@c.FoodId" name="FoodId" />
+                                            <input hidden value="@c.UserInfoId" name="UserInfoId" />               
+                                            <div class="row">
+                                                <input type="text" name="quantity" class="quantity form-control input-number col-sm-6" value="@c.Quantity" min="1" max="100">
+                                                <input type="submit" class="btn btn-primary py-3 px-4 col-sm-6" value="Update Cart" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
 
-                                    <td class="price">@c.Food.Price</td>
-
-                                    <td class="quantity">
-                                        <div class="input-group mb-3">
-                                            <input type="text" name="quantity" class="quantity form-control input-number" value="@c.Quantity" min="1" max="100">
-                                        </div>
-                                    </td>
-
-                                    <td class="total">$4.90</td>
+                                    <td class="total" id="totalOfItemPrice">$@(c.Food.Price * c.Quantity)</td>
                                     <td class="product-remove">
                                         <form asp-action="Delete" method="post">
                                             <input hidden value="@c.Id" name="id" />
                                             <button class="btn text-center auth-form-btn" style="width:50px;aspect-ratio:1/1;"><span class="icon-close"></span></button>
                                         </form>
-                                    </td>
+                                    </td>                                    
                                 </tr><!-- END TR-->
-                            }                                
-                            </tbody>
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
         <div class="row justify-content-end">
+            
             <div class="col col-lg-3 col-md-6 mt-5 cart-wrap ftco-animate">
+                @{float total = subtotal + delivery - discount;}
                 <div class="cart-total mb-3">
                     <h3>Cart Totals</h3>
                     <p class="d-flex">
                         <span>Subtotal</span>
-                        <span>$20.60</span>
+                        <span>$@subtotal</span>
                     </p>
                     <p class="d-flex">
                         <span>Delivery</span>
-                        <span>$0.00</span>
+                        <span>$@delivery</span>
                     </p>
                     <p class="d-flex">
                         <span>Discount</span>
-                        <span>$3.00</span>
+                        <span>$@discount</span>
                     </p>
                     <hr>
                     <p class="d-flex total-price">
                         <span>Total</span>
-                        <span>$17.60</span>
+                        <span>$@total</span>
                     </p>
                 </div>
-                <form class="text-center" asp-controller="Order" asp-action="Create" method="post"><button class="btn btn-primary py-3 px-4">Proceed to Checkout</button></form>
+                <form class="text-center" asp-controller="Order" asp-action="Create" method="post"><input type="submit" class="btn btn-primary py-3 px-4" value="Check Out" /></form>
             </div>
         </div>
     </div>

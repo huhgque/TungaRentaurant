@@ -8,6 +8,7 @@ using TungaRestaurant.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace TungaRestaurant.Controllers
 {
@@ -57,11 +58,20 @@ namespace TungaRestaurant.Controllers
                 try
                 {
                     cart.UserInfoId = _userManager.GetUserId(User);
-                    _dbContext.Add(cart);
+                    Cart cartThatHasExistedFood = await _dbContext.Carts.FirstOrDefaultAsync(c => c.FoodId == cart.FoodId);
+                    if (cartThatHasExistedFood != null)
+                    {
+                        cartThatHasExistedFood.Quantity += cart.Quantity;
+                        _dbContext.Update(cartThatHasExistedFood);
+                    }
+                    else
+                    {
+                        _dbContext.Add(cart);
+                    }
                     await _dbContext.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     ViewBag.error = "This item has exist in your cart. Please add or reduce it by go to Cart page!";
                     return View(cart);
@@ -104,6 +114,8 @@ namespace TungaRestaurant.Controllers
             }
             return View(cart);
         }
+
+        
 
         // POST: Cart/Delete/5
         [HttpPost, ActionName("Delete")]

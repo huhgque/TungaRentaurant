@@ -23,13 +23,13 @@
                     
                     <div class="input-group col-md-6 d-flex mb-3">
                         <span class="input-group-btn mr-2">
-                            <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+                            <button type="button" class="quantity-left-minus btn" id="minus" data-type="minus" data-field="">
                                 <i class="icon-minus"></i>
                             </button>
                         </span>
                         <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
                         <span class="input-group-btn ml-2">
-                            <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+                            <button type="button" class="quantity-right-plus btn" id="plus" data-type="plus" data-field="">
                                 <i class="icon-plus"></i>
                             </button>
                         </span>
@@ -60,7 +60,6 @@
                             <h3><a asp-controller="Home" asp-action="Food" asp-route-id="@relate.Id">@relate.Name</a></h3>
                             <p>A small river named Duden flows by their place and supplies</p>
                             <p class="price"><span>$@relate.Price</span></p>
-                            <p><a href="#" class="btn btn-primary btn-outline-primary">Add to Cart</a></p>
                         </div>
                     </div>
                 </div>
