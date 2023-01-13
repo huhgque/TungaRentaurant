@@ -33,6 +33,14 @@ namespace TungaRestaurant.Controllers
             {
                 ViewBag.Message =TempData["Message"].ToString();
             }
+            if (TempData["Notice"] != null)
+            {
+                ViewBag.Notice = TempData["Notice"].ToString();
+            }
+            if (TempData["Description"] != null)
+            {
+                ViewBag.Description = TempData["Description"].ToString();
+            }
             return View();
         }
 

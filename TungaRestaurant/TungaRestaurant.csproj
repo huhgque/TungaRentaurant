@@ -13,17 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20230106055903_userhasbrach.cs" />
-    <Compile Remove="Migrations\20230106055903_userhasbrach.Designer.cs" />
-    <Compile Remove="Migrations\20230106060022_userhasbranch.cs" />
-    <Compile Remove="Migrations\20230106060022_userhasbranch.Designer.cs" />
-    <Compile Remove="Migrations\20230109165344_add-user-prefer-branch.cs" />
-    <Compile Remove="Migrations\20230109165344_add-user-prefer-branch.Designer.cs" />
-    <Compile Remove="Migrations\20230109165629_add-user-prefer-branch.cs" />
-    <Compile Remove="Migrations\20230109165629_add-user-prefer-branch.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="wwwroot\template\wp-content\plugins\add-search-to-menu\public\images\spinner.gif" />
     <Content Remove="wwwroot\template\wp-content\plugins\add-search-to-menu\public\js\is-highlight.min82d0.js" />
     <Content Remove="wwwroot\template\wp-content\plugins\add-search-to-menu\public\js\ivory-ajax-search.min82d0.js" />
