@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TungaRestaurant.Migrations
 {
-    public partial class init : Migration
+    public partial class init1000 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,22 +49,6 @@ namespace TungaRestaurant.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Price = table.Column<float>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -275,6 +259,29 @@ namespace TungaRestaurant.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<float>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    UserInfoId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserInfoId",
+                        column: x => x.UserInfoId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reservations",
                 columns: table => new
                 {
@@ -456,6 +463,11 @@ namespace TungaRestaurant.Migrations
                 name: "IX_OrderDetails_FoodId",
                 table: "OrderDetails",
                 column: "FoodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserInfoId",
+                table: "Orders",
+                column: "UserInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReservationDetails_FoodId",

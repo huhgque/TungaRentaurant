@@ -10,8 +10,8 @@ using TungaRestaurant.Data;
 namespace TungaRestaurant.Migrations
 {
     [DbContext(typeof(TungaRestaurantDbContext))]
-    [Migration("20230111093505_fixOrder")]
-    partial class fixOrder
+    [Migration("20230113093037_init1000")]
+    partial class init1000
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

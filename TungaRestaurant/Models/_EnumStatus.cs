@@ -34,4 +34,11 @@
         MALE,
         OTHER
     }
+
+    public enum Role
+    {
+        ADMIN,
+        BRANCH_MANAGER,
+        CUSTOMER
+    }
 }
