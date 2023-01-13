@@ -22,9 +22,10 @@ namespace TungaRestaurant.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            ViewBag.Food = await _context.Foods.ToListAsync();
+            return View("~/Views/Home/TableReservation.cshtml");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -37,7 +38,7 @@ namespace TungaRestaurant.Controllers
                 DateTime revEnd = DateTime.ParseExact(tableBookInfor.date + " " + tableBookInfor.time_to, "M/d/yyyy h:mmtt", CultureInfo.InvariantCulture);
                 
                 Table tables = await _context.Table
-                 .Where(t => t.Type == tableBookInfor.type)
+           
                 .Where(t => t.NumberOfGuest >= tableBookInfor.numberOfGuest)
                 .Where(t =>
                   _context.Reservations

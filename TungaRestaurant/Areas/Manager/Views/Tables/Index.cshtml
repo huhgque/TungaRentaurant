@@ -5,155 +5,199 @@
     var Reservations = (List<Reservation>)ViewBag.Resevations;
 }
 
-<form asp-action="Index" asp-area="Manager" asp-controller="Tables" method="get">
-    <div>
-        <div style="text-align:center;display:inline-block">
-
-            <select class="form-control" style="text-align:center" name="branche" onchange="this.form.submit()">
-
-                @foreach (var item in ViewBag.BranchList)
-                {
-                    @if (ViewBag.Branch == item.Id)
-                    {
-                        <option value="@item.Id" selected>@item.Name</option>
-                    }
-                    else
-                    {
-                        <option value="@item.Id">@item.Name</option>
-                    }
-
-
-                }
-
-            </select>
-
-        </div>
-        <div style="text-align:center;display:inline-block">
-
-            <select class="form-control" name="tableType" onchange="this.form.submit()">
-                @if (ViewBag.tableType == "ALL")
-                {
-                    <option selected value="ALL">All</option>
-                }
-                else
-                {
-                    <option value="ALL">All</option>
-                }
-
-
-                @if (ViewBag.tableType == TableType.PUBLIC.ToString())
-                {
-                    <option selected value="@TableType.PUBLIC.ToString()">Public</option>
-                }
-                else
-                {
-                    <option value="@TableType.PUBLIC.ToString()">Public</option>
-                }
-
-
-                @if (ViewBag.tableType == TableType.PRIVATE.ToString())
-                {
-                    <option selected value="@TableType.PRIVATE.ToString()">Private</option>
-                }
-                else
-                {
-                    <option value="@TableType.PRIVATE.ToString()">Private</option>
-                }
-
-
-            </select>
-
-        </div>
-    </div>
-</form>
-<div style="text-align: left; width: 100%;  margin:1% 0 1% 0">
-    <div class="row">
-        @foreach (var item in Model)
-        {
-        <div class="col-md-3 stretch-card grid-margin ">
-
-            @{
-                string color = "";
-                if(Reservations!=null) foreach (var reservasion in Reservations)
-                {
-
-                    if (reservasion.Table.Id == item.Id)
-                        if (reservasion.Status==ReservationStatus.USING)
-                        {
-                            color = "danger";
-                        }
-                       
-                        else
-                        {
-                            color = "success";
-                        }
-                }
-                else color = "success";
-
-
-                string type_boder = "";
-                if (@item.Type == TableType.PUBLIC)
-                    type_boder = "rgba(0,0,0,0)";
-                else type_boder = "black";
-            }
-            <div class="card bg-gradient-@color card-img-holder text-white">
-
-                <div class="card-body hihi" style="border:2px solid @type_boder;border-radius:5px">
-
-                    <img src="~/admin_asset/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
-
-                    <h4 class="font-weight-normal mb-3">
-                        <span class="mdi mdi-24px float-right">0/@item.NumberOfGuest</span>
-                    </h4>
-                    <h2 class="mb-5">@item.Name</h2>
-                    <h6 class="card-text">@item.Type</h6>
-                   
-                    <a class="hi" type="button" data-toggle="modal" data-target="#exampleModal">
-                        Delete
-                    </a>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" style="color:black" id="exampleModalLabel">Sure?</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <form asp-action="Delete">
-                                        <input type="hidden" name="id" value="@item.Id" />
-                                        <input type="submit" value="Delete" class="btn btn-danger" /> 
-                                    </form>
-
-                                </div>
-                            </div>
-                        </div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Tables list</h4>
+            <p class="text-right">
+                <a class="btn btn-gradient-primary" asp-area="Manager" asp-controller="Tables" asp-action="Create">Add new table</a>
+            </p>
+            <form asp-action="Index" asp-area="Manager" asp-controller="Tables" method="get">
+                <div class="row">
+                    <div class="col-md-2" style="text-align: center; display: inline-block; ">
+                        <span class="mt-5">Branch:</span>
                     </div>
+                    <div class="col-md-4" style="text-align:center;display:inline-block">
+                        <select class="form-select" style="text-align:center" name="branch" onchange="this.form.submit()">
+
+                            @foreach (var item in ViewBag.BranchList)
+                            {
+                                @if (ViewBag.Branch == item.Id)
+                                {
+                                    <option value="@item.Id" selected>@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+
+
+                            }
+
+                        </select>
+                    </div>
+                    <div class="col-md-2" style="text-align:center;display:inline-block">
+                        <span>Room:</span>
+                    </div>
+                    <div class="col-md-4" style="text-align:center;display:inline-block">
+
+                        <select class="form-select" style="text-align:center" name="room" onchange="this.form.submit()">
+
+                            @foreach (var item in ViewBag.RoomList)
+                            {
+                                @if (ViewBag.Room == item.Id)
+                                {
+                                    <option value="@item.Id" selected>@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+
+
+                            }
+
+                        </select>
+
+                    </div>
+
                 </div>
-              
+            </form>
+            <div style="text-align: left; width: 100%;  margin:1% 0 1% 0">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-3 stretch-card grid-margin ">
+
+                            @{
+                                string color = "";
+                                string note = "";
+                                if (Reservations != null) {
+
+                                    foreach (var reservasion in Reservations)
+                                    {
+
+                                        if (reservasion.Table.Id == item.Id)
+                                            if (reservasion.ReservationAt <= DateTime.Now && reservasion.ReservationEnd >= DateTime.Now)
+                                            {
+                                                color = "infor";
+                                                note = "Booking in progress";
+                                            }
+                                            else if (item.Status == TableStatus.USING)
+                                            {
+                                                color = "danger";
+                                                note = "Have a Guest";
+                                            }
+                                            else
+                                            {
+                                                color = "success";
+                                                note = "Empty";
+                                            }
+                                    }
+                                }
+
+                                else
+                                {
+                                    if (item.Status == TableStatus.USING)
+                                    {
+                                        color = "danger";
+                                        note = "Have a Guest";
+                                    }
+                                    else
+                                    {
+                                        color = "success";
+                                        note = "Empty";
+                                    }
+                                };
+
+
+                            }
+                            <div class="card bg-gradient-@color card-img-holder text-white">
+
+                                <div class="card-body hihi">
+
+                                    <img src="~/admin_asset/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
+
+                                    <h4 class="font-weight-normal mb-3">
+                                        <span class="mdi mdi-24px float-right">0/@item.NumberOfGuest</span>
+                                    </h4>
+                                    <h2 class="mb-5">@item.Name</h2>
+                                    <h4>@note</h4>
+                                    
+                                    <div style="text-align:center" class="row">
+                                        @if (color == "success")
+                                        {
+                                            <a class="btn-block hi col-md-6" style="display: inline-block; pointer-events: none" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.EMPTY" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Empty</a>
+
+                                        }
+                                        else
+                                        {
+                                            <a class="btn-success hi col-md-6" style="display:inline-block" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.EMPTY" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Empty</a>
+                                        }
+
+                                        @if (color == "danger")
+                                        {
+                                            <a class="btn-block hi col-md-6" style="display: inline-block; pointer-events: none" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.USING" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Using</a>
+
+                                        }
+                                        else
+                                        {
+                                            <a class="btn-danger hi col-md-6" style="display: inline-block" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.USING" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Using</a>
+
+                                        }
+
+
+                                        <a class="btn-info hi col-md-6" style="text-decoration:none" asp-area="Manager" asp-controller="Tables" asp-action="Edit" asp-route-id="@item.Id">
+                                            Edit
+                                        </a><a class="btn-dark hi col-md-6" type="button" data-toggle="modal" data-target="#exampleModal_@item.Id">
+                                            Delete
+                                        </a>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" style="color:black" id="exampleModalLabel">Sure?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                    <form asp-action="Delete">
+                                                        <input type="hidden" name="id" value="@item.Id" />
+                                                        <input type="submit" value="Delete" class="btn btn-danger" />
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+                </div>
             </div>
-           
+            <style>
+                .hi {
+                    display: inline-block;
+                    transition: 0.75s;
+                    opacity: 0;
+                    top: 0;
+                    right: 1px;
+                }
+
+                .hihi:hover .hi {
+                    opacity: 1;
+                    display: inline-block;
+                }
+            </style>
         </div>
-        }
     </div>
-    </div>
-<style>
-    .hi {
-        display:inline-block;
-        transition : 0.75s;
-        opacity : 0;
-        top:0;
-        right:1px;
-    }
-    .hihi:hover .hi{
-        opacity : 1;
-   
-        display:inline-block;
-    }
-</style>
+</div>
 

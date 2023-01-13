@@ -17,11 +17,7 @@
         END
     }
 
-    public enum TableType
-    {
-        PUBLIC,
-        PRIVATE
-    }
+   
     public enum TableStatus
     {
         EMPTY,

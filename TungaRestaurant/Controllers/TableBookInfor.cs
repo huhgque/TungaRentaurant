@@ -21,8 +21,7 @@ namespace TungaRestaurant.Controllers
         public string time_to { get; set; }
         [Required(ErrorMessage = "Requied")]
         public string phone { get; set; }
-        [Required(ErrorMessage = "Requied")]
-        public TableType type { get; set; }
+     
         [Required(ErrorMessage = "Requied")]
         public int numberOfGuest { get; set; }
    

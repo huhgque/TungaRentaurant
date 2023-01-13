@@ -15,7 +15,7 @@ namespace TungaRestaurant.Data
             : base(options)
         {
         }
-
+    
         public DbSet<Table> Table { get; set; }
         public DbSet<Branch> Branch { get; set; }
         public DbSet<Food> Foods { get; set; }
@@ -24,6 +24,7 @@ namespace TungaRestaurant.Data
         public DbSet<ReservationDetail> ReservationDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,8 +32,9 @@ namespace TungaRestaurant.Data
             
             builder.Entity<OrderDetail>().HasKey(order => new { order.OrderId });
             builder.Entity<ReservationDetail>().HasKey(reserv => reserv.ReservationId);
-
             builder.Entity<Branch>().HasMany(b=>b.Users).WithOne(u=>u.Branch).HasForeignKey(u => u.BranchId);
+            builder.Entity<Branch>().HasMany(b=>b.Rooms).WithOne(r=>r.Branch).HasForeignKey(r => r.BranchId);
+            builder.Entity<Room>().HasMany(r=>r.Tables).WithOne(t=>t.Room).HasForeignKey(t=>t.RoomId);
         }
 
     }

@@ -1,10 +1,10 @@
-﻿@model TungaRestaurant.Models.Branch
+﻿@model TungaRestaurant.Models.Room
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1 style="text-align:center">Edit Branch</h1>
+<h1 style="text-align:center">Edit Room</h1>
 
 
 <hr />
@@ -19,14 +19,9 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <label asp-for="BranchId" class="control-label"></label>
+                <select asp-for="BranchId" class="form-control" asp-items="ViewBag.BranchId"></select>
+                <span asp-validation-for="BranchId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

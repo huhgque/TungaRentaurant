@@ -21,45 +21,71 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         }
 
         // GET: Manager/Tables
-        public async Task<IActionResult> Index(int? branche,String? tableType)
+        public async Task<IActionResult> Index(int? branch,int? room)
         {
+            ViewBag.RoomList = await _context.Rooms.ToListAsync();
             ViewBag.BranchList = await _context.Branch.ToListAsync();
             IQueryable<Table> tunga ;
             ViewBag.Reservations = await _context.Reservations.Where(r => r.CreatedAt >= DateTime.Now.AddMonths(-1)).Include(r=>r.Table).ToListAsync();
-            if (branche==null)
+            if (branch == null)
             {
-                var id = _context.Table.FirstOrDefault().Id;
-                tunga = _context.Table.Where(t => t.BranchId ==(id)).Include(t => t.Branch);
-                ViewBag.Branch = id;
-            }
-            else
-            {
-                tunga = _context.Table.Include(t => t.Branch).Where(t=>t.BranchId==branche);
-                ViewBag.Branch = branche;
-            }
-
-
-            if (String.IsNullOrEmpty(tableType) )
-            {
-                
-                ViewBag.tableType = null;
-            }
-            else if(tableType=="ALL")
-            {
-                ViewBag.tableType = "ALL";
-            }else
-            {
-                if (tableType == TableType.PUBLIC.ToString())
+                if (room == null)
                 {
-                    tunga = tunga.Where(t => t.Type == TableType.PUBLIC);
+                    var id = _context.Branch.FirstOrDefault().Id;
+                    tunga = from r in _context.Rooms
+                            join t in _context.Table
+                            on r.Id equals t.RoomId
+                            where r.BranchId == id
+                            select t;
+                    ViewBag.Branch = id;
+                    ViewBag.Room = null;
                 }
                 else
                 {
-                    tunga = tunga.Where(t => t.Type == TableType.PRIVATE);
+                    var id = _context.Branch.FirstOrDefault().Id;
+                    tunga = from r in _context.Rooms
+                            join t in _context.Table
+                            on r.Id equals t.RoomId
+                            where r.BranchId == id
+                            where r.Id == room
+
+                            select t;
+                    ViewBag.Branch = id;
+                    ViewBag.Room = room;
                 }
                 
-                ViewBag.tableType = tableType;
             }
+            else
+            {
+                if (room == null)
+                {
+                    var id = _context.Branch.FirstOrDefault().Id;
+                    tunga = from r in _context.Rooms
+                            join t in _context.Table
+                            on r.Id equals t.RoomId
+                            where r.BranchId == branch
+                            select t;
+                    ViewBag.Branch = branch;
+                    ViewBag.Room = null;
+                }
+                else
+                {
+                    var id = _context.Branch.FirstOrDefault().Id;
+                    tunga = from r in _context.Rooms
+                            join t in _context.Table
+                            on r.Id equals t.RoomId
+                            where r.BranchId == branch
+                            where r.Id == room
+
+                            select t;
+                    ViewBag.Branch = branch;
+                    ViewBag.Room = room;
+                }
+            }
+            
+
+
+           
                 return View(await tunga.ToListAsync());
         }
 
@@ -72,7 +98,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             }
 
             var table = await _context.Table
-                .Include(t => t.Branch)
+                .Include(t => t.Room)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (table == null)
             {
@@ -86,7 +112,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         public IActionResult Create()
         {
            
-            ViewData["BranchId"] = new SelectList(_context.Set<Branch>(), "Id", "Id");
+            ViewData["RoomId"] = new SelectList(_context.Set<Room>(), "Id", "Name");
             return View();
         }
 
@@ -95,7 +121,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Type,BranchId,NumberOfGuest,Status")] Table table)
+        public async Task<IActionResult> Create([Bind("Id,Name,Type,RoomId,NumberOfGuest,Status")] Table table)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +129,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BranchId"] = new SelectList(_context.Set<Branch>(), "Id", "Id", table.BranchId);
+            ViewData["RoomId"] = new SelectList(_context.Set<Room>(), "Id", "Id", table.RoomId);
             return View(table);
         }
 
@@ -120,7 +146,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             {
                 return NotFound();
             }
-            ViewData["BranchId"] = new SelectList(_context.Set<Branch>(), "Id", "Id", table.BranchId);
+            ViewData["RoomId"] = new SelectList(_context.Set<Room>(), "Id", "Name", table.RoomId);
             return View(table);
         }
 
@@ -129,7 +155,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,BranchId,NumberOfGuest,Status")] Table table)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,RoomId,NumberOfGuest,Status")] Table table)
         {
             if (id != table.Id)
             {
@@ -156,7 +182,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BranchId"] = new SelectList(_context.Set<Branch>(), "Id", "Id", table.BranchId);
+            ViewData["RoomId"] = new SelectList(_context.Set<Room>(), "Id", "Name", table.RoomId);
             return View(table);
         }
 
@@ -172,6 +198,14 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             _context.Table.Remove(table);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Change_Status(int id,TableStatus type,string url)
+        {
+            var table = await _context.Table.FindAsync(id);
+            table.Status = type;
+            _context.Update(table);
+            await _context.SaveChangesAsync();
+            return Redirect(url);
         }
 
         private bool TableExists(int id)

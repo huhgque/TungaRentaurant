@@ -1394,7 +1394,7 @@
 		calendarWeeks: false,
 		clearBtn: false,
 		daysOfWeekDisabled: [],
-		endDate: Infinity,
+		endDate: 5,
 		forceParse: true,
 		format: 'mm/dd/yyyy',
 		keyboardNavigation: true,
@@ -1408,7 +1408,8 @@
 		startView: 0,
 		todayBtn: false,
 		todayHighlight: false,
-		weekStart: 0
+		weekStart: 0,
+		
 	};
 	var locale_opts = $.fn.datepicker.locale_opts = [
 		'format',
