@@ -24,4 +24,17 @@
         BOOKED,
         USING
     }
+    public enum Sex
+    {
+        FEMALE,
+        MALE,
+        OTHER
+    }
+
+    public enum Role
+    {
+        ADMIN,
+        BRANCH_MANAGER,
+        CUSTOMER
+    }
 }

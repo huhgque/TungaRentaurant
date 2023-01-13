@@ -37,8 +37,16 @@ namespace TungaRestaurant
 
             });
 
-         
-           
+            services.AddDbContext<TungaRestaurantContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("TungaRestaurantContext")));
+
+            //cau hinh su dung session
+            services.AddSession(ops =>
+            {
+                ops.IdleTimeout = TimeSpan.FromHours(1);
+                ops.Cookie.Name = "Order.Session";
+                ops.Cookie.HttpOnly = true;
+            });
 
         }
 

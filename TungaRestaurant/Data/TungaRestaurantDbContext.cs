@@ -23,6 +23,7 @@ namespace TungaRestaurant.Data
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ReservationDetail> ReservationDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Cart> Carts { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Room> Rooms { get; set; }
 
@@ -30,11 +31,12 @@ namespace TungaRestaurant.Data
         {
             base.OnModelCreating(builder);
             
-            builder.Entity<OrderDetail>().HasKey(order => new { order.OrderId });
+            builder.Entity<OrderDetail>().HasKey(order => new { order.OrderId, order.FoodId});
             builder.Entity<ReservationDetail>().HasKey(reserv => reserv.ReservationId);
             builder.Entity<Branch>().HasMany(b=>b.Users).WithOne(u=>u.Branch).HasForeignKey(u => u.BranchId);
             builder.Entity<Branch>().HasMany(b=>b.Rooms).WithOne(r=>r.Branch).HasForeignKey(r => r.BranchId);
             builder.Entity<Room>().HasMany(r=>r.Tables).WithOne(t=>t.Room).HasForeignKey(t=>t.RoomId);
+
         }
 
     }
