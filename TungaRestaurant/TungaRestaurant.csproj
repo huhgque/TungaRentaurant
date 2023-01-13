@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20230113104123_testignore.cs" />
+    <Compile Remove="Migrations\20230113104123_testignore.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\template\wp-content\plugins\add-search-to-menu\public\images\spinner.gif" />
     <Content Remove="wwwroot\template\wp-content\plugins\add-search-to-menu\public\js\is-highlight.min82d0.js" />
     <Content Remove="wwwroot\template\wp-content\plugins\add-search-to-menu\public\js\ivory-ajax-search.min82d0.js" />
@@ -550,6 +555,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
