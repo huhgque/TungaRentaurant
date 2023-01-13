@@ -16,7 +16,7 @@ namespace TungaRestaurant.Models
         public string DisplayName { get; set; }
         public string Avatar { get; set; }
         [Required]
-        public int Sex { get; set; }
+        public Sex Sex { get; set; }
         [Required]
         public string Address {get;set;}
         public Boolean IsVegan { get; set; } = false;

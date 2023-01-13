@@ -122,6 +122,7 @@ namespace TungaRestaurant.Controllers
                         case 0:
                             tmpFood = _context.Foods.Where(f => f.IsVeganDish == food.IsVeganDish && f.CategoryId == food.CategoryId)
                                 .Where(f => f.Id != food.Id)
+                                .Where(f => f.BranchId == food.BranchId || f.BranchId == null)
                                 .OrderBy(f => f.Id)
                                 .Take(4).ToList();
                             break;
@@ -130,6 +131,7 @@ namespace TungaRestaurant.Controllers
                                 .Where(f => f.IsVeganDish == food.IsVeganDish)
                                 .Where(f => f.Id != food.Id)
                                 .Where(f => !relateFood.Contains(f))
+                                .Where(f => f.BranchId == food.BranchId || f.BranchId == null)
                                 .OrderBy(f => f.Id)
                                 .Take(4 - relateFood.Count)
                                 .ToList();
@@ -139,6 +141,7 @@ namespace TungaRestaurant.Controllers
                                 .Where(f => f.IsVeganDish == food.IsVeganDish)
                                 .Where(f => f.Id != food.Id)
                                 .Where(f => !relateFood.Contains(f))
+                                .Where(f => f.BranchId == food.BranchId || f.BranchId == null)
                                 .OrderBy(f => f.Id)
                                 .Take(4 - relateFood.Count)
                                 .ToList();

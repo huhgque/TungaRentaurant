@@ -21,7 +21,7 @@ namespace TungaRestaurant.Controllers
             _dbContext = context;
             _userManager = userManager;
         }
-        [Authorize(Roles = "Customer,Admin,Branch Manager")]
+        [Authorize]
         // GET: Cart
         public async Task<IActionResult> Index()
         {

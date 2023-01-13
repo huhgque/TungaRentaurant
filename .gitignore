@@ -361,5 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Conflig stuff
 /TungaRestaurant/Design
+/TungaRestaurant/wwwroot/images
 /TungaRestaurant/appsettings.json
+/TungaRestaurant/Migrations
