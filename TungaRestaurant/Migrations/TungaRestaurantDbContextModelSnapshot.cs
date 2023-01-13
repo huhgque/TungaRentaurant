@@ -369,7 +369,7 @@ namespace TungaRestaurant.Migrations
                     b.ToTable("ReservationDetails");
                 });
 
-            modelBuilder.Entity("TungaRestaurant.Models.Table", b =>
+            modelBuilder.Entity("TungaRestaurant.Models.Room", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -382,18 +382,40 @@ namespace TungaRestaurant.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("TungaRestaurant.Models.Table", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("NumberOfGuest")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
+
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Table");
                 });
@@ -618,11 +640,24 @@ namespace TungaRestaurant.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TungaRestaurant.Models.Room", b =>
+                {
+                    b.HasOne("TungaRestaurant.Models.Branch", "Branch")
+                        .WithMany("Rooms")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TungaRestaurant.Models.Table", b =>
                 {
                     b.HasOne("TungaRestaurant.Models.Branch", "Branch")
                         .WithMany()
-                        .HasForeignKey("BranchId")
+                        .HasForeignKey("BranchId");
+
+                    b.HasOne("TungaRestaurant.Models.Room", "Room")
+                        .WithMany("Tables")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

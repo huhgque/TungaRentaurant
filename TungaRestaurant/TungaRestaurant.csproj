@@ -208,6 +208,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Areas\Manager\Views\Rooms\Create.cshtml" />
+    <None Include="Areas\Manager\Views\Rooms\Delete.cshtml" />
+    <None Include="Areas\Manager\Views\Rooms\Details.cshtml" />
+    <None Include="Areas\Manager\Views\Rooms\Edit.cshtml" />
+    <None Include="Areas\Manager\Views\Rooms\Index.cshtml" />
     <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Bold.woff2" />
     <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Light.woff2" />
     <None Include="wwwroot\admin_asset\assets\fonts\Ubuntu\Ubuntu-Medium.woff2" />
@@ -256,7 +261,6 @@
     <None Include="wwwroot\customer_asset\js\jquery.stellar.min.js" />
     <None Include="wwwroot\customer_asset\js\jquery.timepicker.min.js" />
     <None Include="wwwroot\customer_asset\js\jquery.waypoints.min.js" />
-    <None Include="wwwroot\customer_asset\js\main.js" />
     <None Include="wwwroot\customer_asset\js\owl.carousel.min.js" />
     <None Include="wwwroot\customer_asset\js\popper.min.js" />
     <None Include="wwwroot\customer_asset\js\range.js" />

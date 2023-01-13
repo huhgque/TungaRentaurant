@@ -16,5 +16,6 @@ namespace TungaRestaurant.Models
         public int Status { get; set; }
         public virtual List<UserInfo> Users { get; set; }
         public virtual List<Food> Foods { get; set; }
+        public virtual List<Room> Rooms { get; set; }
     }
 }

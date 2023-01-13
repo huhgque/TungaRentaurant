@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TungaRestaurant.Migrations
 {
-    public partial class init1000 : Migration
+    public partial class _1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,6 +49,22 @@ namespace TungaRestaurant.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<float>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,22 +134,19 @@ namespace TungaRestaurant.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Table",
+                name: "Rooms",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    Type = table.Column<int>(nullable: false),
-                    BranchId = table.Column<int>(nullable: false),
-                    NumberOfGuest = table.Column<int>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    BranchId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Table", x => x.Id);
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Table_Branch_BranchId",
+                        name: "FK_Rooms_Branch_BranchId",
                         column: x => x.BranchId,
                         principalTable: "Branch",
                         principalColumn: "Id",
@@ -259,26 +272,58 @@ namespace TungaRestaurant.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "Table",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    Price = table.Column<float>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    RoomId = table.Column<int>(nullable: false),
+                    NumberOfGuest = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    UserInfoId = table.Column<string>(nullable: true)
+                    BranchId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.PrimaryKey("PK_Table", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_UserInfoId",
-                        column: x => x.UserInfoId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Table_Branch_BranchId",
+                        column: x => x.BranchId,
+                        principalTable: "Branch",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Table_Rooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Rooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(nullable: false),
+                    FoodId = table.Column<int>(nullable: false),
+                    Price = table.Column<float>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Foods_FoodId",
+                        column: x => x.FoodId,
+                        principalTable: "Foods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -310,59 +355,6 @@ namespace TungaRestaurant.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Carts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FoodId = table.Column<int>(nullable: false),
-                    UserInfoId = table.Column<string>(nullable: true),
-                    Quantity = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Carts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Carts_Foods_FoodId",
-                        column: x => x.FoodId,
-                        principalTable: "Foods",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Carts_AspNetUsers_UserInfoId",
-                        column: x => x.UserInfoId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderDetails",
-                columns: table => new
-                {
-                    OrderId = table.Column<int>(nullable: false),
-                    FoodId = table.Column<int>(nullable: false),
-                    Price = table.Column<float>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderDetails", x => new { x.OrderId, x.FoodId });
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_Foods_FoodId",
-                        column: x => x.FoodId,
-                        principalTable: "Foods",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -440,16 +432,6 @@ namespace TungaRestaurant.Migrations
                 column: "PreferBranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Carts_FoodId",
-                table: "Carts",
-                column: "FoodId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Carts_UserInfoId",
-                table: "Carts",
-                column: "UserInfoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Foods_BranchId",
                 table: "Foods",
                 column: "BranchId");
@@ -463,11 +445,6 @@ namespace TungaRestaurant.Migrations
                 name: "IX_OrderDetails_FoodId",
                 table: "OrderDetails",
                 column: "FoodId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_UserInfoId",
-                table: "Orders",
-                column: "UserInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReservationDetails_FoodId",
@@ -485,9 +462,19 @@ namespace TungaRestaurant.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Rooms_BranchId",
+                table: "Rooms",
+                column: "BranchId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Table_BranchId",
                 table: "Table",
                 column: "BranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Table_RoomId",
+                table: "Table",
+                column: "RoomId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -506,9 +493,6 @@ namespace TungaRestaurant.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "Carts");
 
             migrationBuilder.DropTable(
                 name: "OrderDetails");
@@ -536,6 +520,9 @@ namespace TungaRestaurant.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Rooms");
 
             migrationBuilder.DropTable(
                 name: "Branch");
