@@ -11,7 +11,7 @@ namespace TungaRestaurant.Models
         public string Name { get; set; }
         public float Price { get; set; }
         public  DateTime CreatedAt { get; set; }
-        public int Status { get; set; }
+        public OrderStatus Status { get; set; }
         [ForeignKey("User")]
         public string UserInfoId { get; set; }
         public UserInfo User { get; set; }

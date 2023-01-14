@@ -37,4 +37,13 @@
         BRANCH_MANAGER,
         CUSTOMER
     }
+
+    public enum OrderStatus
+    {
+        QUEUED,
+        COOKING,
+        DELIVERING,
+        DELIVERED,
+        CANCELED
+    }
 }

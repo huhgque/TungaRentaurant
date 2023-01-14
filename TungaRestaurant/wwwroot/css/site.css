@@ -163,3 +163,7 @@ body {
 .user-avata-frame:hover .select-avata-overlay{
     opacity:1;
 }
+
+.redirect-on-click{
+    cursor:pointer;
+}
