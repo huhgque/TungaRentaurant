@@ -6,6 +6,10 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using TungaRestaurant.Models;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using TungaRestaurant.Data;
 
 namespace TungaRestaurant.Controllers
 {
@@ -13,9 +17,11 @@ namespace TungaRestaurant.Controllers
     public class ProfileController : Controller
     {
         private readonly UserManager<UserInfo> _userManager;
-        public ProfileController(UserManager<UserInfo> userManager)
+        private readonly TungaRestaurantDbContext _context;
+        public ProfileController(UserManager<UserInfo> userManager,TungaRestaurantDbContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
         public async Task<IActionResult> Index()
         {
@@ -88,5 +94,30 @@ namespace TungaRestaurant.Controllers
             }
             return true;
         }
+        public async Task<IActionResult> History()
+        {
+            UserInfo user = await _userManager.Users
+                                        .Include(u => u.Orders)
+                                            .ThenInclude(o=>o.OrderDetail)
+                                                .ThenInclude(od=>od.Food)
+                                        .Where(u=>u.UserName.Equals(User.Identity.Name))
+                                        .FirstOrDefaultAsync();
+            ViewBag.LoginUser = user;
+            return View();
+        }
+        
+        public async Task<IActionResult> History(int id)
+        {
+            string uid = _userManager.GetUserId(User);
+            Order order = await _context.Orders.Where(o => o.Id == id && o.UserInfoId.Equals(uid)).FirstOrDefaultAsync();
+            if (order == null)
+            {
+                TempData["ErrMsg"] = "Order not exist";
+                return RedirectToAction(nameof(History));
+            }
+            ViewBag.Order = order;
+            return View();
+        }
+
     }
 }
