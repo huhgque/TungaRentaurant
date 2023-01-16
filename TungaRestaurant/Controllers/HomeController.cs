@@ -33,14 +33,6 @@ namespace TungaRestaurant.Controllers
             {
                 ViewBag.Message =TempData["Message"].ToString();
             }
-            if (TempData["Notice"] != null)
-            {
-                ViewBag.Notice = TempData["Notice"].ToString();
-            }
-            if (TempData["Description"] != null)
-            {
-                ViewBag.Description = TempData["Description"].ToString();
-            }
             return View();
         }
 
@@ -54,20 +46,17 @@ namespace TungaRestaurant.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public async Task<IActionResult> Menu(int? branch,string isVegan,string search)
+        public async Task<IActionResult> Menu(int? branch,[DefaultValue(false)] bool isVegan,[DefaultValue("")] string search)
         {
-            bool isVeganValue = (isVegan != null)? bool.Parse(isVegan):false;
-            if (search == null) search = "";
-            search.Trim();
+            
             UserInfo user = null;
             List<Branch> branches = await _context.Branch.ToListAsync();
             ViewBag.Branches = branches;
-            if (User.Identity.Name != null)
+            if (User != null)
             {
                 user = await _userManager.FindByNameAsync(User.Identity.Name);
-                
+                isVegan = user.IsVegan;
                 if (branch == null) branch = user.PreferBranchId;
-                if (isVegan == null) isVeganValue = user.IsVegan;
             }
             if (branch == null)
             {
@@ -76,11 +65,10 @@ namespace TungaRestaurant.Controllers
             if(user != null)
             {
                 user.PreferBranchId = branch;
-                user.IsVegan = isVeganValue;
                 await _userManager.UpdateAsync(user);
             }
             ViewBag.BranchId = branch;
-            ViewBag.IsVegan = isVeganValue;
+            ViewBag.IsVegan = isVegan;
             // query by food
             //IQueryable<Food> foods = _context.Foods.Include(f => f.Category);
             //if (isVegan)
@@ -91,14 +79,20 @@ namespace TungaRestaurant.Controllers
             //ViewBag.Foods = await foods.ToListAsync();
 
             //query by category
-            ViewBag.Categories = _context.Categories.Include(c => c.Foods )
-                .Where(categories=>categories
-                    .Foods.Where(f=>
-                        (f.BranchId==branch || f.BranchId == null))
-                        .Where(f=>f.Name.Contains(search))
-                        .Where(f=>f.IsVeganDish == isVeganValue)
-                        .FirstOrDefault() != null)
-                .ToList();
+            if (isVegan)
+            {
+                ViewBag.Categories = _context.Categories.Include(c => c.Foods.Where(f => f.IsVeganDish && ( f.BranchId == branch || f.BranchId == null ) )).AsQueryable();
+            }
+            else
+            {
+                ViewBag.Categories = _context.Categories.Include(c => c.Foods )
+                    .Where(categories=>categories
+                        .Foods.Where(f=>
+                            (f.BranchId==branch || f.BranchId == null)
+                            && f.Name.Contains(search)
+                            ).FirstOrDefault() != null)
+                    .ToList();
+            }
             return View();
         }
 
@@ -110,55 +104,7 @@ namespace TungaRestaurant.Controllers
                 TempData["msg"] = "Food not exist";
                 return RedirectToAction(nameof(Menu));
             }
-            List<Food> relateFood = new List<Food>();
-            int relateOption = 0;
-            do
-            {
-                if (relateFood.Count < 4)
-                {
-                    List<Food> tmpFood = new List<Food>();
-                    switch (relateOption)
-                    {
-                        case 0:
-                            tmpFood = _context.Foods.Where(f => f.IsVeganDish == food.IsVeganDish && f.CategoryId == food.CategoryId)
-                                .Where(f => f.Id != food.Id)
-                                .Where(f => f.BranchId == food.BranchId || f.BranchId == null)
-                                .OrderBy(f => f.Id)
-                                .Take(4).ToList();
-                            break;
-                        case 1:
-                            tmpFood = _context.Foods.Where(f => f.Price > food.Price)
-                                .Where(f => f.IsVeganDish == food.IsVeganDish)
-                                .Where(f => f.Id != food.Id)
-                                .Where(f => !relateFood.Contains(f))
-                                .Where(f => f.BranchId == food.BranchId || f.BranchId == null)
-                                .OrderBy(f => f.Id)
-                                .Take(4 - relateFood.Count)
-                                .ToList();
-                            break;
-                        case 2:
-                            tmpFood = _context.Foods
-                                .Where(f => f.IsVeganDish == food.IsVeganDish)
-                                .Where(f => f.Id != food.Id)
-                                .Where(f => !relateFood.Contains(f))
-                                .Where(f => f.BranchId == food.BranchId || f.BranchId == null)
-                                .OrderBy(f => f.Id)
-                                .Take(4 - relateFood.Count)
-                                .ToList();
-                            break;
-                        default:
-                            relateOption = -1;
-                            break;
-                    }
-                    relateFood.AddRange(tmpFood);
-                    if(relateOption != -1)
-                        relateOption++;
-
-                }
-            } while (relateFood.Count < 4 && relateOption != -1);
-
             ViewBag.Food = food;
-            ViewBag.RelateFood = relateFood;
             return View();
         }
     }

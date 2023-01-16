@@ -77,7 +77,7 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
             public string PhoneNumber { get; set; }
             [Display(Name = "Gender")]
             [Required]
-            public Sex Sex { get; set; }
+            public int Sex { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -97,7 +97,8 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Customer");
+                    IdentityRole role = _roleManager.FindByNameAsync("Customer").Result;
+                    await _userManager.AddToRoleAsync(user,role.Name);
                     _logger.LogInformation("User created a new account with password.");
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

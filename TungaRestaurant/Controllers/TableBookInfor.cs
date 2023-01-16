@@ -12,7 +12,9 @@ namespace TungaRestaurant.Controllers
         [Required(ErrorMessage ="Requied")]
         public string firstName { get; set; }
         [Required(ErrorMessage = "Requied")]
-        public DateTime date { get; set; }
+        public string lastName { get; set; }
+        [Required(ErrorMessage = "Requied")]
+        public string date { get; set; }
         [Required(ErrorMessage = "Requied")]
         public string time { get; set; }
         [Required(ErrorMessage = "Requied")]

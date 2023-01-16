@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    ViewData["HomeNav"] = "active";
 }
 <section class="home-slider owl-carousel">
     <div class="slider-item" style="background-image: url(/customer_asset/images/bg_1.jpg);">
@@ -11,20 +10,10 @@
             <div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
 
                 <div class="col-md-8 col-sm-12 text-center ftco-animate">
-                    @if (@ViewBag.Notice != null)
-                    {
-                        <span class="subheading">Sorry</span>
-                        <h1 class="mb-4">@ViewBag.Notice</h1>
-                        <p class="mb-4 mb-md-5">@ViewBag.Description</p>
-                        <p><a href="#" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
-                    }
-                    else
-                    {
-                    <span class="subheading">Welcome!</span>
+                    <span class="subheading">Welcome</span>
                     <h1 class="mb-4">The Best Coffee Testing Experience</h1>
                     <p class="mb-4 mb-md-5">A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
                     <p><a href="#" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
-                    }
                 </div>
 
             </div>
@@ -100,6 +89,10 @@
                         <div class="form-group">
                             <input type="text" asp-for="firstName" class="form-control" placeholder="First Name">
                             <span asp-validation-for="firstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group ml-md-4">
+                            <input type="text" asp-for="lastName" class="form-control" placeholder="Last Name">
+                            <span asp-validation-for="lastName" class="text-danger"></span>
                         </div>
                         
 
@@ -682,7 +675,11 @@
                             <input type="text" asp-for="firstName" class="form-control" placeholder="First Name">
                             <span asp-validation-for="firstName" class="text-danger"></span>
                         </div>
-                        
+                        <div class="form-group ml-md-4">
+                            <input type="text" asp-for="lastName" class="form-control" placeholder="Last Name">
+                            <span asp-validation-for="lastName" class="text-danger"></span>
+                        </div>
+
                     </div>
                     <div class="d-md-flex">
                         <div class="form-group">

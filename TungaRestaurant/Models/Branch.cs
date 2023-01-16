@@ -13,7 +13,7 @@ namespace TungaRestaurant.Models
         public string Name { get; set; }  
         public string Location { get; set; }
 
-        public BranchStatus Status { get; set; }
+        public int Status { get; set; }
         public virtual List<UserInfo> Users { get; set; }
         public virtual List<Food> Foods { get; set; }
         public virtual List<Room> Rooms { get; set; }

@@ -3,40 +3,32 @@
 *@
 @{
     ViewData["navBarMode"] = "navbar-normal";
-	ViewData["MenuNav"] = "active";
 }
 <div class="container mt-5" style="min-height:100vh">
 	<div>
 		<form >
 			<div>
-				<div class="row">
-					<div class="col-6 form-group">
-						@{
-							SelectList branchList = new SelectList(ViewBag.Branches,"Id","Name",ViewBag.BranchId);
-						}
-						<label>Select Branch</label>
-						<select class="custom-select" asp-items="branchList" name="branch"></select>
-					</div>
-					<div class="col-6 form-group">
-						<label for="checkvegan">Are you a vegan?</label>
-						@{
-							var what = new Dictionary<bool, string>();
-							var selectedValue = ViewBag.IsVegan;
-							what.Add(false, "No");
-							what.Add(true, "Yes");
-							SelectList veganValue = new SelectList(what, "Key", "Value", ViewBag.IsVegan?true:false);
+				<div class="form-group">
+					@{
+						SelectList branchList = new SelectList(ViewBag.Branches,"Id","Name",ViewBag.BranchId);
+					}
+					<label>Select Branch</label>
+					<select class="custom-select" asp-items="branchList" name="branch"></select>
+				</div>
+				<div class="form-group">
+					<label for="checkvegan">Are you a vegan?</label>
+					@{
+						var what = new Dictionary<bool, string>();
+						what.Add(false, "No");
+						what.Add(true, "Yes");
+						SelectList veganValue = new SelectList(what,"Key","Value",ViewBag.IsVegan);
 
-						}
-						<select class="custom-select form-control" name="isVegan" asp-items="veganValue" id="checkvegan"></select>
-					</div>
-
+					}
+					<select class="custom-select form-control" name="isVegan" asp-items="veganValue" id="checkvegan"></select>
 				</div>
 			</div>
-			<div class="p-relative mb-5" style="">
-				<div class="form-group m-0">
-					<input class="form-control" name="search" autocomplete="off" placeholder="Search for a dish" />
-				</div>
-				<button class="btn .auth-form-btn search-button-over-input" type="submit">Search</button>
+			<div class="form-group">
+				<input class="form-control" name="search" autocomplete="off" placeholder="Search for a dish" />
 			</div>
 		</form>
 	</div>
@@ -48,13 +40,16 @@
 				@if (category.Foods == null) continue;
 				@foreach (Food food in category.Foods)
 				{
-					<div class="menu-wrap text-center">
-						<a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id" class="menu-img img mb-4" style="background-image: url(/images/@food.Image);"></a>
-						<div class="text">
-							<h3><a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id">@food.Name</a></h3>
-							<p>Serve unit: @food.ServeUnit</p>
-							<p class="price"><span>$@food.Price</span></p>
-							<p><a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id" class="btn btn-primary btn-outline-primary">Detail</a></p>
+					<div class="pricing-entry d-flex ftco-animate fadeInUp ftco-animated">
+						<div class="img" style="background-image: url(/images/@food.Image);"></div>
+						<div class="desc pl-3">
+							<div class="d-flex text align-items-center">
+								<h3><a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id" ><span>@food.Name</span></a></h3>
+								<span class="price">$@food.Price</span>
+							</div>
+							<div class="d-block">
+								<p>Serve unit: @food.ServeUnit</p>
+							</div>
 						</div>
 					</div>
 				}

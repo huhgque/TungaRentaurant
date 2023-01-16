@@ -16,7 +16,7 @@ namespace TungaRestaurant.Models
         public string DisplayName { get; set; }
         public string Avatar { get; set; }
         [Required]
-        public Sex Sex { get; set; }
+        public int Sex { get; set; }
         [Required]
         public string Address {get;set;}
         public Boolean IsVegan { get; set; } = false;
@@ -27,8 +27,5 @@ namespace TungaRestaurant.Models
         [ForeignKey("PreferBranch")]
         public int? PreferBranchId { get; set; }
         public Branch PreferBranch { get; set; }
-        public virtual ICollection<Cart> Carts { get; set; }
-        public virtual ICollection<Reservation> Reservations { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
     }
 }

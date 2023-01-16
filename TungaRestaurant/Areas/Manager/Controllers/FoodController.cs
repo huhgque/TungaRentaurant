@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +12,6 @@ using TungaRestaurant.Models;
 namespace TungaRestaurant.Areas.Manager.Controllers
 {
     [Area("Manager")]
-    [Authorize(Roles = "Admin")]
     public class FoodController:Controller
     {
         private readonly TungaRestaurantDbContext _dbContext;
@@ -60,7 +57,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Image,Price,CookDuration,BranchId,CategoryId,ServeUnit,Status,IsVeganDish")] Food Food)
+        public async Task<IActionResult> Create([Bind("Id,Name,Image,Price,CookDuration,BranchId,Category,ServeUnit,Status")] Food Food)
         {
             if (ModelState.IsValid)
             {
@@ -88,12 +85,12 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 catch (Exception ex)
                 {
                     ViewBag.error = "This food has existed! Please contact with admin for more infor." + ex;
+                    return View(Food);
                 }
             }
             ViewData["CateId"] = new SelectList(_dbContext.Categories, "CateId", "CateId", Food.Category);
-            ViewData["BranchId"] = new SelectList(_dbContext.Branch, "BranchId", "BranchId", Food.BranchId);
+            ViewData["ProducerId"] = new SelectList(_dbContext.Branch, "BranchId", "BranchId", Food.BranchId);
             return View(Food);
-
         }
 
         // GET: Food/Edit/5
@@ -120,7 +117,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Image,Price,CookDuration,BranchId,ServeUnit,Status,CategoryId,IsVeganDish")] Food Food)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Image,Price,CookDuration,BranchId,ServeUnit,Status,Category")] Food Food)
         {
             if (id != Food.Id)
             {

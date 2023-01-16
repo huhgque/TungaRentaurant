@@ -20,19 +20,15 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
     {
         private readonly UserManager<UserInfo> _userManager;
         private readonly SignInManager<UserInfo> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly string firstTimeLogin = "admin@admin.com";
-        private readonly string firstTimeLoginPassword = "Admin000";
+
         public LoginModel(SignInManager<UserInfo> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<UserInfo> userManager,
-            RoleManager<IdentityRole> roleManager)
+            UserManager<UserInfo> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -78,19 +74,6 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
-            if(await CheckFirstTimeLogin(Input.Email,Input.Password))
-            {
-                var result = _signInManager.PasswordSignInAsync(firstTimeLogin, firstTimeLoginPassword, false, false);
-                if (result.IsFaulted)
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid first time init attempt.");
-                } else
-                {
-                    return RedirectToAction(actionName: "Index", controllerName: "Profile",new {area = ""});
-
-                }
-            }
-
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -119,36 +102,6 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-        private async Task<bool> CheckFirstTimeLogin(string email,string password)
-        {
-            if (_userManager.Users.Count() > 0)
-            {
-                return false;
-            }
-            if (email.Equals(firstTimeLogin) && password.Equals(firstTimeLoginPassword))
-            {
-                UserInfo firstUser = new UserInfo();
-                firstUser.Email = firstTimeLogin;
-                firstUser.UserName = firstTimeLogin;
-                firstUser.DisplayName = "Admin";
-                firstUser.PhoneNumber = "0000000000";
-                firstUser.Address = "XXX";
-                firstUser.Sex = Sex.OTHER;
-                firstUser.Status = UserStatus.NORMAL;
-
-                IdentityRole adminRole = new IdentityRole("Admin");
-                IdentityRole branchRole = new IdentityRole("Branch Manager");
-                IdentityRole customerRole = new IdentityRole("Customer");
-                var adminRes = await _roleManager.CreateAsync(adminRole);
-                var branchRes = await _roleManager.CreateAsync(branchRole);
-                var customerRes = await _roleManager.CreateAsync(customerRole);
-
-                var createRes = await _userManager.CreateAsync(firstUser, firstTimeLoginPassword);
-                var addAdminRole = await _userManager.AddToRoleAsync(firstUser,"Admin");
-                return true;
-            }
-            return false;
         }
     }
 }
