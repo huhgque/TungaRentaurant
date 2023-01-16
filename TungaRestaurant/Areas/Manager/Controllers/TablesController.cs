@@ -32,64 +32,32 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             ViewBag.Reservations = await _context.Reservations.Where(r => r.CreatedAt >= DateTime.Now.AddMonths(-1)).Include(r=>r.Table).ToListAsync();
             if (branch == null)
             {
-                if (room == null)
-                {
-                    var id = _context.Branch.FirstOrDefault().Id;
-                    tunga = from r in _context.Rooms
-                            join t in _context.Table
-                            on r.Id equals t.RoomId
-                            where r.BranchId == id
-                            select t;
-                    ViewBag.Branch = id;
-                    ViewBag.Room = null;
-                }
-                else
-                {
-                    var id = _context.Branch.FirstOrDefault().Id;
-                    tunga = from r in _context.Rooms
-                            join t in _context.Table
-                            on r.Id equals t.RoomId
-                            where r.BranchId == id
-                            where r.Id == room
-
-                            select t;
-                    ViewBag.Branch = id;
-                    ViewBag.Room = room;
-                }
-                
+                Branch b = new Branch();
+                b = await _context.Branch.FirstOrDefaultAsync();
+                branch = b.Id;
             }
-            else
+            if (room == null)
             {
-                if (room == null)
-                {
-                    var id = _context.Branch.FirstOrDefault().Id;
-                    tunga = from r in _context.Rooms
-                            join t in _context.Table
-                            on r.Id equals t.RoomId
-                            where r.BranchId == branch
-                            select t;
-                    ViewBag.Branch = branch;
-                    ViewBag.Room = null;
-                }
-                else
-                {
-                    var id = _context.Branch.FirstOrDefault().Id;
-                    tunga = from r in _context.Rooms
-                            join t in _context.Table
-                            on r.Id equals t.RoomId
-                            where r.BranchId == branch
-                            where r.Id == room
-
-                            select t;
-                    ViewBag.Branch = branch;
-                    ViewBag.Room = room;
-                }
+                Room r = new Room();
+                r = await _context.Rooms.FirstOrDefaultAsync();
+                room = r.Id;
             }
+
+            var id = _context.Branch.FirstOrDefault().Id;
+            tunga = from r in _context.Rooms
+                    join t in _context.Table
+                    on r.Id equals t.RoomId
+                    where r.BranchId == branch
+                    where r.Id == room
+                    select t;
+            ViewBag.Branch = branch;
+            ViewBag.Room = room;
+               
             
 
 
            
-                return View(await tunga.ToListAsync());
+            return View(await tunga.ToListAsync());
         }
 
         // GET: Manager/Tables/Details/5
