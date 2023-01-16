@@ -1,8 +1,12 @@
-﻿@model TungaRestaurant.Controllers.TableBookInfor
-
+﻿@using Microsoft.AspNetCore.Identity
+@model TungaRestaurant.Controllers.TableBookInfor
+@inject UserManager<UserInfo> _userManager
 @{
+    ViewData["HomeNav"] = "active";
+    ViewData["navBarMode"] = "navbar-normal";
     ViewData["Title"] = "Table";
     List<Food> food=(List<Food>)ViewBag.Food;
+    UserInfo userInfo = await _userManager.FindByNameAsync(User.Identity.Name);
 }
 <section class="mt-auto ftco-appointment " >
     
@@ -15,12 +19,12 @@
                 <form asp-controller="Table" asp-action="BookATable" method="post" class="appointment-form" >
                     <div class="d-md-flex">
                         <div class="form-group">
-                            <input type="text" asp-for="firstName" class="form-control" placeholder="First Name">
+                            <input type="text" asp-for="firstName" class="form-control" value="@userInfo.DisplayName" placeholder="Your Name">
                             <span asp-validation-for="firstName" class="text-danger"></span>
                         </div>
                         <div class="form-group ml-md-4">
-                            <input type="text" asp-for="lastName" class="form-control" placeholder="Last Name">
-                            <span asp-validation-for="lastName" class="text-danger"></span>
+                            <input type="text" asp-for="phone" value="@userInfo.PhoneNumber" class="form-control" placeholder="Phone">
+                            <span asp-validation-for="phone" class="text-danger"></span>
                         </div>
 
                     </div>
@@ -47,20 +51,17 @@
                     </div>
                     <div class="d-md-flex">
                        
-                        <div class="form-group ml-md-4">
+                        <div class="form-group ">
                             <input type="number" asp-for="numberOfGuest" class="form-control" placeholder="Number Of Guest">
                             <span asp-validation-for="numberOfGuest" class="text-danger"></span>
                         </div>
                         <div class="form-group ml-md-4">
-                            <input type="text" asp-for="phone" class="form-control" placeholder="Phone">
-                            <span asp-validation-for="phone" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="d-md-flex">
-                        <div class="form-group">
                             <textarea asp-for="message" id="" cols="30" rows="2" class="form-control" placeholder="Message"></textarea>
                             <span asp-validation-for="message" class="text-danger"></span>
                         </div>
+                    </div>
+                    <div class="d-md-flex">
+                        
                         <div class="form-group ml-md-4">
                             @if (User.Identity.Name == null)
                             {

@@ -24,12 +24,13 @@ namespace TungaRestaurant.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.Branchs = await _context.Branch.ToListAsync();
             ViewBag.Food = await _context.Foods.ToListAsync();
             return View("~/Views/Home/TableReservation.cshtml");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BookATable([Bind("firstName,lastName,date,time,time_to,phone,type,numberOfGuest,message")] TableBookInfor tableBookInfor)
+        public async Task<IActionResult> BookATable([Bind("firstName,date,time,time_to,phone,type,numberOfGuest,message")] TableBookInfor tableBookInfor)
         {
             
             if (ModelState.IsValid)
@@ -50,11 +51,8 @@ namespace TungaRestaurant.Controllers
                 if (tables == null)
                 {
                     TempData["Message"] = "No table available at this time stamp";
-                    return RedirectToAction("Index", "Home");
+                    return View("~/Views/Home/TableReservation.cshtml");
                 }
-               
-                                   
-              
                 Reservation reservation = new Reservation();
                 reservation.CreatedAt = DateTime.Now;
                 reservation.NumberOfGuest = tableBookInfor.numberOfGuest;
@@ -74,6 +72,7 @@ namespace TungaRestaurant.Controllers
             else
             {
                 TempData["Message"] = "Err";
+                return View("~/Views/Home/TableReservation.cshtml");
             }
             return RedirectToAction("Index","Home");
         }

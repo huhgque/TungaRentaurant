@@ -167,3 +167,11 @@ body {
 .redirect-on-click{
     cursor:pointer;
 }
+
+.bg-table {
+    padding:10px;
+    background-color: #f2edf3;
+}
+.bg-table .form-group{
+    margin : 0;
+}

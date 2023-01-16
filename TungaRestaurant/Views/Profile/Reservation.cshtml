@@ -6,8 +6,9 @@
 @{
     ViewData["ProfileNav"] = "active";
     TokenManager tokenManager = new TokenManager();
-    UserInfo userInfo = ViewBag.LoginUser;
+    UserInfo userInfo = await _userManager.FindByNameAsync(User.Identity.Name);
 }
+
 @inject UserManager<UserInfo> _userManager
 <section class="home-slider owl-carousel">
 
@@ -33,54 +34,37 @@
                     <table class="table">
                         <thead class="thead-primary">
                             <tr class="text-center">
-                                <th width="20%">Order Token</th>
-                                <th>Order Date</th>
-                                <th>Price</th>
-                                <th>Items</th>
-                                <th>Status</th>
-                                <th>Delever in</th>
+                                <th>Reservation Token</th>
+                                <th>Created Date</th>
+                                <th>Reservation At</th>
+                                <th>Table</th>
+                                <th>Number of guest</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Order order in userInfo.Orders)
+                            @foreach (Reservation reservation in ViewBag.Reservations)
                             {
-                                <tr class="text-center redirect-on-click" href="Profile/History/@order.Id">
-                                    <td class="" style="overflow-wrap:anywhere">
+                                <tr class="text-center redirect-on-click" href="Profile/History/@reservation.Id">
+                                    <td class="image-prod" style="overflow-wrap:anywhere">
                                         <span>
-                                            @tokenManager.GetOrderToken(userInfo,order.Id.ToString())
+                                            @tokenManager.GetReservationToken(userInfo,reservation.Id.ToString())
                                         </span>
                                     </td>
                                     <td class="">
                                         <span>
-                                            @order.CreatedAt
+                                            @reservation.CreatedAt
                                         </span>
                                     </td>
-                                    <td class=""><span>$@order.Price</span> </td>
+                                    <td class=""><span>@reservation.ReservationAt</span> </td>
 
                                     <td class="">
-                                        @{
-                                            int arriveTime = 30;
-                                            foreach (OrderDetail orderDetail in order.OrderDetail)
-                                            {
-                                                arriveTime = orderDetail.Food.CookDuration * orderDetail.Quantity;
-                                                <div>
-                                                    <span>@orderDetail.Food.Name</span>:
-                                                    <span>@orderDetail.Quantity</span>
-                                                </div>
-                                            }
-                                        }
-                                        
+                                        <span>@reservation.Table.Name</span>
                                     </td>
 
-                                    <td class="" id="totalOfItemPrice">
-                                        <span>
-                                            @order.Status
-                                        </span>
+                                    <td class="">
+                                        <span>@reservation.NumberOfGuest</span>
                                     </td>
-                                    <td>
-                                        <span>@arriveTime </span>Minutes
-                                    </td>
-                                    
+
                                 </tr>
 
                                 <!-- END TR-->
@@ -90,6 +74,6 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </section>

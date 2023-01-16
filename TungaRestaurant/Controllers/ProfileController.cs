@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using TungaRestaurant.Data;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace TungaRestaurant.Controllers
 {
@@ -105,8 +106,8 @@ namespace TungaRestaurant.Controllers
             ViewBag.LoginUser = user;
             return View();
         }
-        
-        public async Task<IActionResult> History(int id)
+        [Route("/History/Detail")]
+        public async Task<IActionResult> HistoryDetail(int id)
         {
             string uid = _userManager.GetUserId(User);
             Order order = await _context.Orders.Where(o => o.Id == id && o.UserInfoId.Equals(uid)).FirstOrDefaultAsync();
@@ -118,6 +119,16 @@ namespace TungaRestaurant.Controllers
             ViewBag.Order = order;
             return View();
         }
-
+        public async Task<IActionResult> Reservation()
+        {
+            string uid = _userManager.GetUserId(User);
+            List<Reservation> reservations = await _context.Reservations
+                                                     .Include(r=>r.Table)
+                                                     .Where(r=>r.UserId.Equals(uid))
+                                                     .OrderByDescending(r=>r.Id)
+                                                     .ToListAsync();
+            ViewBag.Reservations = reservations;
+            return View();
+        }
     }
 }
