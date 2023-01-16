@@ -15,35 +15,7 @@
             <span class="oi oi-menu"></span> Menu
         </button>
         <div class="collapse navbar-collapse" id="ftco-nav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item @ViewData["HomeNav"]"><a asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
-                <li class="nav-item @ViewData["MenuNav"]"><a asp-area="" asp-controller="Home" asp-action="Menu" class="nav-link">Menu</a></li>
-                <li class="nav-item @ViewData["TableNav"]"><a asp-area="" asp-controller="Table" asp-action="Index" class="nav-link">Reservation</a></li>
-                <li class="nav-item cart"><a asp-controller="Cart" asp-action="Index" class="nav-link"><span class="icon icon-shopping_cart"></span><span class="bag d-flex justify-content-center align-items-center"><small>@userInfo.Carts.Count</small></span></a></li>
-                @if(User.Identity.Name != null){
-                    UserInfo user = await @_userManager.FindByNameAsync(User.Identity.Name);
-                    <li class="nav-item dropdown @ViewData["ProfileNav"]">
-                        <a class="nav-link dropdown-toggle" href="room.html" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@user.DisplayName</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            <a class="dropdown-item" asp-controller="Profile" asp-action="Index">My profile</a>
-                            <a class="dropdown-item" asp-controller="Profile" asp-action="Reservation">My reservation</a>
-                            <a class="dropdown-item" asp-controller="Profile" asp-action="History">My online order history</a>
-                            <form class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" method="post">
-                                <button type="submit" class="dropdown-item p-0 d-inline text-danger">Logout</button>
-                            </form>
-                        </div>
-                    </li>
-                }
-                else{
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="room.html" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login" >Login</a>
-                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register" >Register</a>
-                        </div>
-                    </li>
-                }
-            </ul>
+            
         </div>
     </div>
 </nav>
