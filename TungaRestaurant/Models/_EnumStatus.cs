@@ -46,4 +46,9 @@
         DELIVERED,
         CANCELED
     }
+    public enum BranchStatus
+    {
+        OPEN,
+        CLOSE
+    }
 }

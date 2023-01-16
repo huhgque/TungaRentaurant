@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ using TungaRestaurant.Models;
 namespace TungaRestaurant.Areas.Manager.Controllers
 {
     [Area("Manager")]
+    [Authorize(Roles = "Admin")]
     public class FoodController:Controller
     {
         private readonly TungaRestaurantDbContext _dbContext;

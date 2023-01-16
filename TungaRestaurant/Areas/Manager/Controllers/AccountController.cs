@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +12,7 @@ using TungaRestaurant.Models;
 namespace TungaRestaurant.Areas.Manager.Controllers
 {
     [Area("Manager")]
+    [Authorize(Roles = "Admin")]
     public class AccountController : Controller
     {
         private readonly TungaRestaurantDbContext tungaRestaurantDbContext;
