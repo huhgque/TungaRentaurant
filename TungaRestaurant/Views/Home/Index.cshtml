@@ -3,7 +3,15 @@
 @{
     ViewData["Title"] = "Home Page";
     ViewData["HomeNav"] = "active";
+    List<Table> ListTable = (List<Table>)ViewBag.ListTable;
+    List<Room> ListRoom = (List<Room>)ViewBag.ListRoom;
+    List<Branch> ListBranch = (List<Branch>)ViewBag.ListBranch;
 }
+<style>
+    .form-control option{
+        color:black;
+    }
+</style>
 <section class="home-slider owl-carousel">
     <div class="slider-item" style="background-image: url(/customer_asset/images/bg_1.jpg);">
         <div class="overlay"></div>
@@ -94,15 +102,38 @@
             <div class="book p-4">
                 <h3>Book a Table</h3>
                 <h3>@ViewBag.Message</h3>
-
+               
+                
+                
+                
                 <form asp-controller="Table" asp-action="BookATable" method="post" class="appointment-form">
                     <div class="d-md-flex">
                         <div class="form-group">
-                            <input type="text" asp-for="firstName" class="form-control" placeholder="First Name">
-                            <span asp-validation-for="firstName" class="text-danger"></span>
+                            <select class="form-control" id="listBranch">
+                                <option>Any</option>
+                                @foreach (var branch in ListBranch)
+                                {
+                                    <option value="@branch.Id">@branch.Name</option>
+                                }
+                            </select>
+                            <span class="text-danger"></span>
                         </div>
-                        
-
+                        <div class="form-group">
+                            <select class="form-control" id="listRoom">
+                            </select>
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="listTable">
+                            </select>
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="d-md-flex">
+                        <div class="form-group">
+                            <input type="text" asp-for="Name" class="form-control" placeholder="First Name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
                     </div>
                     <div class="d-md-flex">
                         <div class="form-group">
@@ -126,8 +157,8 @@
                         </div>
                     </div>
                     <div class="d-md-flex">
-                       
-                        <div class="form-group ml-md-4">
+
+                        <div class="form-group">
                             <input type="number" asp-for="numberOfGuest" class="form-control" placeholder="Number Of Guest">
                             <span asp-validation-for="numberOfGuest" class="text-danger"></span>
                         </div>
@@ -676,13 +707,19 @@
             <div class="col-md-6 appointment ftco-animate">
                 <h3 class="mb-3">Book a Table</h3>
                 <h3>@ViewBag.Message</h3>
+               
                 <form asp-controller="Table" asp-action="BookATable" method="post" class="appointment-form">
                     <div class="d-md-flex">
                         <div class="form-group">
-                            <input type="text" asp-for="firstName" class="form-control" placeholder="First Name">
-                            <span asp-validation-for="firstName" class="text-danger"></span>
+                            <input type="text" asp-for="Name" class="form-control" placeholder="First Name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
-                        
+                    </div>
+                    <div class="d-md-flex">
+                        <div class="form-group">
+                            <input type="text" asp-for="Name" class="form-control" placeholder="First Name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
                     </div>
                     <div class="d-md-flex">
                         <div class="form-group">
@@ -706,7 +743,7 @@
                         </div>
                     </div>
                     <div class="d-md-flex">
-                       
+
                         <div class="form-group ml-md-4">
                             <input type="number" asp-for="numberOfGuest" class="form-control" placeholder="Number Of Guest">
                             <span asp-validation-for="numberOfGuest" class="text-danger"></span>

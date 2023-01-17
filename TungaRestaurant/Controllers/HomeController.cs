@@ -26,8 +26,18 @@ namespace TungaRestaurant.Controllers
             _context = tungaRestaurantDbContext;
             _userManager = userManager;
         }
-
-        public IActionResult Index()
+        [HttpPost]
+        public async Task<JsonResult> ajaxRooms(int branch)
+        {
+            
+            return Json(await _context.Rooms.Where(r=>r.BranchId==branch).ToListAsync());
+        }
+        public async Task<JsonResult> ajaxTables(int branch,int room)
+        {
+            
+            return Json(await _context.Table.Where(t => t.RoomId == room).Where(t => t.Room.BranchId == branch).ToListAsync());
+        }
+        public async Task<IActionResult> Index()
         {
             if(TempData["Message"]!=null)
             {
@@ -41,6 +51,10 @@ namespace TungaRestaurant.Controllers
             {
                 ViewBag.Description = TempData["Description"].ToString();
             }
+            ViewBag.ListTable = await _context.Table.Include(t=>t.Room).ToListAsync();
+            
+            ViewBag.ListBranch = await _context.Branch.ToListAsync();
+            ViewBag.ListRoom = await _context.Rooms.ToListAsync();
             return View();
         }
 

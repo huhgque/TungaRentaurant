@@ -294,7 +294,51 @@
 
 	$('.appointment_time').timepicker();
 
-	console.log("dcm");
+	
+	$('#listBranch').change(function () {
+		$.ajax({
+			type: "POST",
+			url: "/Home/ajaxRooms",
+			data: { "branch": $('#listBranch').find(":selected").val()},
+			success: function (response) {
+				var html = "<option>Any</option>";
+				$.each(response, function (index, item) {
+					html += '<option value="' + item.id + '">' + item.name + '</option>';
+				
+				
+				});
+				$('#listRoom').html(html);
+			},
+			failure: function (response) {
+				alert(response.responseText);
+			},
+			error: function (response) {
+				alert(response.responseText);
+			}
+		});
+	});
+	$('#listRoom').change(function () {
+		$.ajax({
+			type: "POST",
+			url: "/Home/ajaxTables",
+			data: { "branch": $('#listBranch').find(":selected").val(), "room": $('#listRoom').find(":selected").val()},
+			success: function (response) {
+				var html = "<option>Any</option>";
+				$.each(response, function (index, item) {
+					html += '<option value="' + item.id + '">' + item.name + '</option>';
+
+					
+				});
+				$('#listTable').html(html);
+			},
+			failure: function (response) {
+				alert(response.responseText);
+			},
+			error: function (response) {
+				alert(response.responseText);
+			}
+		});
+	});
 })(jQuery);
 
 

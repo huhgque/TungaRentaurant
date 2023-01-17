@@ -10,7 +10,7 @@ namespace TungaRestaurant.Controllers
     public class TableBookInfor
     {
         [Required(ErrorMessage ="Requied")]
-        public string firstName { get; set; }
+        public string Name { get; set; }
         [Required(ErrorMessage = "Requied")]
         public DateTime date { get; set; }
         [Required(ErrorMessage = "Requied")]
