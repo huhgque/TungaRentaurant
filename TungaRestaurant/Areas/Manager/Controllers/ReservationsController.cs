@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ using TungaRestaurant.Models;
 
 namespace TungaRestaurant.Controllers
 {
+    [Area("Manager")]
+    [Authorize(Roles = "Admin")]
     public class ReservationsController : Controller
     {
         private readonly TungaRestaurantDbContext _context;
@@ -22,7 +25,7 @@ namespace TungaRestaurant.Controllers
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            var webApplication6Context = _context.Reservations.Include(r => r.Table);
+            var webApplication6Context = _context.Reservations.Include(r => r.Table).Include(r => r.Table.Room).Include(r => r.Table.Room.Branch).Include(r=>r.User);
             return View(await webApplication6Context.ToListAsync());
         }
 

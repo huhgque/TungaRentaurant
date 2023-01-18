@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -11,6 +12,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using TungaRestaurant.Data;
 using TungaRestaurant.Models;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace TungaRestaurant.Controllers
 {
@@ -32,11 +35,69 @@ namespace TungaRestaurant.Controllers
             
             return Json(await _context.Rooms.Where(r=>r.BranchId==branch).ToListAsync());
         }
-        public async Task<JsonResult> ajaxTables(int branch,int room)
+        public async Task<JsonResult> ajaxTables(int branch,int room,string date, string time,string time_to,int? numberOfGuest)
         {
-            
-            return Json(await _context.Table.Where(t => t.RoomId == room).Where(t => t.Room.BranchId == branch).ToListAsync());
+            if (numberOfGuest == null)
+            {
+                numberOfGuest = 0;
+            };
+
+            List<Table> tables;
+
+
+            if (!string.IsNullOrEmpty(date)&& !string.IsNullOrEmpty(time)&& !string.IsNullOrEmpty(time_to))
+            {
+
+                DateTime revDate = DateTime.ParseExact(date + " " + time, "M/d/yyyy h:mmtt", CultureInfo.InvariantCulture);
+                DateTime revEnd = DateTime.ParseExact(date + " " + time_to, "M/d/yyyy h:mmtt", CultureInfo.InvariantCulture);
+                tables =await _context.Table
+                    .Where(t => t.RoomId == room)
+                    .Where(t => t.Room.BranchId == branch)
+                    .Where(t => t.NumberOfGuest >= numberOfGuest)
+                    .Where(t =>
+                      _context.Reservations
+                            .Where(re => re.ReservationAt.Date == revDate.Date)
+                            .Where(re => re.ReservationAt < revEnd && revDate < re.ReservationEnd)
+                          .FirstOrDefault(re => re.TableId == t.Id) == null
+                     ).ToListAsync();
+            }
+            else if (!string.IsNullOrEmpty(date) && !string.IsNullOrEmpty(time))
+            {
+                DateTime revDate = DateTime.ParseExact(date + " " + time, "M/d/yyyy h:mmtt", CultureInfo.InvariantCulture);
+                tables =await _context.Table
+                    .Where(t => t.RoomId == room)
+                    .Where(t => t.Room.BranchId == branch)
+                    .Where(t => t.NumberOfGuest >= numberOfGuest)
+                    .Where(t =>
+                      _context.Reservations
+                            .Where(re => re.ReservationAt.Date == revDate.Date)
+                            .Where(re => revDate < re.ReservationEnd)
+                          .FirstOrDefault(re => re.TableId == t.Id) == null
+                     ).ToListAsync();
+            }else if (!string.IsNullOrEmpty(date))
+            {
+                DateTime revDate = DateTime.ParseExact(date, "M/d/yyyy", CultureInfo.InvariantCulture);
+                tables =await _context.Table
+                   .Where(t => t.RoomId == room)
+                   .Where(t => t.Room.BranchId == branch)
+                   .Where(t => t.NumberOfGuest >= numberOfGuest)
+                    .Where(t =>
+                      _context.Reservations
+                            .Where(re => re.ReservationAt.Date == revDate.Date)   
+                          .FirstOrDefault(re => re.TableId == t.Id) == null
+                     ).ToListAsync();
+            }
+            else
+            {
+                 tables =await _context.Table
+                   .Where(t => t.RoomId == room)
+                   .Where(t => t.Room.BranchId == branch)
+                   .Where(t => t.NumberOfGuest >= numberOfGuest).ToListAsync();
+            }
+
+            return Json(tables);
         }
+        
         public async Task<IActionResult> Index()
         {
             if(TempData["Message"]!=null)
@@ -51,14 +112,20 @@ namespace TungaRestaurant.Controllers
             {
                 ViewBag.Description = TempData["Description"].ToString();
             }
+            
             ViewBag.ListTable = await _context.Table.Include(t=>t.Room).ToListAsync();
             
-            ViewBag.ListBranch = await _context.Branch.ToListAsync();
+            ViewBag.ListBranch = await _context.Branch.Where(b=>b.Status!=BranchStatus.CLOSE).ToListAsync();
             ViewBag.ListRoom = await _context.Rooms.ToListAsync();
+            if (TempData["bookingValue"] != null)
+            {
+               
+                return View(JsonConvert.DeserializeObject<TableBookInfor>((string)TempData["bookingValue"])); ;
+            }
             return View();
         }
-
-        public IActionResult Privacy()
+       
+            public IActionResult Privacy()
         {
             return View();
         }

@@ -6,10 +6,16 @@
     List<Table> ListTable = (List<Table>)ViewBag.ListTable;
     List<Room> ListRoom = (List<Room>)ViewBag.ListRoom;
     List<Branch> ListBranch = (List<Branch>)ViewBag.ListBranch;
+    UserInfo userInfo = new UserInfo();
+    if (User.Identity.Name != null)
+    {
+        string uid = _userManager.GetUserId(User);
+        userInfo = _userManager.Users.Include(u => u.Carts).Where(u => u.Id.Equals(uid)).FirstOrDefault();
+    }
 }
 <style>
-    .form-control option{
-        color:black;
+    .form-control option {
+        color: black;
     }
 </style>
 <section class="home-slider owl-carousel">
@@ -28,10 +34,10 @@
                     }
                     else
                     {
-                    <span class="subheading">Welcome!</span>
-                    <h1 class="mb-4">The Best Coffee Testing Experience</h1>
-                    <p class="mb-4 mb-md-5">A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-                    <p><a href="#" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
+                        <span class="subheading">Welcome!</span>
+                        <h1 class="mb-4">The Best Coffee Testing Experience</h1>
+                        <p class="mb-4 mb-md-5">A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                        <p><a href="#" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
                     }
                 </div>
 
@@ -102,36 +108,44 @@
             <div class="book p-4">
                 <h3>Book a Table</h3>
                 <h3>@ViewBag.Message</h3>
-               
-                
-                
-                
+
                 <form asp-controller="Table" asp-action="BookATable" method="post" class="appointment-form">
                     <div class="d-md-flex">
                         <div class="form-group">
                             <select class="form-control" id="listBranch">
-                                <option>Any</option>
+
                                 @foreach (var branch in ListBranch)
                                 {
-                                    <option value="@branch.Id">@branch.Name</option>
+                                    <option value="@branch.Id">@branch.Name - @branch.Location</option>
                                 }
                             </select>
                             <span class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <select class="form-control" id="listRoom">
+                                <option>Choose Room</option>
                             </select>
                             <span class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <select class="form-control" id="listTable">
+                            <select class="form-control" asp-for="TableId" id="listTable">
+                                <option>Choose Table</option>
                             </select>
-                            <span class="text-danger"></span>
+                            <span asp-validation-for="TableId" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="d-md-flex">
                         <div class="form-group">
-                            <input type="text" asp-for="Name" class="form-control" placeholder="First Name">
+                            @if (User.Identity.Name != null)
+                            {
+
+                                <input type="text" asp-for="Name" class="form-control" placeholder="First Name" value="@userInfo.UserName">
+                            }
+                            else
+                            {
+                                <input type="text" asp-for="Name" class="form-control" placeholder="First Name">
+                            }
+
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                     </div>
@@ -139,31 +153,39 @@
                         <div class="form-group">
                             <div class="input-wrap">
                                 <div class="icon"><span class="ion-md-calendar"></span></div>
-                                <input type="text" id="datepicker" asp-for="date" class="form-control appointment_date" placeholder="Date">
+                                <input type="text" id="f_date" asp-for="date" class="form-control appointment_date" placeholder="Date">
                                 <span asp-validation-for="date" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group ml-md-4">
                             <div class="input-wrap">
                                 <div class="icon"><span class="ion-ios-clock"></span></div>
-                                <input type="text" id="timepicker" asp-for="time" class="form-control appointment_time" placeholder="Time">
+                                <input type="text" id="f_time" asp-for="time" class="form-control" placeholder="Time">
                                 <span asp-validation-for="time" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group ml-md-4">
                             <div class="icon"><span class="ion-ios-clock"></span></div>
-                            <input type="text" id="datepicker" asp-for="time_to" class="form-control appointment_time hasDatepicker" placeholder="Time To">
+                            <input type="text" id="f_time_to" asp-for="time_to" class="form-control" placeholder="Time To">
                             <span asp-validation-for="time_to" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="d-md-flex">
 
                         <div class="form-group">
-                            <input type="number" asp-for="numberOfGuest" class="form-control" placeholder="Number Of Guest">
+                            <input type="number" id="f_numberOfGuest" asp-for="numberOfGuest" class="form-control" placeholder="Number Of Guest">
                             <span asp-validation-for="numberOfGuest" class="text-danger"></span>
                         </div>
                         <div class="form-group ml-md-4">
-                            <input type="text" asp-for="phone" class="form-control" placeholder="Phone">
+                            @if (User.Identity.Name != null)
+                            {
+                                <input type="text" asp-for="phone" class="form-control" placeholder="Phone" value="@userInfo.PhoneNumber">
+                            }
+                            else
+                            {
+                                <input type="text" asp-for="phone" class="form-control" placeholder="Phone">
+                            }
+
                             <span asp-validation-for="phone" class="text-danger"></span>
                         </div>
                     </div>
@@ -707,17 +729,44 @@
             <div class="col-md-6 appointment ftco-animate">
                 <h3 class="mb-3">Book a Table</h3>
                 <h3>@ViewBag.Message</h3>
-               
+
                 <form asp-controller="Table" asp-action="BookATable" method="post" class="appointment-form">
                     <div class="d-md-flex">
                         <div class="form-group">
-                            <input type="text" asp-for="Name" class="form-control" placeholder="First Name">
-                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <select class="form-control" id="listBranch">
+
+                                @foreach (var branch in ListBranch)
+                                {
+                                    <option value="@branch.Id">@branch.Name - @branch.Location</option>
+                                }
+                            </select>
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="listRoom">
+                                <option>Choose Room</option>
+                            </select>
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" asp-for="TableId" id="listTable">
+                                <option>Choose Table</option>
+                            </select>
+                            <span asp-validation-for="TableId" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="d-md-flex">
                         <div class="form-group">
-                            <input type="text" asp-for="Name" class="form-control" placeholder="First Name">
+                            @if (User.Identity.Name != null)
+                            {
+
+                                <input type="text" asp-for="Name" class="form-control" placeholder="First Name" value="@userInfo.UserName">
+                            }
+                            else
+                            {
+                                <input type="text" asp-for="Name" class="form-control" placeholder="First Name">
+                            }
+
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                     </div>
@@ -725,31 +774,39 @@
                         <div class="form-group">
                             <div class="input-wrap">
                                 <div class="icon"><span class="ion-md-calendar"></span></div>
-                                <input type="text" asp-for="date" class="form-control appointment_date" placeholder="Date">
+                                <input type="text" id="f_date" asp-for="date" class="form-control appointment_date" placeholder="Date">
                                 <span asp-validation-for="date" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group ml-md-4">
                             <div class="input-wrap">
                                 <div class="icon"><span class="ion-ios-clock"></span></div>
-                                <input type="text" asp-for="time" class="form-control appointment_time" placeholder="Time">
+                                <input type="text" id="f_time" asp-for="time" class="form-control" placeholder="Time">
                                 <span asp-validation-for="time" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group ml-md-4">
                             <div class="icon"><span class="ion-ios-clock"></span></div>
-                            <input type="text" asp-for="time_to" class="form-control appointment_time" placeholder="Time To">
+                            <input type="text" id="f_time_to" asp-for="time_to" class="form-control" placeholder="Time To">
                             <span asp-validation-for="time_to" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="d-md-flex">
 
-                        <div class="form-group ml-md-4">
-                            <input type="number" asp-for="numberOfGuest" class="form-control" placeholder="Number Of Guest">
+                        <div class="form-group">
+                            <input type="number" id="f_numberOfGuest" asp-for="numberOfGuest" class="form-control" placeholder="Number Of Guest">
                             <span asp-validation-for="numberOfGuest" class="text-danger"></span>
                         </div>
                         <div class="form-group ml-md-4">
-                            <input type="text" asp-for="phone" class="form-control" placeholder="Phone">
+                            @if (User.Identity.Name != null)
+                            {
+                                <input type="text" asp-for="phone" class="form-control" placeholder="Phone" value="@userInfo.PhoneNumber">
+                            }
+                            else
+                            {
+                                <input type="text" asp-for="phone" class="form-control" placeholder="Phone">
+                            }
+
                             <span asp-validation-for="phone" class="text-danger"></span>
                         </div>
                     </div>
@@ -777,3 +834,6 @@
         </div>
     </div>
 </section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -35,44 +35,7 @@
                     </form>
                 </div>
             </div>
-            <div>
-                <h2>Rooms</h2>
-                <div>
-                    <div class="roominfo">
-                        <div>room name</div>
-                        <div>room type</div>
-                        <div>room status</div>
-                    </div>
-                    <div class="room-dropdown ml-4 border-left border-primary">
-                        <div class="d-flex flex-row">
-                            <div class="col-3">Table Name</div>
-                            <div class="col-3">Table Type</div>
-                            <div class="col-3">Table Status</div>
-                            <div class="col-3"></div>
-                        </div>
-                        <form class="bg-table d-flex flex-row" method="post" asp-controller="Table" asp-action="Edit" asp-route-id="tableid">
-                            <div class="col-3">table name</div>
-                            <div class="col-3">table type</div>
-                            <div class="col-3">table status</div>
-                            <div class="col-3"><button>Save</button></div>
-                        </form>
-                        <form class="bg-table d-flex flex-row" method="post" asp-controller="Table" asp-action="Create" asp-route-id="roomid">
-                            <input name="RoomId" value="roomid" hidden />
-                            <div class="form-group col-3 "> 
-                                <input class="form-control" name="Name" /> 
-                            </div>
-                            <div class="form-group col-3 "> 
-                                <select class="form-control custom-select" asp-items="Html.GetEnumSelectList<TableStatus>()"></select>
-                            </div>
-                            <div class="form-group col-3 ">
-                                <input class="form-control" />
-                            </div>
-                            <div class="col-3"><button>Save</button></div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
+            
             <div>
                 <a asp-action="Index">Back to List</a>
             </div>
