@@ -50,8 +50,10 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         // GET: Food/Create
         public IActionResult Create()
         {
+            List<Branch> branches = _dbContext.Branch.ToList();
+            branches.Add(new Branch());
             ViewData["CateId"] = new SelectList(_dbContext.Categories, "Id", "Name");
-            ViewData["BranchId"] = new SelectList(_dbContext.Branch, "Id", "Name");
+            ViewData["BranchId"] = new SelectList(branches , "Id", "Name");
             return View();
         }
 
