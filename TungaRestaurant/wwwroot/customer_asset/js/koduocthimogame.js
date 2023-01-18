@@ -283,6 +283,7 @@
 		fixedContentPos: false
 	});
 	var date = new Date();
+	date.setHours(date.getHours() + 6);
 	var date1 = new Date(date.getFullYear(), (date.getMonth() + 1), date.getDate());
 	$('.appointment_date').datepicker({
 		'format': 'm/d/yyyy',
@@ -291,14 +292,7 @@
 		'endDate': date1,
 
 	});
-	var dt = new Date();
-	$('#f_time').timepicker({
-		'minTime': dt.getHours() + ":" + dt.getMinutes()
-	});
-	$('#f_time_to').timepicker({
-		
-		'minTime': dt.getHours() + ":" + dt.getMinutes()
-	});
+	
 
 	
 	$('#listBranch').change(function () {
@@ -468,5 +462,17 @@ $(document).ready(function () {
 		error: function (response) {
 			alert(response.responseText);
 		}
+	});
+	
+	var dt = new Date();
+	
+	dt.setHours(dt.getHours() + 6);
+	
+	$('#f_time').timepicker({
+		'minTime': (dt.getHours() ) + ":" + dt.getMinutes(),
+	});
+	$('#f_time_to').timepicker({
+
+		'minTime': (dt.getHours()) + ":" + dt.getMinutes(),
 	});
 });
