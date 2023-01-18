@@ -291,13 +291,13 @@
 		'endDate': date1,
 
 	});
-
+	var dt = new Date();
 	$('#f_time').timepicker({
-		'minTime': '8:00AM'
+		'minTime': dt.getHours() + ":" + dt.getMinutes()
 	});
 	$('#f_time_to').timepicker({
 		
-		'minTime': '8:00AM'
+		'minTime': dt.getHours() + ":" + dt.getMinutes()
 	});
 
 	
