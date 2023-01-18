@@ -27,17 +27,16 @@ namespace TungaRestaurant
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string sqlConnect = Environment.GetEnvironmentVariable("TungaRestaurantDb",EnvironmentVariableTarget.Machine);
             services.AddControllersWithViews();
             services.AddRazorPages();
 
             services.AddDbContext<TungaRestaurantDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("TungaRestaurantDbContext"));
+                options.UseSqlServer(sqlConnect);
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
             });
-
-            
             //cau hinh su dung session
             services.AddSession(ops =>
             {

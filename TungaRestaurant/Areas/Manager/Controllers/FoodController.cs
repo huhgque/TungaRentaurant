@@ -14,7 +14,7 @@ using TungaRestaurant.Models;
 namespace TungaRestaurant.Areas.Manager.Controllers
 {
     [Area("Manager")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Branch Manager")]
     public class FoodController:Controller
     {
         private readonly TungaRestaurantDbContext _dbContext;
@@ -51,7 +51,10 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         public IActionResult Create()
         {
             List<Branch> branches = _dbContext.Branch.ToList();
-            branches.Add(new Branch());
+            var emptyBranch = new Branch();
+            emptyBranch.Id = 0;
+            emptyBranch.Name = "All Branch";
+            branches.Insert(0,emptyBranch);
             ViewData["CateId"] = new SelectList(_dbContext.Categories, "Id", "Name");
             ViewData["BranchId"] = new SelectList(branches , "Id", "Name");
             return View();
@@ -83,6 +86,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                             Food.Image = fileName;
                         }
                     }
+                    if (Food.BranchId == 0) Food.BranchId = null;
                     _dbContext.Add(Food);
                     await _dbContext.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -111,9 +115,14 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             {
                 return NotFound();
             }
-            ViewData["CateId"] = new SelectList(_dbContext.Categories, "Id", "Name");
-            ViewData["BranchId"] = new SelectList(_dbContext.Branch, "Id", "Name");
 
+            List<Branch> branches = _dbContext.Branch.ToList();
+            var emptyBranch = new Branch();
+            emptyBranch.Id = 0;
+            emptyBranch.Name = "All Branch";
+            branches.Insert(0, emptyBranch);
+            ViewData["CateId"] = new SelectList(_dbContext.Categories, "Id", "Name");
+            ViewData["BranchId"] = new SelectList(branches, "Id", "Name",Food.BranchId);
             return View(Food);
         }
 
@@ -147,6 +156,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                             Food.Image = fileName;
                         }
                     }
+                    if (Food.BranchId == 0) Food.BranchId = null;
                     _dbContext.Update(Food);
                     await _dbContext.SaveChangesAsync();
                 }
