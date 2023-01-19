@@ -35,12 +35,12 @@ namespace TungaRestaurant.Controllers
             return View("/Views/Order/CheckOut.cshtml");
         }
 
-        // POST: Order/Create
+        // POST: Cart
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create([FromForm] string ShipAddress)
         {
             Order order = new Order();
             if (ModelState.IsValid)
@@ -55,6 +55,19 @@ namespace TungaRestaurant.Controllers
                         return RedirectToAction("Index", "Home");
                     }
                     order.UserInfoId = _userManager.GetUserId(User);
+                    //lay user
+                    List<UserInfo> userList = new List<UserInfo>();
+                    userList = _context.Users.Where(c => c.Id == _userManager.GetUserId(User)).ToList();
+                    UserInfo user = userList.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
+                    if (ShipAddress == null)
+                    {
+                        order.ShipAddress = user.Address;
+                    }
+                    else
+                    {
+                        order.ShipAddress = ShipAddress;
+                    }
+                    
                     //lay cart
                     order.Name = _userManager.GetUserName(User);
                     float totalPrice = 0;
@@ -70,7 +83,7 @@ namespace TungaRestaurant.Controllers
                     }
                     order.Price = totalPrice;
                     order.CreatedAt = DateTime.Now;
-
+                    
 
                     _context.Orders.Add(order);
                     

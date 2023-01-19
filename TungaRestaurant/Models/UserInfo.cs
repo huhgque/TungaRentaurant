@@ -30,5 +30,10 @@ namespace TungaRestaurant.Models
         public virtual ICollection<Cart> Carts { get; set; }
         public virtual ICollection<Reservation> Reservations { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
+
+        public static implicit operator List<object>(UserInfo v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

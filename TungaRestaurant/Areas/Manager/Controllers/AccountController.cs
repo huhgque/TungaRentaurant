@@ -26,7 +26,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         }
         public IActionResult Index()
         {
-            List<UserInfo> users = userManager.Users.ToList();
+            List<UserInfo> users = userManager.Users.Where(u=>!u.Id.Equals(userManager.GetUserId(User))).ToList();
             return View(users);
         }
         public IActionResult Create()
