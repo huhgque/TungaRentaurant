@@ -39,11 +39,11 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Email,Password,DisplayName,PhoneNumber,Sex,Address")] UserInfo user,[FromForm] string RoleName,[FromForm] string Password)
+        public async Task<IActionResult> Create([Bind("Email,DisplayName,PhoneNumber,Sex,Address")] UserInfo user,[FromForm] string RoleName,[FromForm] string Password)
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                return View(user);
             }
             IdentityRole role = await roleManager.FindByNameAsync(RoleName);
             if (role == null)
@@ -64,14 +64,12 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             }
             var roles = roleManager.Roles.ToList();
             List<Branch> branches = tungaRestaurantDbContext.Branch.ToList();
-            
-            ViewBag.StatusList = Enum.GetValues( typeof(UserStatus) );
             ViewBag.Roles = roles;
             ViewBag.Branches = branches;
             return View(user);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit([Bind("Id,Email,DisplayName,PhoneNumber,Sex,Address,BranchId")] UserInfo user, [FromForm] string RoleName, [FromForm] string Password)
+        public async Task<IActionResult> Edit([Bind("Id,Email,DisplayName,PhoneNumber,Sex,Address,BranchId,Status")] UserInfo user, [FromForm] string RoleName, [FromForm] string Password)
         {
             if (!ModelState.IsValid)
             {
@@ -87,13 +85,25 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             userFromDb.PhoneNumber = user.PhoneNumber;
             userFromDb.Sex = user.Sex;
             userFromDb.Address = user.Address;
-            var currentRoles = userManager.GetRolesAsync(user).Result;
+
+            var currentRoles = await userManager.GetRolesAsync(user);
             string currentRole = (currentRoles.Count > 0) ? currentRoles[0] : "";
             userFromDb.BranchId = user.BranchId;
             if (!currentRole.Equals(role))
             {
-                var removeFromRole = await userManager.RemoveFromRoleAsync(user,currentRole);
+                try
+                {
+                    var removeFromRole = await userManager.RemoveFromRoleAsync(user,currentRole);
+                }
+                catch
+                {
+
+                }
                 var addRoleResult = await userManager.AddToRoleAsync(user, role.Name);
+            }
+            if(Password != null)
+            {
+                userFromDb.PasswordHash = userManager.PasswordHasher.HashPassword(userFromDb, Password);
             }
             var updateResl = await userManager.UpdateAsync(userFromDb);
             return RedirectToAction(nameof(Index));

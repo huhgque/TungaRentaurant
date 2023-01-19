@@ -19,7 +19,7 @@
                 </div>
                 <div class="form-group">
                     <label for="Password">Password</label>
-                    <input value="@Model.PasswordHash" type="text" class="form-control" name="Password" id="Password" placeholder="Password">
+                    <input type="text" class="form-control" name="Password" id="Password" placeholder="Password">
                 </div>
                 <div class="form-group">
                     <label for="exampleSelectGender">Gender</label>
@@ -54,7 +54,10 @@
                     <select asp-items="@branchList" class="form-control" id="setBrach" name="BranchId">
                     </select>
                 </div>
-
+                <div class="form-group">
+                    <label for="setStatus">Status</label>
+                    <select asp-items="@Html.GetEnumSelectList<UserStatus>()" class="form-control" id="setStatus" asp-for="Status" ></select>
+                </div>
                 <button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
                 <a asp-controller="Account" asp-action="Index" class="btn btn-light">Cancel</a>
             </form>

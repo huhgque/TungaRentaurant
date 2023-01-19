@@ -80,11 +80,13 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
 
             if(await CheckFirstTimeLogin(Input.Email,Input.Password))
             {
-                var result = _signInManager.PasswordSignInAsync(firstTimeLogin, firstTimeLoginPassword, false, false);
-                if (result.IsFaulted)
+                var result = await _signInManager.PasswordSignInAsync(firstTimeLogin, firstTimeLoginPassword, false, false);
+                if (!result.Succeeded)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid first time init attempt.");
-                } else
+                    return Page();
+                }
+                else
                 {
                     return RedirectToAction(actionName: "Index", controllerName: "Profile",new {area = ""});
 
@@ -100,15 +102,6 @@ namespace TungaRestaurant.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = false });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
                 }
                 else
                 {

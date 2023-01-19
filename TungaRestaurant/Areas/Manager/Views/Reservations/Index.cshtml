@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TungaRestaurant.Models.Reservation>
+﻿@using TungaRestaurant.Ultils
+@model IEnumerable<TungaRestaurant.Models.Reservation>
 
 @{
     ViewData["Title"] = "Index";
@@ -37,11 +38,14 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @{
+                        TokenManager tokenManager = new TokenManager();
+                    }
                     @foreach (var item in Model)
                     {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Token)
+                            @tokenManager.GetReservationToken(item.User,item.Id.ToString())
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.NumberOfGuest)

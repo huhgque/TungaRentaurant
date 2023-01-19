@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-group">
                     <label for="setRole">Select Role</label>
-                    <select class="form-control" id="setRole" name="RoleId">
+                    <select class="form-control" id="setRole" name="RoleName">
                         @foreach (IdentityRole role in ViewBag.Roles)
                        {
                             <option value="@role.Name">@role.Name</option>
