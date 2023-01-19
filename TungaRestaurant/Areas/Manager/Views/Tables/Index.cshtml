@@ -9,59 +9,65 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Tables list</h4>
-            <p class="text-right">
-                <a class="btn btn-gradient-primary" asp-area="Manager" asp-controller="Tables" asp-action="Create">Add new table</a>
-            </p>
+
             <form asp-action="Index" asp-area="Manager" asp-controller="Tables" method="get">
                 <div class="row">
-                    <div class="col-md-2" style="text-align: center; display: inline-block; ">
-                        <span class="mt-5">Branch:</span>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Branch:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="branch" onchange="this.form.submit()">
+                                    @foreach (var item in ViewBag.BranchList)
+                                    {
+                                        @if (ViewBag.Branch == item.Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-4" style="text-align:center;display:inline-block">
-                        <select class="form-select" style="text-align:center" name="branch" onchange="this.form.submit()">
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Room:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="room" onchange="this.form.submit()">
+                                    @foreach (var item in ViewBag.RoomList)
+                                    {
+                                        @if (ViewBag.Room == item.Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
 
-                            @foreach (var item in ViewBag.BranchList)
-                            {
-                                @if (ViewBag.Branch == item.Id)
-                                {
-                                    <option value="@item.Id" selected>@item.Name</option>
-                                }
-                                else
-                                {
-                                    <option value="@item.Id">@item.Name</option>
-                                }
 
-
-                            }
-
-                        </select>
+                                    }
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-2" style="text-align:center;display:inline-block">
-                        <span>Room:</span>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                                <p class="text-right">
+                                    <a class="btn btn-gradient-primary" asp-area="Manager" asp-controller="Tables" asp-action="Create">Add new table</a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-4" style="text-align:center;display:inline-block">
-
-                        <select class="form-select" style="text-align:center" name="room" onchange="this.form.submit()">
-
-                            @foreach (var item in ViewBag.RoomList)
-                            {
-                                @if (ViewBag.Room == item.Id)
-                                {
-                                    <option value="@item.Id" selected>@item.Name</option>
-                                }
-                                else
-                                {
-                                    <option value="@item.Id">@item.Name</option>
-                                }
-
-
-                            }
-
-                        </select>
-
-                    </div>
-
                 </div>
+            
             </form>
             <div style="text-align: left; width: 100%;  margin:1% 0 1% 0">
                 <div class="row">
@@ -118,12 +124,14 @@
 
                                     <img src="~/admin_asset/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
 
-                                    <h4 class="font-weight-normal mb-3">
-                                        <span class="mdi mdi-24px float-right">0/@item.NumberOfGuest</span>
+                                    <h4 >
+                                        <span class="mdi mdi-24px float-right">Size:@item.NumberOfGuest Guest</span>
                                     </h4>
                                     <h2 class="mb-5">@item.Name</h2>
+
+                                    <br />
                                     <h4>@note</h4>
-                                    
+
                                     <div style="text-align:center" class="row">
                                         @if (color == "success")
                                         {
@@ -149,7 +157,8 @@
 
                                         <a class="btn-info hi col-md-6" style="text-decoration:none" asp-area="Manager" asp-controller="Tables" asp-action="Edit" asp-route-id="@item.Id">
                                             Edit
-                                        </a><a class="btn-dark hi col-md-6" type="button" data-toggle="modal" data-target="#exampleModal_@item.Id">
+                                        </a>
+                                        <a class="btn-dark hi col-md-6" type="button" data-toggle="modal" data-target="#exampleModal_@item.Id">
                                             Delete
                                         </a>
                                     </div>
@@ -183,21 +192,7 @@
                     }
                 </div>
             </div>
-            <style>
-                .hi {
-                    display: inline-block;
-                    transition: 0.75s;
-                    opacity: 0;
-                    top: 0;
-                    right: 1px;
-                }
-
-                .hihi:hover .hi {
-                    opacity: 1;
-                    display: inline-block;
-                }
-            </style>
+         
         </div>
     </div>
 </div>
-

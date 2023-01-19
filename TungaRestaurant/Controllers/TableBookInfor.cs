@@ -10,9 +10,9 @@ namespace TungaRestaurant.Controllers
     public class TableBookInfor
     {
         [Required(ErrorMessage ="Requied")]
-        public string firstName { get; set; }
+        public string Name { get; set; }
         [Required(ErrorMessage = "Requied")]
-        public DateTime date { get; set; }
+        public string date { get; set; }
         [Required(ErrorMessage = "Requied")]
         public string time { get; set; }
         [Required(ErrorMessage = "Requied")]
@@ -22,7 +22,9 @@ namespace TungaRestaurant.Controllers
      
         [Required(ErrorMessage = "Requied")]
         public int numberOfGuest { get; set; }
-   
+        [Required(ErrorMessage = "Requied")]
+        public int TableId { get; set; }
+
         public string message { get; set; }
 
     }

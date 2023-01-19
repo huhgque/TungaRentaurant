@@ -13,3 +13,4 @@ $(".image-input-update").on("change", function () {
     var targetId= $(this).attr("target-id");
     $("#" + targetId).attr("src", imgSrc);
 })
+

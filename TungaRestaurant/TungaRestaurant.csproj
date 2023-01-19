@@ -208,6 +208,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Areas\Manager\Views\Reservations\Create.cshtml" />
+    <None Include="Areas\Manager\Views\Reservations\Delete.cshtml" />
+    <None Include="Areas\Manager\Views\Reservations\Details.cshtml" />
+    <None Include="Areas\Manager\Views\Reservations\Edit.cshtml" />
+    <None Include="Areas\Manager\Views\Reservations\Index.cshtml" />
     <None Include="Areas\Manager\Views\Rooms\Create.cshtml" />
     <None Include="Areas\Manager\Views\Rooms\Delete.cshtml" />
     <None Include="Areas\Manager\Views\Rooms\Details.cshtml" />

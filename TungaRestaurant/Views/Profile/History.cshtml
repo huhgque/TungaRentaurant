@@ -44,7 +44,7 @@
                         <tbody>
                             @foreach (Order order in userInfo.Orders)
                             {
-                                <tr class="text-center redirect-on-click" href="Profile/History/@order.Id">
+                                <tr class="text-center">
                                     <td class="" style="overflow-wrap:anywhere">
                                         <span>
                                             @tokenManager.GetOrderToken(userInfo,order.Id.ToString())

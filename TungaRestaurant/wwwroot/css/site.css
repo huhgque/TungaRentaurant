@@ -112,10 +112,6 @@ body {
         background: #a28151 !important;
     }
 
-.navbar-normal {
-    position: relative !important;
-}
-
 .p-relative{
     position:relative;
 }
@@ -174,4 +170,11 @@ body {
 }
 .bg-table .form-group{
     margin : 0;
+}
+
+.hi {
+    display: inline-block;
+    transition: 0.75s;
+    top: 0;
+    right: 1px;
 }

@@ -283,20 +283,196 @@
 		fixedContentPos: false
 	});
 	var date = new Date();
+	date.setHours(date.getHours() + 6);
 	var date1 = new Date(date.getFullYear(), (date.getMonth() + 1), date.getDate());
 	$('.appointment_date').datepicker({
-		'format': 'd/m/yyyy',
+		'format': 'm/d/yyyy',
 		'autoclose': true,
 		'startDate': date,
 		'endDate': date1,
 
 	});
+	
 
-	$('.appointment_time').timepicker();
+	
+	$('#listBranch').change(function () {
+		$.ajax({
+			type: "POST",
+			url: "/Home/ajaxRooms",
+			data: { "branch": $('#listBranch').find(":selected").val()},
+			success: function (response) {
+				var html = "<option>Choose Room</option>";
+				$.each(response, function (index, item) {
+					html += '<option value="' + item.id + '">' + item.name + '</option>';
+				
+				});
+				$('#listRoom').html(html);
+			},
+			failure: function (response) {
+				alert(response.responseText);
+			},
+			error: function (response) {
+				alert(response.responseText);
+			}
+		});
+	});
+	
+	
+	$('#listRoom').change(function () {
+		$.ajax({
+			type: "POST",
+			url: "/Home/ajaxTables",
+			data: { "branch": $('#listBranch').find(":selected").val(), "room": $('#listRoom').find(":selected").val(), "date": $('#f_date').val(), "time": $('#f_time').val(), "time_to": $('#f_time_to').val(), "numberOfGuest": $('#f_numberOfGuest').val() },
+			success: function (response) {
+				var html = "<option>Choose Table</option>";
+				$.each(response, function (index, item) {
+					html += '<option value="' + item.id + '">' + item.name + '</option>';
 
-	console.log("dcm");
+
+				});
+				$('#listTable').html(html);
+			},
+			failure: function (response) {
+				alert(response.responseText);
+			},
+			error: function (response) {
+				alert(response.responseText);
+			}
+		});
+
+	});
+	
+	$('#f_date').change(function () {
+		$.ajax({
+			type: "POST",
+			url: "/Home/ajaxTables",
+			data: { "branch": $('#listBranch').find(":selected").val(), "room": $('#listRoom').find(":selected").val(), "date": $('#f_date').val(), "time": $('#f_time').val(), "time_to": $('#f_time_to').val(), "numberOfGuest": $('#f_numberOfGuest').val() },
+			success: function (response) {
+				var html = "<option>Choose Table</option>";
+				$.each(response, function (index, item) {
+					html += '<option value="' + item.id + '">' + item.name + '</option>';
+
+
+				});
+				$('#listTable').html(html);
+			},
+			failure: function (response) {
+				alert(response.responseText);
+			},
+			error: function (response) {
+				alert(response.responseText);
+			}
+		});
+	});
+	$('#f_time').change(function () {
+		$.ajax({
+			type: "POST",
+			url: "/Home/ajaxTables",
+			data: { "branch": $('#listBranch').find(":selected").val(), "room": $('#listRoom').find(":selected").val(), "date": $('#f_date').val(), "time": $('#f_time').val(), "time_to": $('#f_time_to').val(), "numberOfGuest": $('#f_numberOfGuest').val() },
+			success: function (response) {
+				var html = "<option>Choose Table</option>";
+				$.each(response, function (index, item) {
+					html += '<option value="' + item.id + '">' + item.name + '</option>';
+					
+
+				});
+				$('#listTable').html(html);
+			},
+			failure: function (response) {
+				alert(response.responseText);
+			},
+			error: function (response) {
+				alert(response.responseText);
+			}
+		});
+		$('#f_time_to').timepicker({
+			'disableTimeRanges': [
+				['8:00AM', $('#f_time').val().toLocaleUpperCase()],
+				
+			],
+			'minTime': $('#f_time').val().toLocaleUpperCase() 
+		});
+		console.log($('#f_time').val().toLocaleUpperCase());
+	});
+	$('#f_time_to').change(function () {
+		$.ajax({
+			type: "POST",
+			url: "/Home/ajaxTables",
+			data: { "branch": $('#listBranch').find(":selected").val(), "room": $('#listRoom').find(":selected").val(), "date": $('#f_date').val(), "time": $('#f_time').val(), "time_to": $('#f_time_to').val(), "numberOfGuest": $('#f_numberOfGuest').val() },
+			success: function (response) {
+				var html = "<option>Choose Table</option>";
+				$.each(response, function (index, item) {
+					html += '<option value="' + item.id + '">' + item.name + '</option>';
+
+
+				});
+				$('#listTable').html(html);
+			},
+			failure: function (response) {
+				alert(response.responseText);
+			},
+			error: function (response) {
+				alert(response.responseText);
+			}
+		});
+	});
+	$('#f_numberOfGuest').change(function () {
+		$.ajax({
+			type: "POST",
+			url: "/Home/ajaxTables",
+			data: { "branch": $('#listBranch').find(":selected").val(), "room": $('#listRoom').find(":selected").val(), "date": $('#f_date').val(), "time": $('#f_time').val(), "time_to": $('#f_time_to').val(), "numberOfGuest": $('#f_numberOfGuest').val() },
+			success: function (response) {
+				var html = "<option>Choose Table</option>";
+				$.each(response, function (index, item) {
+					html += '<option value="' + item.id + '">' + item.name + '</option>';
+
+
+				});
+				$('#listTable').html(html);
+			},
+			failure: function (response) {
+				alert(response.responseText);
+			},
+			error: function (response) {
+				alert(response.responseText);
+			}
+		});
+	});
 })(jQuery);
 
 
 
 
+$(document).ready(function () {
+	$.ajax({
+		type: "POST",
+		url: "/Home/ajaxRooms",
+		data: { "branch": $('#listBranch').find(":selected").val() },
+		success: function (response) {
+			var html = "<option>Choose Room</option>";
+			$.each(response, function (index, item) {
+				html += '<option value="' + item.id + '">' + item.name + '</option>';
+
+			});
+			$('#listRoom').html(html);
+		},
+		failure: function (response) {
+			alert(response.responseText);
+		},
+		error: function (response) {
+			alert(response.responseText);
+		}
+	});
+	
+	var dt = new Date();
+	
+	dt.setHours(dt.getHours() + 6);
+	
+	$('#f_time').timepicker({
+		'minTime': (dt.getHours() ) + ":" + dt.getMinutes(),
+	});
+	$('#f_time_to').timepicker({
+
+		'minTime': (dt.getHours()) + ":" + dt.getMinutes(),
+	});
+});

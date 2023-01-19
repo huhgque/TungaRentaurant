@@ -22,74 +22,54 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         {
             _context = context;
         }
-
+        [HttpPost]
+        public async Task<JsonResult> ajaxRooms(int branch)
+        {
+            var x = await _context.Rooms.Where(r => r.BranchId == branch).ToListAsync();
+            return Json(x);
+        }
         // GET: Manager/Tables
         public async Task<IActionResult> Index(int? branch,int? room)
         {
-            ViewBag.RoomList = await _context.Rooms.ToListAsync();
-            ViewBag.BranchList = await _context.Branch.ToListAsync();
+
+            var br = await _context.Branch.ToListAsync();
+            ViewBag.BranchList = br;
             IQueryable<Table> tunga ;
             ViewBag.Reservations = await _context.Reservations.Where(r => r.CreatedAt >= DateTime.Now.AddMonths(-1)).Include(r=>r.Table).ToListAsync();
             if (branch == null)
             {
-                if (room == null)
-                {
-                    var id = _context.Branch.FirstOrDefault().Id;
-                    tunga = from r in _context.Rooms
-                            join t in _context.Table
-                            on r.Id equals t.RoomId
-                            where r.BranchId == id
-                            select t;
-                    ViewBag.Branch = id;
-                    ViewBag.Room = null;
-                }
-                else
-                {
-                    var id = _context.Branch.FirstOrDefault().Id;
-                    tunga = from r in _context.Rooms
-                            join t in _context.Table
-                            on r.Id equals t.RoomId
-                            where r.BranchId == id
-                            where r.Id == room
-
-                            select t;
-                    ViewBag.Branch = id;
-                    ViewBag.Room = room;
-                }
-                
+                Branch b = new Branch();
+                b = br.First();
+                branch = b.Id;
+               
+            }
+            var ro = await _context.Rooms.Where(r => r.BranchId == branch).ToListAsync();
+            ViewBag.RoomList = ro;
+            if (room == null)
+            {
+                Room r = new Room();
+                r = await _context.Rooms.Where(r => r.BranchId == branch).FirstOrDefaultAsync();
+                room = r.Id;
             }
             else
             {
-                if (room == null)
-                {
-                    var id = _context.Branch.FirstOrDefault().Id;
-                    tunga = from r in _context.Rooms
-                            join t in _context.Table
-                            on r.Id equals t.RoomId
-                            where r.BranchId == branch
-                            select t;
-                    ViewBag.Branch = branch;
-                    ViewBag.Room = null;
-                }
-                else
-                {
-                    var id = _context.Branch.FirstOrDefault().Id;
-                    tunga = from r in _context.Rooms
-                            join t in _context.Table
-                            on r.Id equals t.RoomId
-                            where r.BranchId == branch
-                            where r.Id == room
-
-                            select t;
-                    ViewBag.Branch = branch;
-                    ViewBag.Room = room;
-                }
+                room = ro.First().Id;
             }
+            
+            var id = _context.Branch.FirstOrDefault().Id;
+            tunga = from r in _context.Rooms
+                    join t in _context.Table
+                    on r.Id equals t.RoomId
+                    where r.Id == room
+                    select t;
+            ViewBag.Branch = branch;
+            ViewBag.Room = room;
+               
             
 
 
            
-                return View(await tunga.ToListAsync());
+            return View(await tunga.ToListAsync());
         }
 
         // GET: Manager/Tables/Details/5
@@ -112,9 +92,9 @@ namespace TungaRestaurant.Areas.Manager.Controllers
         }
 
         // GET: Manager/Tables/Create
-        public IActionResult Create()
+        public async Task< IActionResult> Create()
         {
-           
+            ViewBag.ListBranch = await _context.Branch.ToListAsync();
             ViewData["RoomId"] = new SelectList(_context.Set<Room>(), "Id", "Name");
             return View();
         }
@@ -130,9 +110,14 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             {
                 _context.Add(table);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var x = await _context.Rooms.Where(r => r.Id == table.RoomId).FirstOrDefaultAsync();
+                return RedirectToAction(nameof(Index), new
+                {
+                    room=table.RoomId,
+                    branch= x.BranchId
+                });
             }
-            ViewData["RoomId"] = new SelectList(_context.Set<Room>(), "Id", "Id", table.RoomId);
+            ViewData["RoomId"] = new SelectList(_context.Set<Room>(), "Id", "Name", table.RoomId);
             return View(table);
         }
 
