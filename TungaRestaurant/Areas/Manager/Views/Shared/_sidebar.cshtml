@@ -7,10 +7,12 @@
         <li class="nav-item nav-profile">
             <a asp-area="" asp-controller="Profile" asp-action="Index" class="nav-link">
                 <div class="nav-profile-image">
-                    if(@userInfo.Avatar == null){
-                        <img src="" alt="">
-                    }
+                    @if(@userInfo.Avatar == null){
+                    <img src="" alt="">
+                    }else{
                     <img src="/images/@userInfo.Avatar" alt="">
+                    }
+
                     <span class="login-status online"></span>
                     <!--change to offline or busy as needed-->
                 </div>
