@@ -124,33 +124,33 @@
 
                                     <img src="~/admin_asset/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image">
 
-                                    <h4 >
-                                        <span class="mdi mdi-24px float-right">Size:@item.NumberOfGuest Guest</span>
-                                    </h4>
-                                    <h2 class="mb-5">@item.Name</h2>
 
+                                    <h2 class="mb-5">@item.Name</h2>
+                                    <h4>
+                                        Size:@item.NumberOfGuest Guest
+                                    </h4>
                                     <br />
                                     <h4>@note</h4>
 
                                     <div style="text-align:center" class="row">
                                         @if (color == "success")
                                         {
-                                            <a class="btn-block hi col-md-6" style="display: inline-block; pointer-events: none" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.EMPTY" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Empty</a>
+                                        <a class="btn-block hi col-md-6" style="display: inline-block; pointer-events: none" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.EMPTY" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Empty</a>
 
                                         }
                                         else
                                         {
-                                            <a class="btn-success hi col-md-6" style="display:inline-block" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.EMPTY" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Empty</a>
+                                        <a class="btn-success hi col-md-6" style="display:inline-block" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.EMPTY" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Empty</a>
                                         }
 
                                         @if (color == "danger")
                                         {
-                                            <a class="btn-block hi col-md-6" style="display: inline-block; pointer-events: none" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.USING" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Using</a>
+                                        <a class="btn-block hi col-md-6" style="display: inline-block; pointer-events: none" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.USING" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Using</a>
 
                                         }
                                         else
                                         {
-                                            <a class="btn-danger hi col-md-6" style="display: inline-block" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.USING" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Using</a>
+                                        <a class="btn-danger hi col-md-6" style="display: inline-block" asp-action="Change_Status" asp-area="Manager" asp-controller="Tables" asp-route-id="@item.Id" asp-route-type="@TableStatus.USING" asp-route-url="@Context.Request.Path@Context.Request.QueryString">Using</a>
 
                                         }
 
@@ -196,3 +196,17 @@
         </div>
     </div>
 </div>
+<style>
+    .hi {
+        display: inline-block;
+        transition: 0.75s;
+        opacity: 0;
+        top: 0;
+        right: 1px;
+    }
+
+    .hihi:hover .hi {
+        opacity: 1;
+        display: inline-block;
+    }
+</style>

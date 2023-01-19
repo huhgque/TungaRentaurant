@@ -39,22 +39,32 @@ namespace TungaRestaurant.Areas.Manager.Controllers
             if (branch == null)
             {
                 Branch b = new Branch();
-                b = br.First();
-                branch = b.Id;
+                if (br == null)
+                {
+                    branch = null;
+                }
+                else
+                {
+                    b = br.First();
+                    branch = b.Id;
+                }
+                
                
             }
             var ro = await _context.Rooms.Where(r => r.BranchId == branch).ToListAsync();
             ViewBag.RoomList = ro;
-            if (room == null)
+            if (room == null|| ro.Count() == 0)
             {
-                Room r = new Room();
-                r = await _context.Rooms.Where(r => r.BranchId == branch).FirstOrDefaultAsync();
-                room = r.Id;
+                if (ro.Count() == 0)
+                {
+                    room = null;
+                }
+                else
+                {
+                    room = ro.First().Id;
+                }
             }
-            else
-            {
-                room = ro.First().Id;
-            }
+         
             
             var id = _context.Branch.FirstOrDefault().Id;
             tunga = from r in _context.Rooms
