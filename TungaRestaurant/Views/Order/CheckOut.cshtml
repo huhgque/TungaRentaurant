@@ -1,4 +1,8 @@
-﻿<section class="home-slider owl-carousel">
+﻿@using TungaRestaurant.Ultils
+@{
+    UserInfo userInfo = ViewBag.UserInfo;
+}
+<section class="home-slider owl-carousel">
 
     <div class="slider-item" style="background-image: url(/customer_asset/images/bg_3.jpg);">
         <div class="overlay"></div>
@@ -6,8 +10,8 @@
             <div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
                 <div class="col-md-8 col-sm-12 text-center ftco-animate">
                     <h1 class="mb-3 mt-5 bread">Your order has been saved successfully!</h1>
-                    <p class="breadcrumbs"><span class="mr-2"><a asp-controller="Home" asp-action="Index">Home</a></span> <span>Check Out</span></p>
-                    <p><a href="#" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
+                    <p class="breadcrumbs">Token:@ViewBag.OrderToken </p>
+                    <p><a asp-controller="Home" asp-action="Menu" class="btn btn-primary p-3 px-xl-4 py-xl-3">Menu</a> <a asp-controller="Profile" asp-action="History" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View History</a></p>
                 </div>
 
             </div>

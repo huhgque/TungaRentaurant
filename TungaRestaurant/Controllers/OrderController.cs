@@ -12,9 +12,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using TungaRestaurant.Areas.Manager.Controllers;
+using TungaRestaurant.Ultils;
 
 namespace TungaRestaurant.Controllers
 {
+    [Authorize]
     public class OrderController : Controller, IActionFilter
     {
 
@@ -28,11 +30,10 @@ namespace TungaRestaurant.Controllers
             _context = context;
             _userManager = userManager;
         }
-        [Authorize]
         public IActionResult Index()
         {
             //return ve trang checkout
-            return View("/Views/Order/CheckOut.cshtml");
+            return RedirectToAction(actionName:"Index",controllerName:"Home");
         }
 
         // POST: Cart
@@ -86,16 +87,20 @@ namespace TungaRestaurant.Controllers
                     
 
                     _context.Orders.Add(order);
-                    
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+
+                    TokenManager tokenManager = new TokenManager();
+                    UserInfo userInfo = await _userManager.FindByNameAsync(User.Identity.Name);
+                    ViewBag.OrderToken = tokenManager.GetOrderToken(userInfo,order.Id.ToString());
+                    return View("/Views/Order/CheckOut.cshtml");
+
                 }
                 catch (Exception)
                 {
                     ViewBag.error = "This item has exist in your Order. Please add or reduce it by go to Order page!";
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: "Index", controllerName: "Home");
         }
         private bool OrderExists(int id)
         {

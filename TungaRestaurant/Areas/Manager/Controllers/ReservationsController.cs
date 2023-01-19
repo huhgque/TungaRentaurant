@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,21 +13,28 @@ using TungaRestaurant.Models;
 namespace TungaRestaurant.Controllers
 {
     [Area("Manager")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Branch Manager")]
     public class ReservationsController : Controller
     {
         private readonly TungaRestaurantDbContext _context;
-
-        public ReservationsController(TungaRestaurantDbContext context)
+        private readonly UserManager<UserInfo> _userManager;
+        public ReservationsController(TungaRestaurantDbContext context, UserManager<UserInfo> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            var webApplication6Context = _context.Reservations.Include(r => r.Table).Include(r => r.Table.Room).Include(r => r.Table.Room.Branch).Include(r=>r.User);
-            return View(await webApplication6Context.ToListAsync());
+            UserInfo userInfo = await _userManager.FindByNameAsync(User.Identity.Name);
+            var Reservation = _context.Reservations.Include(r => r.Table).Include(r => r.Table.Room).Include(r => r.Table.Room.Branch).Include(r=>r.User);
+            if (await _userManager.IsInRoleAsync(userInfo, "Branch Manager"))
+            {
+                Reservation.Where(r => r.Table.Room.BranchId == userInfo.BranchId);
+                return View(await Reservation.ToListAsync());
+            }
+            return View(await Reservation.ToListAsync());
         }
 
         // GET: Reservations/Details/5

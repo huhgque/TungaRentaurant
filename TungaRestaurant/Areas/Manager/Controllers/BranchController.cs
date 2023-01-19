@@ -3,28 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TungaRestaurant.Controllers;
 using TungaRestaurant.Data;
 using TungaRestaurant.Models;
 
 namespace TungaRestaurant.Areas.Manager.Controllers
 {
     [Area("Manager")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Branch Manager")]
     public class BranchController : Controller
     {
         private readonly TungaRestaurantDbContext _context;
-
-        public BranchController(TungaRestaurantDbContext context)
+        private readonly UserManager<UserInfo> _userManager;
+        public BranchController(TungaRestaurantDbContext context,UserManager<UserInfo> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Manager/Branch
         public async Task<IActionResult> Index()
         {
+            UserInfo userInfo = await _userManager.FindByNameAsync(User.Identity.Name);
+            if(await _userManager.IsInRoleAsync(userInfo,"Branch Manager"))
+            {
+                return RedirectToAction(actionName: "Index", controllerName: "Rooms",  new { branch = userInfo.BranchId });
+            }
             return View(await _context.Branch.ToListAsync());
         }
 

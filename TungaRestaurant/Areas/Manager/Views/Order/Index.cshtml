@@ -1,5 +1,7 @@
-﻿@model IEnumerable<Order>
+﻿@using TungaRestaurant.Ultils
+@model IEnumerable<Order>
 @{
+    TokenManager tokenManager = new TokenManager();
 }
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
@@ -9,6 +11,7 @@
                 <thead>
                     <tr>
                         <th> User </th>
+                        <th> Token </th>
                         <th> Price </th>
                         <th> Created At </th>
                         <th> Ship Address </th>
@@ -20,6 +23,7 @@
                     {
                         <tr class="redirect-on-click" href="manager/order/edit/@o.Id">
                             <td>@o.User.DisplayName</td>
+                            <td>@tokenManager.GetOrderToken(o.User,o.Id.ToString())</td>
                             <td>@o.Price</td>
                             <td>@o.CreatedAt</td>
                             <td>@o.ShipAddress</td>

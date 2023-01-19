@@ -106,19 +106,6 @@ namespace TungaRestaurant.Controllers
             ViewBag.LoginUser = user;
             return View();
         }
-        [Route("/History/Detail")]
-        public async Task<IActionResult> HistoryDetail(int id)
-        {
-            string uid = _userManager.GetUserId(User);
-            Order order = await _context.Orders.Where(o => o.Id == id && o.UserInfoId.Equals(uid)).FirstOrDefaultAsync();
-            if (order == null)
-            {
-                TempData["ErrMsg"] = "Order not exist";
-                return RedirectToAction(nameof(History));
-            }
-            ViewBag.Order = order;
-            return View();
-        }
         public async Task<IActionResult> Reservation()
         {
             string uid = _userManager.GetUserId(User);

@@ -112,9 +112,8 @@ namespace TungaRestaurant.Controllers
             {
                 ViewBag.Description = TempData["Description"].ToString();
             }
-            
             ViewBag.ListTable = await _context.Table.Include(t=>t.Room).ToListAsync();
-            
+            ViewBag.MainCategorys = await _context.Categories.Include(c=>c.Foods).Take(3).ToListAsync();
             ViewBag.ListBranch = await _context.Branch.Where(b=>b.Status!=BranchStatus.CLOSE).ToListAsync();
             ViewBag.ListRoom = await _context.Rooms.ToListAsync();
             if (TempData["bookingValue"] != null)

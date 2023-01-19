@@ -40,27 +40,25 @@
 			</div>
 		</form>
 	</div>
-	<div class="row">
 		@foreach(Category category in ViewBag.Categories)
 	   {
-			<div class="col-md-6 mb-5 pb-3">
-				<h3 class="mb-5 heading-pricing ftco-animate fadeInUp ftco-animated">@category.Name</h3>
-				@if (category.Foods == null) continue;
-				@foreach (Food food in category.Foods)
-				{
-					<div class="menu-wrap text-center">
-						<a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id" class="menu-img img mb-4" style="background-image: url(/images/@food.Image);"></a>
-						<div class="text">
-							<h3><a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id">@food.Name</a></h3>
-							<p>Serve unit: @food.ServeUnit</p>
-							<p class="price"><span>$@food.Price</span></p>
-							<p><a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id" class="btn btn-primary btn-outline-primary">Detail</a></p>
+			<h3 class="mb-5 heading-pricing ftco-animate fadeInUp ftco-animated ">@category.Name</h3>
+			<div class="row">
+					@if (category.Foods == null) continue;
+					@foreach (Food food in category.Foods)
+					{
+					<div class="col-md-4 mb-5 pb-3">
+						<div class="menu-wrap text-center col">
+							<a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id" class="menu-img img mb-4" style="background-image: url(/images/@food.Image);"></a>
+							<div class="text">
+								<h3><a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id">@food.Name</a></h3>
+								<p>Serve unit: @food.ServeUnit</p>
+								<p class="price"><span>$@food.Price</span></p>
+								<p><a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id" class="btn btn-primary btn-outline-primary">Detail</a></p>
+							</div>
 						</div>
 					</div>
-				}
+					}
 			</div>
-
-		
 	   }
-	</div>
 </div>

@@ -44,7 +44,7 @@ namespace TungaRestaurant.Areas.Manager.Controllers
                 return NotFound();
             }
 
-            var Order = await _context.Orders.FindAsync(id);
+            var Order = await _context.Orders.Include(o=>o.User).Where(o=>o.Id == id).FirstOrDefaultAsync();
             if (Order == null)
             {
                 return NotFound();

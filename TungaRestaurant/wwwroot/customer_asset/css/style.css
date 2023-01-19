@@ -7307,7 +7307,6 @@ h1, h2, h3, h4, h5,
 
 .ftco-navbar-light {
   background: transparent !important;
-  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -7440,7 +7439,6 @@ h1, h2, h3, h4, h5,
     .ftco-navbar-light .navbar-toggler:hover, .ftco-navbar-light .navbar-toggler:focus {
       outline: none !important; }
   .ftco-navbar-light.scrolled {
-    position: fixed;
     right: 0;
     left: 0;
     top: 0;
