@@ -1,10 +1,12 @@
 ﻿$(document).ready(function () {
     $("#minus").click(function () {
-        alert("Text: ");
+        var m = parseInt($("#quantity").val())-1;
+        $("#quantity").val(m);
     });
 
     $("#plus").click(function () {
-        alert("Text: ");
+        var p = parseInt($("#quantity").val())+1;
+        $("#quantity").val(p);
     });
 })
 

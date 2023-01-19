@@ -26,7 +26,10 @@ namespace TungaRestaurant.Controllers
         public async Task<IActionResult> Index()
         {
             string userId = _userManager.GetUserId(User);
-            var cartDbContext = await _dbContext.Carts.Include(c=>c.Food).OrderByDescending(c => c.Id).ToListAsync();
+
+            List<UserInfo> userList = new List<UserInfo>();
+            UserInfo user = userList.FirstOrDefault(u => u.Id == userId);
+            var cartDbContext = await _dbContext.Carts.Include(c=>c.Food).Include(c=>c.UserInfo).OrderByDescending(c => c.Id).ToListAsync();
             return View(cartDbContext);
         }
         // GET: Cart/Details/5

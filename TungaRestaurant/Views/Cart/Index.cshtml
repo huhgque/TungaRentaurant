@@ -80,32 +80,43 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-end">
-            
-            <div class="col col-lg-3 col-md-6 mt-5 cart-wrap ftco-animate">
-                @{float total = subtotal + delivery - discount;}
-                <div class="cart-total mb-3">
-                    <h3>Cart Totals</h3>
-                    <p class="d-flex">
-                        <span>Subtotal</span>
-                        <span>$@subtotal</span>
-                    </p>
-                    <p class="d-flex">
-                        <span>Delivery</span>
-                        <span>$@delivery</span>
-                    </p>
-                    <p class="d-flex">
-                        <span>Discount</span>
-                        <span>$@discount</span>
-                    </p>
-                    <hr>
-                    <p class="d-flex total-price">
-                        <span>Total</span>
-                        <span>$@total</span>
-                    </p>
+        <form asp-controller="Order" asp-action="Create" method="post">
+            <div class="row justify-content-start">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="streetaddress">Delivery Address</label>
+                        <input type="text" name="ShipAddress" class="form-control" placeholder="House number and street name">
+                    </div>
                 </div>
-                <form class="text-center" asp-controller="Order" asp-action="Create" method="post"><input type="submit" class="btn btn-primary py-3 px-4" value="Check Out" /></form>
             </div>
-        </div>
+
+            <div class="row justify-content-end">
+                <div class="col col-lg-3 col-md-6 mt-5 cart-wrap ftco-animate">
+                    @{float total = subtotal + delivery - discount;}
+                    <div class="cart-total mb-3">
+                        <h3>Cart Totals</h3>
+                        <p class="d-flex">
+                            <span>Subtotal</span>
+                            <span>$@subtotal</span>
+                        </p>
+                        <p class="d-flex">
+                            <span>Delivery</span>
+                            <span>$@delivery</span>
+                        </p>
+                        <p class="d-flex">
+                            <span>Discount</span>
+                            <span>$@discount</span>
+                        </p>
+                        <hr>
+                        <p class="d-flex total-price">
+                            <span>Total</span>
+                            <span>$@total</span>
+                        </p>
+                    </div>
+                    <input type="submit" class="btn btn-primary py-3 px-4" value="Check Out" />
+
+                </div>
+            </div>
+        </form>
     </div>
 </section>
