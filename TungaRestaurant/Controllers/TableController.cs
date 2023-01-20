@@ -26,8 +26,28 @@ namespace TungaRestaurant.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Branchs = await _context.Branch.ToListAsync();
-            ViewBag.Food = await _context.Foods.ToListAsync();
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
+            if (TempData["Notice"] != null)
+            {
+                ViewBag.Notice = TempData["Notice"].ToString();
+            }
+            if (TempData["Description"] != null)
+            {
+                ViewBag.Description = TempData["Description"].ToString();
+            }
+            ViewBag.ListTable = await _context.Table.Include(t => t.Room).ToListAsync();
+            ViewBag.MainCategorys = await _context.Categories.Include(c => c.Foods).Take(3).ToListAsync();
+            ViewBag.ListBranch = await _context.Branch.Where(b => b.Status != BranchStatus.CLOSE).ToListAsync();
+            ViewBag.ListRoom = await _context.Rooms.ToListAsync();
+            if (TempData["bookingValue"] != null)
+            {
+
+                return View("~/Views/Home/TableReservation.cshtml",JsonConvert.DeserializeObject<TableBookInfor>((string)TempData["bookingValue"])); ;
+            }
+            
             return View("~/Views/Home/TableReservation.cshtml");
         }
         [HttpPost]
@@ -41,9 +61,15 @@ namespace TungaRestaurant.Controllers
                 DateTime revEnd = DateTime.ParseExact(tableBookInfor.date + " " + tableBookInfor.time_to, "M/d/yyyy h:mmtt", CultureInfo.InvariantCulture);
                 if (revEnd<=revDate)
                 {
+
                     TempData["bookingValue"] = JsonConvert.SerializeObject(tableBookInfor);
                     TempData["Message"] = "Time End must after Time Start";
-                    return RedirectToAction("Index", "Home");
+                    ViewBag.Message = "Time End must after Time Start";
+                    ViewBag.ListTable = await _context.Table.Include(t => t.Room).ToListAsync();
+                    ViewBag.MainCategorys = await _context.Categories.Include(c => c.Foods).Take(3).ToListAsync();
+                    ViewBag.ListBranch = await _context.Branch.Where(b => b.Status != BranchStatus.CLOSE).ToListAsync();
+                    ViewBag.ListRoom = await _context.Rooms.ToListAsync();
+                    return View("~/Views/Home/TableReservation.cshtml", tableBookInfor);
                 }
                 
                 Reservation reservation = new Reservation();
@@ -65,13 +91,23 @@ namespace TungaRestaurant.Controllers
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 TempData["Message"] = "You had booking table at "+revDate+" to "+revEnd+" with token "+token;
-                return RedirectToAction("Index", "Home");
+                ViewBag.Message = "You had booking table at " + revDate + " to " + revEnd + " with token " + token;
+                ViewBag.ListTable = await _context.Table.Include(t => t.Room).ToListAsync();
+                ViewBag.MainCategorys = await _context.Categories.Include(c => c.Foods).Take(3).ToListAsync();
+                ViewBag.ListBranch = await _context.Branch.Where(b => b.Status != BranchStatus.CLOSE).ToListAsync();
+                ViewBag.ListRoom = await _context.Rooms.ToListAsync();
+                return View("~/Views/Home/TableReservation.cshtml");
             }
             else
             {
                 TempData["bookingValue"] = JsonConvert.SerializeObject(tableBookInfor); 
                 TempData["Message"] = "Please select right and all status";
-                return RedirectToAction("Index", "Home");
+                ViewBag.Message = "Please select right and all status";
+                ViewBag.ListTable = await _context.Table.Include(t => t.Room).ToListAsync();
+                ViewBag.MainCategorys = await _context.Categories.Include(c => c.Foods).Take(3).ToListAsync();
+                ViewBag.ListBranch = await _context.Branch.Where(b => b.Status != BranchStatus.CLOSE).ToListAsync();
+                ViewBag.ListRoom = await _context.Rooms.ToListAsync();
+                return View("~/Views/Home/TableReservation.cshtml");
             }
             
            
