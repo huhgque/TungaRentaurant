@@ -45,7 +45,7 @@
                     {
                     <tr>
                         <td>
-                            @tokenManager.GetReservationToken(item.User,item.Id.ToString())
+                            @Html.DisplayFor(modelItem => item.Token)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.NumberOfGuest)

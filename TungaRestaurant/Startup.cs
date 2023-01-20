@@ -33,7 +33,7 @@ namespace TungaRestaurant
 
             services.AddDbContext<TungaRestaurantDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("TungaRestaurantDbContext"));
+                options.UseSqlServer(sqlConnect);
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
             });
