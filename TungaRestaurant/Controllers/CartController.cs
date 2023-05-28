@@ -99,8 +99,15 @@ namespace TungaRestaurant.Controllers
             {
                 try
                 {
+                    if (cart.Quantity <= 0)
+                    {
+                        cart.Quantity = 1;
+                        
+                    }
+                
                     _dbContext.Update(cart);
                     await _dbContext.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {

@@ -32,9 +32,10 @@ namespace TungaRestaurant.Controllers
             if (await _userManager.IsInRoleAsync(userInfo, "Branch Manager"))
             {
                 Reservation.Where(r => r.Table.Room.BranchId == userInfo.BranchId);
-                return View(await Reservation.ToListAsync());
+                return View(await Reservation.OrderByDescending(r => r.Id).ToListAsync());
             }
-            return View(await Reservation.ToListAsync());
+        
+            return View(await Reservation.OrderByDescending(r => r.Id).ToListAsync());
         }
 
         // GET: Reservations/Details/5

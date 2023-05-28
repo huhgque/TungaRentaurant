@@ -21,8 +21,6 @@
                         <th> Restaurant </th>
                         <th> Category </th>
                         <th> Serve Unit </th>
-                        <th> Vegan?</th>
-                        <th> Status </th>
                         <th width="150px" class="text-center"> Action </th>
                     </tr>
                 </thead>
@@ -41,11 +39,6 @@
                             }
                             <td> @food.Category.Name</td>
                             <td> @food.ServeUnit</td>
-                            @if (@food.IsVeganDish == true)
-                            {<td>Vegan</td>}
-                            else
-                            {<td>Non-vegan</td>}
-                            <td>@food.Status</td>
                             <td><a asp-action="Delete" asp-route-id="@food.Id" class="btn btn-gradient-danger">Delete</a></td>
                         </tr>
                     }

@@ -176,7 +176,7 @@ namespace TungaRestaurant.Controllers
                     .Foods.Where(f=>
                         (f.BranchId==branch || f.BranchId == null))
                         .Where(f=>f.Name.Contains(search))
-                        .Where(f=>f.IsVeganDish == isVeganValue)
+                        .Where(f=> (isVeganValue == false)?true : f.IsVeganDish == isVeganValue )
                         .FirstOrDefault() != null)
                 .ToList();
             return View();

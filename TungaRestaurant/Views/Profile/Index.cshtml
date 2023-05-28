@@ -58,7 +58,7 @@
 							@{
 								SelectList selectSex = new SelectList(Html.GetEnumSelectList<Sex>(),"Value","Text", profile.Sex);
 							}
-							<Select class="custom-select form-control" asp-for="@profile.Sex" asp-items="selectSex">
+							<Select class="custom-select form-control" asp-for="Sex" asp-items="selectSex">
 							</Select>
 							<span asp-validation-for="Sex" class="text-danger"></span>
 

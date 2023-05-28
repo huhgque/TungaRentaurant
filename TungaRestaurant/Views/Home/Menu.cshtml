@@ -49,7 +49,7 @@
 					{
 					<div class="col-md-4 mb-5 pb-3">
 						<div class="menu-wrap text-center col">
-							<a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id" class="menu-img img mb-4" style="background-image: url(/images/@food.Image);"></a>
+							<a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id" class="menu-img img mb-4" style="background-image: url('/images/@food.Image');"></a>
 							<div class="text">
 								<h3><a asp-controller="Home" asp-action="Food" asp-route-id="@food.Id">@food.Name</a></h3>
 								<p>Serve unit: @food.ServeUnit</p>
